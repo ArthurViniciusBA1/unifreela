@@ -22,14 +22,14 @@ interface AdminActionResult {
 }
 
 interface ListarResult {
-  data?: any[]; // Agora 'data' é opcional e pode ser um array de qualquer coisa
+  data?: any[];
   success: boolean;
   error?: string;
   items?: any[];
   total?: number;
 }
 
-// ... (outras actions que não serão modificadas) ...
+// CORRIGIDO: Adaptado para criar Usuario primeiro, depois Cliente (perfil empresa)
 export async function criarEmpresaComRecrutadorAction(
   data: tNovaEmpresa
 ): Promise<AdminActionResult> {
@@ -62,20 +62,22 @@ export async function criarEmpresaComRecrutadorAction(
     const hashedPassword = await bcrypt.hash(senhaRecrutador, 10);
 
     await prisma.$transaction(async (tx) => {
-      const novaEmpresa = await tx.empresa.create({
-        data: {
-          nome: nomeEmpresa,
-          cnpj: cnpj || null,
-        },
-      });
-
-      await tx.usuario.create({
+      const novoUsuario = await tx.susuario.create({
         data: {
           nome: nomeRecrutador,
           email: emailRecrutador,
           senha: hashedPassword,
           role: RoleUsuario.USER,
-          empresaId: novaEmpresa.id,
+          ativo: true,
+        },
+      });
+
+      // 2. Cria o perfil de Cliente (Empresa) vinculado ao usuário
+      await tx.cliente.create({
+        data: {
+          usuarioId: novoUsuario.id,
+          nomeFantasia: nomeEmpresa,
+          cpfOuCnpj: cnpj || null,
         },
       });
     });
@@ -102,12 +104,13 @@ export async function procurarUsuariosAction(
   }
 
   try {
+    // Nota: O campo numeroRA não existe no schema fornecido (Usuario),
+    // removi da busca para evitar outro erro. Se ele existir, pode adicionar de volta.
     const usuarios = await prisma.usuario.findMany({
       where: {
         OR: [
           { nome: { contains: termoBusca, mode: 'insensitive' } },
           { email: { contains: termoBusca, mode: 'insensitive' } },
-          { numeroRA: { contains: termoBusca, mode: 'insensitive' } },
         ],
       },
       select: {
@@ -154,6 +157,7 @@ export async function adminMudarSenhaUsuarioAction(
   }
 }
 
+// CORRIGIDO: Removida lógica de conectar 'empresa' que não existe no Usuario
 export async function adminEditarUsuarioAction(
   data: tEditarUsuario
 ): Promise<AdminActionResult> {
@@ -177,15 +181,9 @@ export async function adminEditarUsuarioAction(
     role: updateData.role,
   };
 
-  if (updateData.role === 'RECRUTADOR' && updateData.empresaId) {
-    dataPayload.empresa = {
-      connect: { id: updateData.empresaId },
-    };
-  } else {
-    dataPayload.empresa = {
-      disconnect: true,
-    };
-  }
+  // Removido bloco que tentava conectar 'empresa' via 'empresaId'
+  // pois o schema atual define a relação via modelo Cliente (perfil_cliente)
+  // e não como uma propriedade direta 'empresa' no Usuario.
 
   try {
     const usuarioAtualizado = await prisma.usuario.update({
@@ -200,6 +198,7 @@ export async function adminEditarUsuarioAction(
   }
 }
 
+// CORRIGIDO: Busca total de 'Cliente' em vez de 'Empresa'
 export async function getAdminDashboardStatsAction(): Promise<AdminActionResult> {
   const { isAuthorized, role } = await authorizeUser([RoleUsuario.ADMIN]);
   if (!isAuthorized || role !== RoleUsuario.ADMIN) {
@@ -208,7 +207,7 @@ export async function getAdminDashboardStatsAction(): Promise<AdminActionResult>
 
   try {
     const totalUsuarios = await prisma.usuario.count();
-    const totalEmpresas = await prisma.empresa.count();
+    const totalEmpresas = await prisma.cliente.count(); // Usando tabela cliente
     return { success: true, data: { totalUsuarios, totalEmpresas } };
   } catch (error) {
     console.error('Erro ao buscar estatísticas do admin:', error);
@@ -216,6 +215,7 @@ export async function getAdminDashboardStatsAction(): Promise<AdminActionResult>
   }
 }
 
+// CORRIGIDO: Busca em 'Cliente', mapeando campos corretos (nomeFantasia, cpfOuCnpj)
 export async function listarTodasEmpresasAction(
   params: { page: number; query?: string } = { page: 1 }
 ): Promise<ListarResult> {
@@ -229,31 +229,45 @@ export async function listarTodasEmpresasAction(
   const skip = (page - 1) * limit;
 
   try {
-    const whereClause: Prisma.EmpresaWhereInput = {};
+    const whereClause: Prisma.ClienteWhereInput = {};
     if (query) {
       whereClause.OR = [
-        { nome: { contains: query, mode: 'insensitive' } },
-        { cnpj: { contains: query, mode: 'insensitive' } },
+        { nomeFantasia: { contains: query, mode: 'insensitive' } },
+        { cpfOuCnpj: { contains: query, mode: 'insensitive' } },
       ];
     }
 
     const [empresas, total] = await prisma.$transaction([
-      prisma.empresa.findMany({
+      prisma.cliente.findMany({
         where: whereClause,
-        select: { id: true, nome: true, cnpj: true, criadoEm: true },
-        orderBy: { criadoEm: 'desc' },
+        select: {
+          id: true,
+          nomeFantasia: true, // Mapeado para 'nome' no retorno se necessário
+          cpfOuCnpj: true, // Mapeado para 'cnpj'
+          createdAt: true, // Schema usa createdAt, não criadoEm
+        },
+        orderBy: { createdAt: 'desc' },
         take: limit,
         skip: skip,
       }),
-      prisma.empresa.count({ where: whereClause }),
+      prisma.cliente.count({ where: whereClause }),
     ]);
 
-    return { success: true, items: empresas, total };
+    // Adaptando o retorno para o formato esperado pelo frontend (nome, cnpj, criadoEm)
+    const itemsAdaptados = empresas.map((e) => ({
+      id: e.id,
+      nome: e.nomeFantasia,
+      cnpj: e.cpfOuCnpj,
+      criadoEm: e.createdAt,
+    }));
+
+    return { success: true, items: itemsAdaptados, total };
   } catch (error) {
     console.error('Erro ao listar empresas:', error);
     return { success: false, error: 'Ocorreu um erro no servidor.' };
   }
 }
+
 export async function listarTodosUsuariosAction(
   params: {
     page: number;
@@ -279,7 +293,7 @@ export async function listarTodosUsuariosAction(
       whereClause.OR = [
         { nome: { contains: query, mode: 'insensitive' } },
         { email: { contains: query, mode: 'insensitive' } },
-        { numeroRA: { contains: query, mode: 'insensitive' } },
+        // numeroRA removido pois não consta no schema Usuario
       ];
     }
     if (role) {
@@ -296,11 +310,11 @@ export async function listarTodosUsuariosAction(
           id: true,
           nome: true,
           email: true,
-          numeroRA: true,
+          // numeroRA: true, // Removido
           role: true,
           ativo: true,
           criadoEm: true,
-          empresaId: true,
+          // empresaId: true, // Removido, não existe no schema
         },
         orderBy: [{ ativo: 'desc' }, { criadoEm: 'desc' }],
         take: limit,
@@ -359,6 +373,7 @@ export async function adminToggleUsuarioAtivoAction(
   }
 }
 
+// CORRIGIDO: Atualiza 'Cliente' em vez de 'Empresa'
 export async function adminEditarEmpresaAction(
   data: tEmpresaForm
 ): Promise<AdminActionResult> {
@@ -375,11 +390,13 @@ export async function adminEditarEmpresaAction(
   const { id, ...updateData } = validation.data;
 
   try {
-    const empresaAtualizada = await prisma.empresa.update({
+    // Atualiza o modelo Cliente
+    const empresaAtualizada = await prisma.cliente.update({
       where: { id },
       data: {
-        ...updateData,
-        cnpj: updateData.cnpj || null,
+        nomeFantasia: updateData.nome, // mapeando nome -> nomeFantasia
+        cpfOuCnpj: updateData.cnpj || null, // mapeando cnpj -> cpfOuCnpj
+        // outros campos se existirem no tEmpresaForm
       },
     });
     revalidatePath('/admin/empresas');
