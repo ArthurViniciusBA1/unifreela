@@ -14,12 +14,9 @@ interface ApiCurriculoResumo {
   id?: string;
   tituloCurriculo?: string;
   resumoProfissional?: string;
-  telefone?: string;
-  enderecoCompleto?: string;
   linkedinUrl?: string;
   githubUrl?: string;
   portfolioUrl?: string;
-  visibilidade?: boolean;
   temInformacoesPessoais?: boolean;
   numExperiencias?: number;
   numFormacoes?: number;
@@ -40,7 +37,7 @@ export async function GET() {
 
   try {
     const decodedToken = jwt.verify(token, jwtSecret) as TokenPayload;
-    if (!decodedToken?.id || (decodedToken.role !== RoleUsuario.CANDIDATO && decodedToken.role !== RoleUsuario.ADMIN)) {
+    if (!decodedToken?.id || (decodedToken.role !== RoleUsuario.USER && decodedToken.role !== RoleUsuario.ADMIN)) {
       return NextResponse.json({ error: 'Acesso não autorizado.' }, { status: 403 });
     }
 
@@ -57,18 +54,15 @@ export async function GET() {
       where: { usuarioId: usuario.id },
       select: {
         id: true,
-        titulo: true,
-        resumoProfissional: true,
-        telefone: true,
-        endereco: true,
+        tituloProfissional: true,
+        resumo: true,
         linkedinUrl: true,
         githubUrl: true,
         portfolioUrl: true,
-        visibilidade: true,
         _count: {
           select: {
-            experienciasProfissionais: true,
-            formacoesAcademicas: true,
+            experiencias: true,
+            formacoes: true,
             habilidades: true,
           },
         },
@@ -80,17 +74,14 @@ export async function GET() {
     if (curriculoPrisma) {
       curriculoResumoParaFrontend = {
         id: curriculoPrisma.id,
-        tituloCurriculo: curriculoPrisma.titulo ?? undefined,
-        resumoProfissional: curriculoPrisma.resumoProfissional ?? undefined,
-        telefone: curriculoPrisma.telefone ?? undefined,
-        enderecoCompleto: curriculoPrisma.endereco ?? undefined,
+        tituloCurriculo: curriculoPrisma.tituloProfissional ?? undefined,
+        resumoProfissional: curriculoPrisma.resumo ?? undefined,
         linkedinUrl: curriculoPrisma.linkedinUrl ?? undefined,
         githubUrl: curriculoPrisma.githubUrl ?? undefined,
         portfolioUrl: curriculoPrisma.portfolioUrl ?? undefined,
-        visibilidade: curriculoPrisma.visibilidade ?? undefined,
-        temInformacoesPessoais: !!(curriculoPrisma.titulo || curriculoPrisma.id),
-        numExperiencias: curriculoPrisma._count?.experienciasProfissionais || 0,
-        numFormacoes: curriculoPrisma._count?.formacoesAcademicas || 0,
+        temInformacoesPessoais: !!(curriculoPrisma.tituloProfissional || curriculoPrisma.id),
+        numExperiencias: curriculoPrisma._count?.experiencias || 0,
+        numFormacoes: curriculoPrisma._count?.formacoes || 0,
         numHabilidades: curriculoPrisma._count?.habilidades || 0,
       };
     }

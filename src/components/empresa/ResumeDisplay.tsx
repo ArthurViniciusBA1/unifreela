@@ -2,13 +2,9 @@ import {
   Award,
   Briefcase,
   FileText,
-  Github,
   Languages,
   Lightbulb,
-  Link as LinkIcon,
-  Linkedin,
 } from 'lucide-react';
-import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
 
@@ -53,12 +49,12 @@ export function ResumeDisplay({ curriculo }: { curriculo: any }) {
 
   return (
     <div className='bg-card rounded-lg p-6 sm:p-10'>
-      {curriculo.resumoProfissional && (
+      {curriculo.resumo && (
         <CurriculoSecao
           titulo='Resumo Profissional'
           icon={<FileText size={20} className='text-primary' />}
         >
-          <p className='text-gray-700 leading-relaxed'>{curriculo.resumoProfissional}</p>
+          <p className='text-gray-700 leading-relaxed'>{curriculo.resumo}</p>
         </CurriculoSecao>
       )}
       <CurriculoSecao
@@ -66,7 +62,7 @@ export function ResumeDisplay({ curriculo }: { curriculo: any }) {
         icon={<Briefcase size={20} className='text-primary' />}
       >
         <div className='space-y-6'>
-          {curriculo.experienciasProfissionais?.map((exp: any) => (
+          {curriculo.experiencias?.map((exp: any) => (
             <div key={exp.id}>
               <h3 className='text-lg font-semibold text-gray-800'>{exp.cargo}</h3>
               <p className='text-md text-gray-700'>
@@ -88,7 +84,7 @@ export function ResumeDisplay({ curriculo }: { curriculo: any }) {
         icon={<FileText size={20} className='text-primary' />}
       >
         <div className='space-y-6'>
-          {curriculo.formacoesAcademicas?.map((formacao: any) => (
+          {curriculo.formacoes?.map((formacao: any) => (
             <div key={formacao.id}>
               <h3 className='text-lg font-semibold text-gray-800'>{formacao.curso}</h3>
               <p className='text-md text-gray-700'>{formacao.instituicao}</p>
@@ -116,28 +112,6 @@ export function ResumeDisplay({ curriculo }: { curriculo: any }) {
               {idioma.nome} -{' '}
               <span className='font-semibold capitalize'>{idioma.nivel.toLowerCase()}</span>
             </p>
-          ))}
-        </div>
-      </CurriculoSecao>
-      <CurriculoSecao titulo='Projetos' icon={<Lightbulb size={20} className='text-primary' />}>
-        <div className='space-y-6'>
-          {curriculo.projetos?.map((proj: any) => (
-            <div key={proj.id}>
-              <div className='flex items-center gap-2'>
-                <h3 className='text-lg font-semibold text-gray-800'>{proj.nome}</h3>
-                {proj.projectUrl && (
-                  <Link href={proj.projectUrl} target='_blank'>
-                    <LinkIcon size={14} className='text-blue-600 hover:underline' />
-                  </Link>
-                )}
-                {proj.repositorioUrl && (
-                  <Link href={proj.repositorioUrl} target='_blank'>
-                    <Github size={14} className='text-gray-800 hover:underline' />
-                  </Link>
-                )}
-              </div>
-              {proj.descricao && <p className='mt-1 text-sm text-gray-600'>{proj.descricao}</p>}
-            </div>
           ))}
         </div>
       </CurriculoSecao>

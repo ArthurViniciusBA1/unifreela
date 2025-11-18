@@ -8,30 +8,25 @@ import { toast } from 'sonner';
 import { FloatingLabelInput } from '@/components/custom/FloatingLabelInput';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { loginAdminSchema, tLoginAdmin } from '@/schemas/usuarioSchema';
+import { loginSchema, tLogin } from '@/schemas/usuarioSchema';
 
 export default function FormLoginAdmin() {
   const router = useRouter();
 
-  const form = useForm<tLoginAdmin>({
-    resolver: zodResolver(loginAdminSchema),
+  const form = useForm<tLogin>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
       senha: '',
     },
   });
 
-  const onSubmit = async (data: tLoginAdmin) => {
+  const onSubmit = async (data: tLogin) => {
     try {
-      const payload = {
-        ...data,
-        tipoAcesso: 'admin',
-      };
-
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(data),
       });
 
       const result = await res.json();

@@ -1,10 +1,31 @@
 import { z } from 'zod';
-import type { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 /////////////////////////////////////////
 // HELPER FUNCTIONS
 /////////////////////////////////////////
 
+// DECIMAL
+//------------------------------------------------------
+
+export const DecimalJsLikeSchema: z.ZodType<Prisma.DecimalJsLike> = z.object({
+  d: z.array(z.number()),
+  e: z.number(),
+  s: z.number(),
+  toFixed: z.any(),
+})
+
+export const DECIMAL_STRING_REGEX = /^(?:-?Infinity|NaN|-?(?:0[bB][01]+(?:\.[01]+)?(?:[pP][-+]?\d+)?|0[oO][0-7]+(?:\.[0-7]+)?(?:[pP][-+]?\d+)?|0[xX][\da-fA-F]+(?:\.[\da-fA-F]+)?(?:[pP][-+]?\d+)?|(?:\d+|\d*\.\d+)(?:[eE][-+]?\d+)?))$/;
+
+export const isValidDecimalInput =
+  (v?: null | string | number | Prisma.DecimalJsLike): v is string | number | Prisma.DecimalJsLike => {
+    if (v === undefined || v === null) return false;
+    return (
+      (typeof v === 'object' && 'd' in v && 'e' in v && 's' in v && 'toFixed' in v) ||
+      (typeof v === 'string' && DECIMAL_STRING_REGEX.test(v)) ||
+      typeof v === 'number'
+    )
+  };
 
 /////////////////////////////////////////
 // ENUMS
@@ -12,27 +33,29 @@ import type { Prisma } from '@prisma/client';
 
 export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted','ReadCommitted','RepeatableRead','Serializable']);
 
-export const UsuarioScalarFieldEnumSchema = z.enum(['id','email','senha','nome','numeroRA','fotoUrl','role','ativo','empresaId','criadoEm','atualizadoEm']);
+export const UsuarioScalarFieldEnumSchema = z.enum(['id','email','senha','nome','fotoUrl','role','ativo','criadoEm','updatedAt']);
 
-export const EmpresaScalarFieldEnumSchema = z.enum(['id','nome','cnpj','descricao','websiteUrl','logoUrl','cadastradaPorId','criadoEm','atualizadoEm']);
+export const ClienteScalarFieldEnumSchema = z.enum(['id','usuarioId','nomeFantasia','cpfOuCnpj','descricao','websiteUrl','localizacao','createdAt','updatedAt']);
 
-export const CurriculoScalarFieldEnumSchema = z.enum(['id','titulo','resumoProfissional','telefone','linkedinUrl','githubUrl','portfolioUrl','endereco','visibilidade','usuarioId','criadoEm','atualizadoEm']);
+export const CurriculoScalarFieldEnumSchema = z.enum(['id','usuarioId','tituloProfissional','resumo','valorHora','portfolioUrl','githubUrl','linkedinUrl','disponivel','createdAt','updatedAt']);
 
-export const ExperienciaProfissionalScalarFieldEnumSchema = z.enum(['id','cargo','nomeEmpresa','local','dataInicio','dataFim','descricao','trabalhoAtual','curriculoId']);
+export const ProjetoScalarFieldEnumSchema = z.enum(['id','titulo','descricao','habilidadesDesejadas','tipo','status','orcamentoEstimado','prazoEstimado','remoto','criadoPorId','dataPublicacao','updatedAt']);
 
-export const FormacaoAcademicaScalarFieldEnumSchema = z.enum(['id','instituicao','curso','areaEstudo','dataInicio','dataFim','descricao','emCurso','curriculoId']);
+export const PropostaScalarFieldEnumSchema = z.enum(['id','mensagem','valorProposto','prazoEstimadoDias','status','freelancerId','projetoId','createdAt','updatedAt']);
 
-export const HabilidadeScalarFieldEnumSchema = z.enum(['id','nome','categoria','curriculoId']);
+export const AvaliacaoScalarFieldEnumSchema = z.enum(['id','nota','comentario','projetoId','avaliadorId','avaliadoId','createdAt']);
+
+export const ExperienciaProfissionalScalarFieldEnumSchema = z.enum(['id','cargo','empresa','descricao','dataInicio','dataFim','atual','curriculoId']);
+
+export const FormacaoAcademicaScalarFieldEnumSchema = z.enum(['id','instituicao','curso','dataInicio','dataFim','concluido','curriculoId']);
+
+export const HabilidadeScalarFieldEnumSchema = z.enum(['id','nome','curriculoId']);
 
 export const IdiomaScalarFieldEnumSchema = z.enum(['id','nome','nivel','curriculoId']);
 
-export const ProjetoScalarFieldEnumSchema = z.enum(['id','nome','descricao','projectUrl','repositorioUrl','dataInicio','dataFim','tecnologiasUsadas','curriculoId']);
+export const CertificacaoScalarFieldEnumSchema = z.enum(['id','nome','organizacaoEmissora','dataEmissao','urlCredencial','curriculoId']);
 
-export const CertificacaoScalarFieldEnumSchema = z.enum(['id','nome','organizacaoEmissora','dataEmissao','credencialId','credencialUrl','curriculoId']);
-
-export const VagaScalarFieldEnumSchema = z.enum(['id','titulo','descricao','requisitos','tipo','localizacao','salario','faixaSalarial','ativa','empresaId','criadoPorId','dataPublicacao','dataExpiracao','criadoEm','atualizadoEm']);
-
-export const CandidaturaScalarFieldEnumSchema = z.enum(['id','dataCandidatura','status','cartaApresentacao','usuarioId','vagaId','criadoEm','atualizadoEm']);
+export const ProjetoPortfolioScalarFieldEnumSchema = z.enum(['id','nome','descricao','projectUrl','repositorioUrl','dataInicio','dataFim','tecnologiasUsadas','curriculoId','createdAt','updatedAt']);
 
 export const SortOrderSchema = z.enum(['asc','desc']);
 
@@ -40,21 +63,25 @@ export const QueryModeSchema = z.enum(['default','insensitive']);
 
 export const NullsOrderSchema = z.enum(['first','last']);
 
-export const RoleUsuarioSchema = z.enum(['CANDIDATO','RECRUTADOR','ADMIN']);
+export const RoleUsuarioSchema = z.enum(['USER','ADMIN']);
 
 export type RoleUsuarioType = `${z.infer<typeof RoleUsuarioSchema>}`
 
-export const NivelProficienciaSchema = z.enum(['INICIANTE','INTERMEDIARIO','AVANCADO','ESPECIALISTA','NATIVO']);
+export const NivelProficienciaSchema = z.enum(['BASICO','INTERMEDIARIO','AVANCADO','ESPECIALISTA']);
 
 export type NivelProficienciaType = `${z.infer<typeof NivelProficienciaSchema>}`
 
-export const TipoVagaSchema = z.enum(['ESTAGIO','EFETIVO','TRAINEE','TEMPORARIO','PROJETO']);
+export const TipoProjetoSchema = z.enum(['PROJETO_FIXO','HORA','CONSULTORIA','LONGO_PRAZO']);
 
-export type TipoVagaType = `${z.infer<typeof TipoVagaSchema>}`
+export type TipoProjetoType = `${z.infer<typeof TipoProjetoSchema>}`
 
-export const StatusCandidaturaSchema = z.enum(['INSCRITO','VISUALIZADA','EM_PROCESSO','APROVADO','REJEITADO','CANCELADA']);
+export const StatusProjetoSchema = z.enum(['RASCUNHO','ABERTO','EM_ANDAMENTO','CONCLUIDO','CANCELADO']);
 
-export type StatusCandidaturaType = `${z.infer<typeof StatusCandidaturaSchema>}`
+export type StatusProjetoType = `${z.infer<typeof StatusProjetoSchema>}`
+
+export const StatusPropostaSchema = z.enum(['ENVIADA','EM_NEGOCIACAO','ACEITA','RECUSADA']);
+
+export type StatusPropostaType = `${z.infer<typeof StatusPropostaSchema>}`
 
 /////////////////////////////////////////
 // MODELS
@@ -70,33 +97,31 @@ export const UsuarioSchema = z.object({
   email: z.string(),
   senha: z.string(),
   nome: z.string(),
-  numeroRA: z.string().nullable(),
   fotoUrl: z.string().nullable(),
   ativo: z.boolean(),
-  empresaId: z.string().nullable(),
   criadoEm: z.coerce.date(),
-  atualizadoEm: z.coerce.date(),
+  updatedAt: z.coerce.date(),
 })
 
 export type Usuario = z.infer<typeof UsuarioSchema>
 
 /////////////////////////////////////////
-// EMPRESA SCHEMA
+// CLIENTE SCHEMA
 /////////////////////////////////////////
 
-export const EmpresaSchema = z.object({
+export const ClienteSchema = z.object({
   id: z.string().cuid(),
-  nome: z.string(),
-  cnpj: z.string().nullable(),
+  usuarioId: z.string(),
+  nomeFantasia: z.string().nullable(),
+  cpfOuCnpj: z.string().nullable(),
   descricao: z.string().nullable(),
   websiteUrl: z.string().nullable(),
-  logoUrl: z.string().nullable(),
-  cadastradaPorId: z.string().nullable(),
-  criadoEm: z.coerce.date(),
-  atualizadoEm: z.coerce.date(),
+  localizacao: z.string().nullable(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
 })
 
-export type Empresa = z.infer<typeof EmpresaSchema>
+export type Cliente = z.infer<typeof ClienteSchema>
 
 /////////////////////////////////////////
 // CURRICULO SCHEMA
@@ -104,20 +129,74 @@ export type Empresa = z.infer<typeof EmpresaSchema>
 
 export const CurriculoSchema = z.object({
   id: z.string().cuid(),
-  titulo: z.string(),
-  resumoProfissional: z.string().nullable(),
-  telefone: z.string().nullable(),
-  linkedinUrl: z.string().nullable(),
-  githubUrl: z.string().nullable(),
-  portfolioUrl: z.string().nullable(),
-  endereco: z.string().nullable(),
-  visibilidade: z.boolean(),
   usuarioId: z.string(),
-  criadoEm: z.coerce.date(),
-  atualizadoEm: z.coerce.date(),
+  tituloProfissional: z.string(),
+  resumo: z.string().nullable(),
+  valorHora: z.instanceof(Prisma.Decimal, { message: "Field 'valorHora' must be a Decimal. Location: ['Models', 'Curriculo']"}).nullable(),
+  portfolioUrl: z.string().nullable(),
+  githubUrl: z.string().nullable(),
+  linkedinUrl: z.string().nullable(),
+  disponivel: z.boolean(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
 })
 
 export type Curriculo = z.infer<typeof CurriculoSchema>
+
+/////////////////////////////////////////
+// PROJETO SCHEMA
+/////////////////////////////////////////
+
+export const ProjetoSchema = z.object({
+  tipo: TipoProjetoSchema,
+  status: StatusProjetoSchema,
+  id: z.string().cuid(),
+  titulo: z.string(),
+  descricao: z.string(),
+  habilidadesDesejadas: z.string().array(),
+  orcamentoEstimado: z.string().nullable(),
+  prazoEstimado: z.string().nullable(),
+  remoto: z.boolean(),
+  criadoPorId: z.string(),
+  dataPublicacao: z.coerce.date(),
+  updatedAt: z.coerce.date(),
+})
+
+export type Projeto = z.infer<typeof ProjetoSchema>
+
+/////////////////////////////////////////
+// PROPOSTA SCHEMA
+/////////////////////////////////////////
+
+export const PropostaSchema = z.object({
+  status: StatusPropostaSchema,
+  id: z.string().cuid(),
+  mensagem: z.string(),
+  valorProposto: z.instanceof(Prisma.Decimal, { message: "Field 'valorProposto' must be a Decimal. Location: ['Models', 'Proposta']"}),
+  prazoEstimadoDias: z.number().int(),
+  freelancerId: z.string(),
+  projetoId: z.string(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
+})
+
+export type Proposta = z.infer<typeof PropostaSchema>
+
+/////////////////////////////////////////
+// AVALIACAO SCHEMA
+/////////////////////////////////////////
+
+export const AvaliacaoSchema = z.object({
+  id: z.string().cuid(),
+  nota: z.number().int(),
+  comentario: z.string().nullable(),
+  projetoId: z.string(),
+  avaliadorId: z.string(),
+  avaliadoId: z.string(),
+  createdAt: z.coerce.date(),
+})
+
+export type Avaliacao = z.infer<typeof AvaliacaoSchema>
 
 /////////////////////////////////////////
 // EXPERIENCIA PROFISSIONAL SCHEMA
@@ -126,12 +205,11 @@ export type Curriculo = z.infer<typeof CurriculoSchema>
 export const ExperienciaProfissionalSchema = z.object({
   id: z.string().cuid(),
   cargo: z.string(),
-  nomeEmpresa: z.string(),
-  local: z.string().nullable(),
+  empresa: z.string(),
+  descricao: z.string().nullable(),
   dataInicio: z.coerce.date(),
   dataFim: z.coerce.date().nullable(),
-  descricao: z.string().nullable(),
-  trabalhoAtual: z.boolean(),
+  atual: z.boolean(),
   curriculoId: z.string(),
 })
 
@@ -145,11 +223,9 @@ export const FormacaoAcademicaSchema = z.object({
   id: z.string().cuid(),
   instituicao: z.string(),
   curso: z.string(),
-  areaEstudo: z.string().nullable(),
   dataInicio: z.coerce.date(),
   dataFim: z.coerce.date().nullable(),
-  descricao: z.string().nullable(),
-  emCurso: z.boolean(),
+  concluido: z.boolean(),
   curriculoId: z.string(),
 })
 
@@ -162,7 +238,6 @@ export type FormacaoAcademica = z.infer<typeof FormacaoAcademicaSchema>
 export const HabilidadeSchema = z.object({
   id: z.string().cuid(),
   nome: z.string(),
-  categoria: z.string().nullable(),
   curriculoId: z.string(),
 })
 
@@ -182,10 +257,25 @@ export const IdiomaSchema = z.object({
 export type Idioma = z.infer<typeof IdiomaSchema>
 
 /////////////////////////////////////////
-// PROJETO SCHEMA
+// CERTIFICACAO SCHEMA
 /////////////////////////////////////////
 
-export const ProjetoSchema = z.object({
+export const CertificacaoSchema = z.object({
+  id: z.string().cuid(),
+  nome: z.string(),
+  organizacaoEmissora: z.string(),
+  dataEmissao: z.coerce.date(),
+  urlCredencial: z.string().nullable(),
+  curriculoId: z.string(),
+})
+
+export type Certificacao = z.infer<typeof CertificacaoSchema>
+
+/////////////////////////////////////////
+// PROJETO PORTFOLIO SCHEMA
+/////////////////////////////////////////
+
+export const ProjetoPortfolioSchema = z.object({
   id: z.string().cuid(),
   nome: z.string(),
   descricao: z.string().nullable(),
@@ -195,63 +285,8 @@ export const ProjetoSchema = z.object({
   dataFim: z.coerce.date().nullable(),
   tecnologiasUsadas: z.string().array(),
   curriculoId: z.string(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
 })
 
-export type Projeto = z.infer<typeof ProjetoSchema>
-
-/////////////////////////////////////////
-// CERTIFICACAO SCHEMA
-/////////////////////////////////////////
-
-export const CertificacaoSchema = z.object({
-  id: z.string().cuid(),
-  nome: z.string(),
-  organizacaoEmissora: z.string(),
-  dataEmissao: z.coerce.date(),
-  credencialId: z.string().nullable(),
-  credencialUrl: z.string().nullable(),
-  curriculoId: z.string(),
-})
-
-export type Certificacao = z.infer<typeof CertificacaoSchema>
-
-/////////////////////////////////////////
-// VAGA SCHEMA
-/////////////////////////////////////////
-
-export const VagaSchema = z.object({
-  tipo: TipoVagaSchema,
-  id: z.string().cuid(),
-  titulo: z.string(),
-  descricao: z.string(),
-  requisitos: z.string().array(),
-  localizacao: z.string(),
-  salario: z.number().nullable(),
-  faixaSalarial: z.string().nullable(),
-  ativa: z.boolean(),
-  empresaId: z.string(),
-  criadoPorId: z.string(),
-  dataPublicacao: z.coerce.date(),
-  dataExpiracao: z.coerce.date().nullable(),
-  criadoEm: z.coerce.date(),
-  atualizadoEm: z.coerce.date(),
-})
-
-export type Vaga = z.infer<typeof VagaSchema>
-
-/////////////////////////////////////////
-// CANDIDATURA SCHEMA
-/////////////////////////////////////////
-
-export const CandidaturaSchema = z.object({
-  status: StatusCandidaturaSchema,
-  id: z.string().cuid(),
-  dataCandidatura: z.coerce.date(),
-  cartaApresentacao: z.string().nullable(),
-  usuarioId: z.string(),
-  vagaId: z.string(),
-  criadoEm: z.coerce.date(),
-  atualizadoEm: z.coerce.date(),
-})
-
-export type Candidatura = z.infer<typeof CandidaturaSchema>
+export type ProjetoPortfolio = z.infer<typeof ProjetoPortfolioSchema>

@@ -1,6 +1,6 @@
 'use client';
 
-import { Projeto } from '@prisma/client';
+import { ProjetoPortfolio } from '@prisma/client';
 import { Github, Link as LinkIcon, Loader2, Pencil, PlusCircle, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState, useTransition } from 'react';
@@ -13,11 +13,11 @@ import { ProjetoForm } from '../forms/ProjetoForm';
 
 export function ProjetoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
   const { curriculo, fetchCandidatoData } = useCandidato();
-  const [projetoParaEditar, setProjetoParaEditar] = useState<Projeto | null>(null);
+  const [projetoParaEditar, setProjetoParaEditar] = useState<ProjetoPortfolio | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  const handleOpenForm = (projeto: Projeto | null) => {
+  const handleOpenForm = (projeto: ProjetoPortfolio | null) => {
     setProjetoParaEditar(projeto);
     setShowForm(true);
   };
@@ -58,8 +58,8 @@ export function ProjetoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
         </Button>
       </div>
       <div className='space-y-3 max-h-[50vh] overflow-y-auto pr-2'>
-        {curriculo?.projetos && curriculo.projetos.length > 0 ? (
-          curriculo.projetos.map((projeto) => (
+        {curriculo?.projetosPortfolio && curriculo.projetosPortfolio.length > 0 ? (
+          curriculo.projetosPortfolio.map((projeto) => (
             <div key={projeto.id} className='p-3 rounded-md border bg-background'>
               <div className='flex justify-between items-start'>
                 <h3 className='font-bold text-base'>{projeto.nome}</h3>

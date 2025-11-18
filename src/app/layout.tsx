@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
 import { Toaster } from 'sonner';
 
+import { UserModeProvider } from '@/context/UserModeContext';
+
 const monstserrat = Montserrat({
   subsets: ['latin'],
   variable: '--font-montserrat',
@@ -22,8 +24,10 @@ export default function RootLayout({
   return (
     <html lang='pt-br'>
       <body className={`${monstserrat.variable} antialiased`}>
-        <Toaster richColors position='top-right' duration={4000} />
-        {children}
+        <UserModeProvider>
+          <Toaster richColors position='top-right' duration={4000} />
+          {children}
+        </UserModeProvider>
       </body>
     </html>
   );

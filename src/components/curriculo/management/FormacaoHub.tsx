@@ -65,8 +65,8 @@ export function FormacaoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
         </Button>
       </div>
       <div className='space-y-4 max-h-[60vh] overflow-y-auto pr-2'>
-        {curriculo?.formacoesAcademicas && curriculo.formacoesAcademicas.length > 0 ? (
-          curriculo.formacoesAcademicas.map((formacao) => (
+        {curriculo?.formacoes && curriculo.formacoes.length > 0 ? (
+          curriculo.formacoes.map((formacao) => (
             <div key={formacao.id} className='flex justify-between items-start p-3 rounded-md border bg-background'>
               <div>
                 <h3 className='font-bold text-lg'>{formacao.curso}</h3>

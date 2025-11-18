@@ -54,8 +54,7 @@ async function createProtectedAction<TInput, TOutput>(schema: z.ZodSchema<TInput
 
       const result = await logic(input, userId);
 
-      revalidatePath('/candidato/dashboard');
-      revalidatePath('/candidato/curriculo/editar-completo');
+      revalidatePath('/perfil');
 
       return { success: true, data: result };
     } catch (e) {
@@ -78,7 +77,7 @@ async function getCurriculoId(userId: string): Promise<string> {
   });
   if (curriculo) return curriculo.id;
   const novoCurriculo = await prisma.curriculo.create({
-    data: { usuarioId: userId, titulo: 'Meu Currículo' },
+    data: { usuarioId: userId, tituloProfissional: 'Meu Currículo' },
   });
   return novoCurriculo.id;
 }
@@ -86,10 +85,8 @@ async function getCurriculoId(userId: string): Promise<string> {
 // Informações Pessoais (NOVA ACTION)
 const saveInformacoesPessoaisLogic: ActionLogic<tCurriculoInformacoesPessoais, any> = async (data, userId) => {
   const dataToSave = {
-    ...data,
-    resumoProfissional: data.resumoProfissional || null,
-    telefone: data.telefone || null,
-    endereco: data.endereco || null,
+    tituloProfissional: data.tituloProfissional,
+    resumo: data.resumo || null,
     linkedinUrl: data.linkedinUrl || null,
     githubUrl: data.githubUrl || null,
     portfolioUrl: data.portfolioUrl || null,
@@ -192,21 +189,23 @@ export const deleteIdiomaAction = await createProtectedAction(z.string().min(1),
 const saveProjetoLogic: ActionLogic<tProjeto, any> = async (data, userId) => {
   const { id, ...rest } = data;
   const prismaData = {
-    ...rest,
+    nome: rest.nome,
+    descricao: rest.descricao || null,
     projectUrl: rest.projectUrl || null,
     repositorioUrl: rest.repositorioUrl || null,
-    dataInicio: rest.dataInicio ? new Date(rest.dataInicio) : null,
-    dataFim: rest.dataFim ? new Date(rest.dataFim) : null,
+    dataInicio: rest.dataInicio ? new Date(rest.dataInicio + '-01') : null,
+    dataFim: rest.dataFim ? new Date(rest.dataFim + '-01') : null,
+    tecnologiasUsadas: rest.tecnologiasUsadas || [],
   };
   const curriculoId = await getCurriculoId(userId);
-  return prisma.projeto.upsert({
+  return prisma.projetoPortfolio.upsert({
     where: { id: id || '' },
     create: { ...prismaData, curriculoId },
     update: prismaData,
   });
 };
 const deleteProjetoLogic: ActionLogic<string, any> = (id, userId) =>
-  prisma.projeto.delete({
+  prisma.projetoPortfolio.delete({
     where: { id, curriculo: { usuarioId: userId } },
   });
 export const saveProjetoAction = await createProtectedAction(projetoSchema, saveProjetoLogic);

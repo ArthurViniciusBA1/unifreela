@@ -8,8 +8,8 @@ interface AuthLayoutProps {
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className='flex flex-col h-dvh w-full items-center'>
-      <div className='flex-grow w-full max-w-3xl flex items-center justify-center px-4'>{children}</div>
+    <div className='flex flex-col min-h-screen w-full bg-gradient-to-b from-background via-background to-background/80'>
+      <div className='flex-grow w-full flex items-center justify-center py-8'>{children}</div>
       <Footer />
     </div>
   );

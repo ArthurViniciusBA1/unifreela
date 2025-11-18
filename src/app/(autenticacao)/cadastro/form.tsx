@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
+import { UserPlus } from 'lucide-react';
+
 import { FloatingLabelInput } from '@/components/custom/FloatingLabelInput';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
@@ -15,7 +17,6 @@ export default function RegistroForm() {
     resolver: zodResolver(cadastroSchema),
     defaultValues: {
       nome: '',
-      numeroRA: '',
       email: '',
       senha: '',
       confirmarSenha: '',
@@ -38,8 +39,6 @@ export default function RegistroForm() {
       if (!res.ok) {
         if (result.error?.form) {
           toast.error(result.error.form);
-        } else if (result.error?.numeroRA) {
-          form.setError('numeroRA', { message: result.error.numeroRA._errors.join(', ') });
         } else if (result.error?.email) {
           form.setError('email', { message: result.error.email._errors.join(', ') });
         } else {
@@ -62,34 +61,15 @@ export default function RegistroForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='w-full flex flex-col gap-10 mt-4'>
-        <div className='flex flex-col gap-5'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='w-full flex flex-col gap-6'>
+        <div className='space-y-4'>
           <FormField
             control={form.control}
             name='nome'
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput label='Nome completo' id='nome' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='numeroRA'
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <FloatingLabelInput
-                    label='Número do RA'
-                    id='numeroRA'
-                    inputMode='numeric'
-                    {...field}
-                    onChange={(e) => field.onChange(e.target.value.replace(/\D/g, ''))}
-                  />
+                  <FloatingLabelInput label='Nome completo' id='nome' autoComplete='name' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -102,7 +82,7 @@ export default function RegistroForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput label='Email' id='email' type='email' {...field} />
+                  <FloatingLabelInput label='E-mail' id='email' type='email' autoComplete='email' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -115,7 +95,7 @@ export default function RegistroForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput label='Senha' id='senha' type='password' {...field} />
+                  <FloatingLabelInput label='Senha' id='senha' type='password' autoComplete='new-password' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -128,7 +108,7 @@ export default function RegistroForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput label='Confirmar senha' id='confirmarSenha' type='password' {...field} />
+                  <FloatingLabelInput label='Confirmar senha' id='confirmarSenha' type='password' autoComplete='new-password' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -136,8 +116,23 @@ export default function RegistroForm() {
           />
         </div>
 
-        <Button type='submit' disabled={form.formState.isSubmitting} variant='default' className='cursor-pointer'>
-          {form.formState.isSubmitting ? 'Enviando...' : 'Cadastrar'}
+        <Button 
+          type='submit' 
+          disabled={form.formState.isSubmitting} 
+          variant='default' 
+          size='lg'
+          className='w-full cursor-pointer mt-2'
+        >
+          {form.formState.isSubmitting ? (
+            <>
+              <span className='mr-2'>Criando conta...</span>
+            </>
+          ) : (
+            <>
+              <UserPlus className='mr-2 h-4 w-4' />
+              Criar conta
+            </>
+          )}
         </Button>
       </form>
     </Form>

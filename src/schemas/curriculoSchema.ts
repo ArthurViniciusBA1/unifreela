@@ -8,26 +8,21 @@ import {
   IdiomaSchema as generatedIdiomaSchema,
   ProjetoSchema as generatedProjetoSchema,
   CertificacaoSchema as generatedCertificacaoSchema,
-  VagaSchema as generatedVagaSchema,
 } from './generated';
 
 // --- SCHEMAS DE FORMULÁRIO ---
 
 export const curriculoInformacoesPessoaisSchema = generatedCurriculoSchema
   .pick({
-    titulo: true,
-    resumoProfissional: true,
-    telefone: true,
-    endereco: true,
+    tituloProfissional: true,
+    resumo: true,
     linkedinUrl: true,
     githubUrl: true,
     portfolioUrl: true,
   })
   .extend({
-    titulo: z.string().min(1, 'Título do currículo é obrigatório.'),
-    resumoProfissional: z.string().max(2000).optional().or(z.literal('')),
-    telefone: z.string().max(20).optional().or(z.literal('')),
-    endereco: z.string().max(255).optional().or(z.literal('')),
+    tituloProfissional: z.string().min(1, 'Título profissional é obrigatório.'),
+    resumo: z.string().max(2000).optional().or(z.literal('')),
     linkedinUrl: z.string().url({ message: 'URL do LinkedIn inválida.' }).optional().or(z.literal('')),
     githubUrl: z.string().url({ message: 'URL do GitHub inválida.' }).optional().or(z.literal('')),
     portfolioUrl: z.string().url({ message: 'URL do Portfólio inválida.' }).optional().or(z.literal('')),
@@ -171,11 +166,11 @@ export const certificacaoSchema = z.object({
 
 // Schema para o currículo completo, unindo todos os outros
 export const curriculoCompletoSchema = curriculoInformacoesPessoaisSchema.extend({
-  experienciasProfissionais: z.array(experienciaProfissionalSchema).optional(),
-  formacoesAcademicas: z.array(formacaoAcademicaSchema).optional(),
+  experiencias: z.array(experienciaProfissionalSchema).optional(),
+  formacoes: z.array(formacaoAcademicaSchema).optional(),
   habilidades: z.array(habilidadeSchema).optional(),
   idiomas: z.array(idiomaSchema).optional(),
-  projetos: z.array(projetoSchema).optional(),
+  projetosPortfolio: z.array(projetoSchema).optional(),
   certificacoes: z.array(certificacaoSchema).optional(),
 });
 

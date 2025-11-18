@@ -26,7 +26,7 @@ export function UserTable({ usuarios, isLoading, onOpenActionsModal }: UserTable
           <TableRow>
             <TableHead className='w-[300px]'>Nome</TableHead>
             <TableHead>E-mail</TableHead>
-            <TableHead className='w-[150px]'>RA</TableHead>
+            <TableHead className='w-[150px]'>Modo</TableHead>
             <TableHead className='w-[150px]'>Tipo</TableHead>
             <TableHead className='w-[180px]'>Data de Cadastro</TableHead>
             <TableHead className='w-[100px] text-center'>Ações</TableHead>
@@ -56,7 +56,11 @@ export function UserTable({ usuarios, isLoading, onOpenActionsModal }: UserTable
                   </div>
                 </TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell>{user.numeroRA || 'N/A'}</TableCell>
+                <TableCell>
+                  <Badge variant='secondary' className='capitalize'>
+                    {user.perfilFreelancer ? 'freelancer' : user.perfilCliente ? 'cliente' : 'indefinido'}
+                  </Badge>
+                </TableCell>
                 <TableCell>
                   <Badge variant='outline' className='capitalize'>
                     {user.role.toLowerCase()}

@@ -33,12 +33,12 @@ import {
 const curriculoCompletoArgs = Prisma.validator<Prisma.CurriculoDefaultArgs>()({
   include: {
     usuario: { select: { id: true, nome: true, email: true } },
-    experienciasProfissionais: true,
-    formacoesAcademicas: true,
+    experiencias: true,
+    formacoes: true,
     habilidades: true,
     idiomas: true,
-    projetos: true,
     certificacoes: true,
+    projetosPortfolio: true,
   },
 });
 
@@ -48,7 +48,6 @@ interface CandidatoProfileData {
   id: string;
   nome: string;
   email?: string | null;
-  numeroRA?: string | null;
   role: RoleUsuario;
 }
 

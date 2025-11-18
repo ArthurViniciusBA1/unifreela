@@ -2,44 +2,57 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, BriefcaseBusiness, Users, Building2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Building2, Layers3, PenLine, Send, Sparkles } from 'lucide-react';
+
 import { LogoutButton } from '@/components/auth/LogoutButton';
+import { Button } from '@/components/ui/button';
+import { ModeToggle } from '@/components/ModeToggle';
+import { useUserMode } from '@/context/UserModeContext';
+import { cn } from '@/lib/utils';
+
+const freelancerLinks = [
+  { href: '/candidato/projetos', label: 'Buscar Projetos', icon: Sparkles },
+  { href: '/candidato/candidaturas', label: 'Minhas Propostas', icon: Send },
+];
+
+const clienteLinks = [
+  { href: '/empresa/projetos', label: 'Projetos Criados', icon: Layers3 },
+  { href: '/empresa/projetos/novo', label: 'Publicar Projeto', icon: PenLine },
+];
 
 export function EmpresaNavbar() {
   const pathname = usePathname();
+  const { currentMode } = useUserMode();
 
-  const navLinks = [
-    { href: '/empresa/dashboard', label: 'Painel', icon: LayoutDashboard },
-    { href: '/empresa/vagas', label: 'Minhas Vagas', icon: BriefcaseBusiness },
-    { href: '/empresa/candidaturas', label: 'Candidaturas', icon: Users },
-    { href: '/empresa/perfil-empresa', label: 'Perfil Empresa', icon: Building2 },
-  ];
+  const navLinks = currentMode === 'CLIENTE' ? clienteLinks : freelancerLinks;
 
   return (
-    <nav className='bg-card border-b border-border p-4 shadow-sm sticky top-0 z-40'>
-      <div className='container mx-auto flex justify-between items-center max-w-screen-xl'>
-        <div className='text-lg font-semibold text-primary'>
-          <Link href='/empresa/dashboard'>Portal da Empresa</Link>
-        </div>
-        <div className='flex items-center gap-4'>
-          <div className='flex items-center gap-1 md:gap-2'>
-            {navLinks.map((link) => (
-              <Button
-                key={link.href}
-                asChild
-                variant={pathname === link.href ? 'secondary' : 'ghost'}
-                size='sm'
-                className='px-2 md:px-3'
-              >
-                <Link href={link.href} className='flex items-center'>
-                  <link.icon size={16} className='md:mr-2' />
-                  <span className='hidden md:inline'>{link.label}</span>
-                </Link>
-              </Button>
-            ))}
+    <nav className='sticky top-0 z-40 border-b border-border bg-card/90 backdrop-blur'>
+      <div className='container mx-auto flex max-w-screen-xl flex-col gap-4 px-4 py-3 md:flex-row md:items-center md:justify-between'>
+        <div className='flex items-center gap-3'>
+          <Building2 size={28} className='text-primary' />
+          <div>
+            <p className='text-sm uppercase text-muted-foreground tracking-widest'>UniFreela</p>
+            <p className='text-lg font-semibold text-foreground'>Portal Unificado</p>
           </div>
-          <LogoutButton variant='outline' size='sm' className='hover:bg-destructive' />
+        </div>
+
+        <div className='flex flex-wrap items-center gap-3 md:justify-end'>
+          <ModeToggle />
+          <div className='flex flex-wrap items-center gap-2'>
+            {navLinks.map((link) => {
+              const isActive = pathname.startsWith(link.href);
+              return (
+                <Button key={link.href} asChild variant={isActive ? 'secondary' : 'ghost'} size='sm' className='px-3'>
+                  <Link href={link.href} className={cn('flex items-center gap-2')}>
+                    <link.icon size={16} />
+                    <span className='hidden sm:inline'>{link.label}</span>
+                  </Link>
+                </Button>
+              );
+            })}
+          </div>
+          <LogoutButton variant='outline' size='sm' className='hover:bg-destructive hover:text-destructive-foreground' />
         </div>
       </div>
     </nav>

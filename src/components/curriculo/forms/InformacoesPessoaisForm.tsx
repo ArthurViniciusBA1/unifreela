@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { InputMask } from '@react-input/mask';
 
 import { FloatingLabelInput } from '@/components/custom/FloatingLabelInput';
 import { FloatingLabelTextarea } from '@/components/custom/FloatingLabelTextarea';
@@ -34,10 +33,8 @@ export function InformacoesPessoaisForm({ setModalOpen }: InformacoesPessoaisFor
   const form = useForm<tCurriculoInformacoesPessoais>({
     resolver: zodResolver(curriculoInformacoesPessoaisSchema),
     defaultValues: {
-      titulo: '',
-      resumoProfissional: '',
-      telefone: '',
-      endereco: '',
+      tituloProfissional: '',
+      resumo: '',
       linkedinUrl: '',
       githubUrl: '',
       portfolioUrl: '',
@@ -47,16 +44,14 @@ export function InformacoesPessoaisForm({ setModalOpen }: InformacoesPessoaisFor
   useEffect(() => {
     if (curriculo) {
       form.reset({
-        titulo: curriculo.titulo ?? '',
-        resumoProfissional: curriculo.resumoProfissional ?? '',
-        telefone: curriculo.telefone ?? '',
-        endereco: curriculo.endereco ?? '',
+        tituloProfissional: curriculo.tituloProfissional ?? '',
+        resumo: curriculo.resumo ?? '',
         linkedinUrl: curriculo.linkedinUrl ?? '',
         githubUrl: curriculo.githubUrl ?? '',
         portfolioUrl: curriculo.portfolioUrl ?? '',
       });
     }
-  }, [curriculo, form, form.reset]);
+  }, [curriculo, form]);
 
   const onSubmit = async (data: tCurriculoInformacoesPessoais) => {
     try {
@@ -72,11 +67,11 @@ export function InformacoesPessoaisForm({ setModalOpen }: InformacoesPessoaisFor
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 py-4'>
         <FormField
           control={form.control}
-          name='titulo'
+          name='tituloProfissional'
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Título do Currículo' id='tituloModal' {...field} />
+                <FloatingLabelInput label='Título Profissional' id='tituloProfissionalModal' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -84,48 +79,14 @@ export function InformacoesPessoaisForm({ setModalOpen }: InformacoesPessoaisFor
         />
         <FormField
           control={form.control}
-          name='resumoProfissional'
+          name='resumo'
           render={({ field }) => (
             <FormItem>
               <FormControl>
                 <FloatingLabelTextarea
                   label='Resumo Profissional / Sobre Mim'
-                  id='resumoProfissionalModal'
+                  id='resumoModal'
                   rows={5}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='telefone'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Telefone (com DDD)</FormLabel>
-              <FormControl>
-                <InputMask
-                  {...field}
-                  mask='(__) _ ____-____'
-                  replacement={{ _: /\d/ }}
-                  className='flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='endereco'
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <FloatingLabelInput
-                  label='Endereço (Ex: Cidade - UF)'
-                  id='enderecoModal'
                   {...field}
                 />
               </FormControl>

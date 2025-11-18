@@ -65,8 +65,8 @@ export function ExperienciaHub({}: { setModalOpen: (isOpen: boolean) => void }) 
         </Button>
       </div>
       <div className='space-y-4 max-h-[60vh] overflow-y-auto pr-2'>
-        {curriculo?.experienciasProfissionais && curriculo.experienciasProfissionais.length > 0 ? (
-          curriculo.experienciasProfissionais.map((exp) => (
+        {curriculo?.experiencias && curriculo.experiencias.length > 0 ? (
+          curriculo.experiencias.map((exp) => (
             <div key={exp.id} className='flex justify-between items-start p-3 rounded-md border bg-background'>
               <div>
                 <h3 className='font-bold text-lg'>{exp.cargo}</h3>

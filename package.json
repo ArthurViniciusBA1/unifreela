@@ -8,8 +8,9 @@
     "build:vercel": "next build --no-lint",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate --no-engine",
-    "postbuild": "prisma migrate deploy"
+    "postinstall": "prisma generate --no-engine && node scripts/fix-zod-cuid.js",
+    "postbuild": "prisma migrate deploy",
+    "prisma:generate": "prisma generate && node scripts/fix-zod-cuid.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",

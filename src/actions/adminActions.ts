@@ -66,7 +66,7 @@ export async function criarEmpresaComRecrutadorAction(
           nome: nomeRecrutador,
           email: emailRecrutador,
           senha: hashedPassword,
-          role: RoleUsuario.RECRUTADOR,
+          role: RoleUsuario.USER,
           empresaId: novaEmpresa.id,
         },
       });
