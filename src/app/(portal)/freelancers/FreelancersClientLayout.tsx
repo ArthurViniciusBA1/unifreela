@@ -63,18 +63,26 @@ export default function FreelancersClientLayout({
             >
               <div className='flex items-center mb-4'>
                 <div className='flex-1'>
-                  <h2 className='text-xl font-bold text-primary'>{freelancer.usuario.nome}</h2>
-                  <p className='text-muted-foreground text-sm'>{freelancer.tituloProfissional}</p>
+                  <h2 className='text-xl font-bold text-primary'>
+                    {freelancer.usuario.nome}
+                  </h2>
+                  <p className='text-muted-foreground text-sm'>
+                    {freelancer.tituloProfissional}
+                  </p>
                 </div>
               </div>
 
               {freelancer.resumo && (
-                <p className='text-foreground text-sm mb-3 line-clamp-3'>{freelancer.resumo}</p>
+                <p className='text-foreground text-sm mb-3 line-clamp-3'>
+                  {freelancer.resumo}
+                </p>
               )}
 
               {freelancer.habilidades && freelancer.habilidades.length > 0 && (
                 <div className='mb-3'>
-                  <p className='text-xs text-muted-foreground mb-1'>Habilidades:</p>
+                  <p className='text-xs text-muted-foreground mb-1'>
+                    Habilidades:
+                  </p>
                   <div className='flex flex-wrap gap-1'>
                     {freelancer.habilidades.slice(0, 3).map((hab: any) => (
                       <span
@@ -138,4 +146,3 @@ export default function FreelancersClientLayout({
     </div>
   );
 }
-

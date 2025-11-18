@@ -6,7 +6,13 @@ import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 
 import { mudarSenhaAdminSchema, tMudarSenhaAdmin } from '@/schemas/adminSchema';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { adminMudarSenhaUsuarioAction } from '@/actions/adminActions';
 import { FloatingLabelInput } from '../custom/FloatingLabelInput';
@@ -27,7 +33,10 @@ export function SimplePasswordChangeForm({
 
   const onSubmit = async (data: tMudarSenhaAdmin) => {
     const toastId = toast.loading('Alterando senha...');
-    const result = await adminMudarSenhaUsuarioAction(usuarioId, data.novaSenha);
+    const result = await adminMudarSenhaUsuarioAction(
+      usuarioId,
+      data.novaSenha
+    );
 
     if (result.success) {
       toast.success('Senha alterada com sucesso!', { id: toastId });
@@ -46,7 +55,12 @@ export function SimplePasswordChangeForm({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Nova Senha' id='novaSenha' type='password' {...field} />
+                <FloatingLabelInput
+                  label='Nova Senha'
+                  id='novaSenha'
+                  type='password'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -71,7 +85,9 @@ export function SimplePasswordChangeForm({
         />
         <div className='flex justify-end pt-4'>
           <Button type='submit' disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+            {form.formState.isSubmitting && (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            )}
             Confirmar Alteração
           </Button>
         </div>

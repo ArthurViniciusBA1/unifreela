@@ -7,12 +7,16 @@ export const novaEmpresaSchema = z.object({
 
   nomeRecrutador: z.string().min(3, 'O nome do recrutador é obrigatório.'),
   emailRecrutador: z.string().email('O e-mail do recrutador é inválido.'),
-  senhaRecrutador: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres.'),
+  senhaRecrutador: z
+    .string()
+    .min(6, 'A senha deve ter no mínimo 6 caracteres.'),
 });
 
 export const mudarSenhaAdminSchema = z
   .object({
-    novaSenha: z.string().min(6, 'A nova senha deve ter no mínimo 6 caracteres.'),
+    novaSenha: z
+      .string()
+      .min(6, 'A nova senha deve ter no mínimo 6 caracteres.'),
     confirmarNovaSenha: z.string(),
   })
   .refine((data) => data.novaSenha === data.confirmarNovaSenha, {
@@ -57,7 +61,11 @@ export const empresaFormSchema = z.object({
     )
     .optional()
     .or(z.literal('')),
-  websiteUrl: z.string().url('URL do website inválida.').optional().or(z.literal('')),
+  websiteUrl: z
+    .string()
+    .url('URL do website inválida.')
+    .optional()
+    .or(z.literal('')),
   logoUrl: z.string().url('URL do logo inválida.').optional().or(z.literal('')),
 });
 

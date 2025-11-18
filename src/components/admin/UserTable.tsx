@@ -18,7 +18,11 @@ interface UserTableProps {
   onOpenActionsModal: (user: any) => void;
 }
 
-export function UserTable({ usuarios, isLoading, onOpenActionsModal }: UserTableProps) {
+export function UserTable({
+  usuarios,
+  isLoading,
+  onOpenActionsModal,
+}: UserTableProps) {
   return (
     <div className='bg-card border rounded-lg'>
       <Table>
@@ -43,7 +47,9 @@ export function UserTable({ usuarios, isLoading, onOpenActionsModal }: UserTable
             usuarios.map((user) => (
               <TableRow
                 key={user.id}
-                className={cn(!user.ativo && 'bg-muted/50 text-muted-foreground')}
+                className={cn(
+                  !user.ativo && 'bg-muted/50 text-muted-foreground'
+                )}
               >
                 <TableCell className='font-medium'>
                   <div className='flex items-center gap-2'>
@@ -58,7 +64,11 @@ export function UserTable({ usuarios, isLoading, onOpenActionsModal }: UserTable
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
                   <Badge variant='secondary' className='capitalize'>
-                    {user.perfilFreelancer ? 'freelancer' : user.perfilCliente ? 'cliente' : 'indefinido'}
+                    {user.perfilFreelancer
+                      ? 'freelancer'
+                      : user.perfilCliente
+                        ? 'cliente'
+                        : 'indefinido'}
                   </Badge>
                 </TableCell>
                 <TableCell>
@@ -68,7 +78,11 @@ export function UserTable({ usuarios, isLoading, onOpenActionsModal }: UserTable
                 </TableCell>
                 <TableCell>{formatarData(user.criadoEm)}</TableCell>
                 <TableCell className='text-center'>
-                  <Button variant='ghost' size='icon' onClick={() => onOpenActionsModal(user)}>
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    onClick={() => onOpenActionsModal(user)}
+                  >
                     <MoreHorizontal className='h-4 w-4' />
                   </Button>
                 </TableCell>

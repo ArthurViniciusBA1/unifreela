@@ -23,9 +23,21 @@ export const curriculoInformacoesPessoaisSchema = generatedCurriculoSchema
   .extend({
     tituloProfissional: z.string().min(1, 'Título profissional é obrigatório.'),
     resumo: z.string().max(2000).optional().or(z.literal('')),
-    linkedinUrl: z.string().url({ message: 'URL do LinkedIn inválida.' }).optional().or(z.literal('')),
-    githubUrl: z.string().url({ message: 'URL do GitHub inválida.' }).optional().or(z.literal('')),
-    portfolioUrl: z.string().url({ message: 'URL do Portfólio inválida.' }).optional().or(z.literal('')),
+    linkedinUrl: z
+      .string()
+      .url({ message: 'URL do LinkedIn inválida.' })
+      .optional()
+      .or(z.literal('')),
+    githubUrl: z
+      .string()
+      .url({ message: 'URL do GitHub inválida.' })
+      .optional()
+      .or(z.literal('')),
+    portfolioUrl: z
+      .string()
+      .url({ message: 'URL do Portfólio inválida.' })
+      .optional()
+      .or(z.literal('')),
   });
 
 export const experienciaProfissionalSchema = generatedExperienciaSchema
@@ -103,17 +115,21 @@ export const formacaoAcademicaSchema = generatedFormacaoSchema
     }
   );
 
-export const habilidadeSchema = generatedHabilidadeSchema.pick({ nome: true }).extend({
-  id: z.string().optional(),
-  curriculoId: z.string().optional(),
-  nome: z.string().min(1, 'O nome da habilidade é obrigatório.'),
-});
+export const habilidadeSchema = generatedHabilidadeSchema
+  .pick({ nome: true })
+  .extend({
+    id: z.string().optional(),
+    curriculoId: z.string().optional(),
+    nome: z.string().min(1, 'O nome da habilidade é obrigatório.'),
+  });
 
-export const idiomaSchema = generatedIdiomaSchema.pick({ nome: true, nivel: true }).extend({
-  id: z.string().optional(),
-  curriculoId: z.string().optional(),
-  nome: z.string().min(1, 'O nome do idioma é obrigatório.'),
-});
+export const idiomaSchema = generatedIdiomaSchema
+  .pick({ nome: true, nivel: true })
+  .extend({
+    id: z.string().optional(),
+    curriculoId: z.string().optional(),
+    nome: z.string().min(1, 'O nome do idioma é obrigatório.'),
+  });
 
 export const projetoSchema = generatedProjetoSchema
   .pick({
@@ -124,8 +140,16 @@ export const projetoSchema = generatedProjetoSchema
     id: z.string().optional(),
     curriculoId: z.string().optional(),
     nome: z.string().min(1, 'O nome do projeto é obrigatório.'),
-    projectUrl: z.string().url({ message: 'URL do Projeto inválida.' }).optional().or(z.literal('')),
-    repositorioUrl: z.string().url({ message: 'URL do Repositório inválida.' }).optional().or(z.literal('')),
+    projectUrl: z
+      .string()
+      .url({ message: 'URL do Projeto inválida.' })
+      .optional()
+      .or(z.literal('')),
+    repositorioUrl: z
+      .string()
+      .url({ message: 'URL do Repositório inválida.' })
+      .optional()
+      .or(z.literal('')),
     // Adicionar as datas para consistência, se não estiverem já lá na generated
     dataInicio: z
       .string()
@@ -161,23 +185,32 @@ export const certificacaoSchema = z.object({
   //   .optional()
   //   .or(z.literal('')), // Permite string vazia
   credencialId: z.string().optional().or(z.literal('')),
-  credencialUrl: z.string().url({ message: 'URL da credencial inválida.' }).optional().or(z.literal('')),
+  credencialUrl: z
+    .string()
+    .url({ message: 'URL da credencial inválida.' })
+    .optional()
+    .or(z.literal('')),
 });
 
 // Schema para o currículo completo, unindo todos os outros
-export const curriculoCompletoSchema = curriculoInformacoesPessoaisSchema.extend({
-  experiencias: z.array(experienciaProfissionalSchema).optional(),
-  formacoes: z.array(formacaoAcademicaSchema).optional(),
-  habilidades: z.array(habilidadeSchema).optional(),
-  idiomas: z.array(idiomaSchema).optional(),
-  projetosPortfolio: z.array(projetoSchema).optional(),
-  certificacoes: z.array(certificacaoSchema).optional(),
-});
+export const curriculoCompletoSchema =
+  curriculoInformacoesPessoaisSchema.extend({
+    experiencias: z.array(experienciaProfissionalSchema).optional(),
+    formacoes: z.array(formacaoAcademicaSchema).optional(),
+    habilidades: z.array(habilidadeSchema).optional(),
+    idiomas: z.array(idiomaSchema).optional(),
+    projetosPortfolio: z.array(projetoSchema).optional(),
+    certificacoes: z.array(certificacaoSchema).optional(),
+  });
 
 // --- TIPOS INFERIDOS ---
 
-export type tCurriculoInformacoesPessoais = z.infer<typeof curriculoInformacoesPessoaisSchema>;
-export type tExperienciaProfissional = z.infer<typeof experienciaProfissionalSchema>;
+export type tCurriculoInformacoesPessoais = z.infer<
+  typeof curriculoInformacoesPessoaisSchema
+>;
+export type tExperienciaProfissional = z.infer<
+  typeof experienciaProfissionalSchema
+>;
 export type tFormacaoAcademica = z.infer<typeof formacaoAcademicaSchema>;
 export type tHabilidade = z.infer<typeof habilidadeSchema>;
 export type tIdioma = z.infer<typeof idiomaSchema>;

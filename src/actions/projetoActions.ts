@@ -24,7 +24,9 @@ const projetoWithClienteArgs = Prisma.validator<Prisma.ProjetoDefaultArgs>()({
   },
 });
 
-export type ProjetoWithCliente = Prisma.ProjetoGetPayload<typeof projetoWithClienteArgs>;
+export type ProjetoWithCliente = Prisma.ProjetoGetPayload<
+  typeof projetoWithClienteArgs
+>;
 
 interface FetchProjetosParams {
   page?: number;
@@ -47,13 +49,21 @@ async function ensureClientePerfil(userId: string) {
   return usuario?.perfilCliente?.id ?? null;
 }
 
-export async function fetchAvailableProjetos(params: FetchProjetosParams = {}): Promise<FetchProjetosResult> {
+export async function fetchAvailableProjetos(
+  params: FetchProjetosParams = {}
+): Promise<FetchProjetosResult> {
   const { page = 1, limit = 9, status = StatusProjeto.ABERTO } = params;
   const skip = (page - 1) * limit;
 
-  const { isAuthorized } = await authorizeUser([RoleUsuario.USER, RoleUsuario.ADMIN]);
+  const { isAuthorized } = await authorizeUser([
+    RoleUsuario.USER,
+    RoleUsuario.ADMIN,
+  ]);
   if (!isAuthorized) {
-    return { success: false, error: 'Acesso negado. Faça login para visualizar projetos.' };
+    return {
+      success: false,
+      error: 'Acesso negado. Faça login para visualizar projetos.',
+    };
   }
 
   try {
@@ -75,15 +85,23 @@ export async function fetchAvailableProjetos(params: FetchProjetosParams = {}): 
     return { success: true, projetos, total };
   } catch (error) {
     console.error('Erro ao listar projetos disponíveis:', error);
-    return { success: false, error: 'Não foi possível carregar os projetos no momento.' };
+    return {
+      success: false,
+      error: 'Não foi possível carregar os projetos no momento.',
+    };
   }
 }
 
-export async function fetchProjetosDoCliente(params: FetchProjetosParams = {}): Promise<FetchProjetosResult> {
+export async function fetchProjetosDoCliente(
+  params: FetchProjetosParams = {}
+): Promise<FetchProjetosResult> {
   const { page = 1, limit = 9 } = params;
   const skip = (page - 1) * limit;
 
-  const { isAuthorized, userId } = await authorizeUser([RoleUsuario.USER, RoleUsuario.ADMIN]);
+  const { isAuthorized, userId } = await authorizeUser([
+    RoleUsuario.USER,
+    RoleUsuario.ADMIN,
+  ]);
 
   if (!isAuthorized || !userId) {
     return { success: false, error: 'Acesso negado.' };
@@ -117,12 +135,18 @@ export async function fetchProjetosDoCliente(params: FetchProjetosParams = {}): 
     return { success: true, projetos, total };
   } catch (error) {
     console.error('Erro ao buscar projetos do cliente:', error);
-    return { success: false, error: 'Não foi possível carregar seus projetos.' };
+    return {
+      success: false,
+      error: 'Não foi possível carregar seus projetos.',
+    };
   }
 }
 
 export async function saveProjetoAction(formData: tProjetoForm) {
-  const { isAuthorized, userId, role } = await authorizeUser([RoleUsuario.USER, RoleUsuario.ADMIN]);
+  const { isAuthorized, userId, role } = await authorizeUser([
+    RoleUsuario.USER,
+    RoleUsuario.ADMIN,
+  ]);
 
   if (!isAuthorized || !userId) {
     return { success: false, error: 'Acesso negado.' };
@@ -130,7 +154,10 @@ export async function saveProjetoAction(formData: tProjetoForm) {
 
   const parsed = projetoFormSchema.safeParse(formData);
   if (!parsed.success) {
-    return { success: false, error: parsed.error.errors.map((e) => e.message).join(', ') };
+    return {
+      success: false,
+      error: parsed.error.errors.map((e) => e.message).join(', '),
+    };
   }
 
   const data = parsed.data;
@@ -144,13 +171,18 @@ export async function saveProjetoAction(formData: tProjetoForm) {
   if (role === RoleUsuario.USER) {
     const clientePerfilId = await ensureClientePerfil(userId);
     if (!clientePerfilId) {
-      return { success: false, error: 'Crie ou complete seu perfil de cliente para publicar projetos.' };
+      return {
+        success: false,
+        error: 'Crie ou complete seu perfil de cliente para publicar projetos.',
+      };
     }
   }
 
   try {
     if (data.id) {
-      const existing = await prisma.projeto.findUnique({ where: { id: data.id } });
+      const existing = await prisma.projeto.findUnique({
+        where: { id: data.id },
+      });
       if (!existing) {
         return { success: false, error: 'Projeto não encontrado.' };
       }
@@ -200,14 +232,19 @@ export async function saveProjetoAction(formData: tProjetoForm) {
 }
 
 export async function fetchProjetoParaEdicao(projetoId: string) {
-  const { isAuthorized, userId, role } = await authorizeUser([RoleUsuario.USER, RoleUsuario.ADMIN]);
+  const { isAuthorized, userId, role } = await authorizeUser([
+    RoleUsuario.USER,
+    RoleUsuario.ADMIN,
+  ]);
 
   if (!isAuthorized || !userId) {
     return { success: false, error: 'Acesso negado.' };
   }
 
   try {
-    const projeto = await prisma.projeto.findUnique({ where: { id: projetoId } });
+    const projeto = await prisma.projeto.findUnique({
+      where: { id: projetoId },
+    });
     if (!projeto) {
       return { success: false, error: 'Projeto não encontrado.' };
     }
@@ -225,19 +262,30 @@ export async function fetchProjetoParaEdicao(projetoId: string) {
     };
   } catch (error) {
     console.error('Erro ao carregar projeto para edição:', error);
-    return { success: false, error: 'Não foi possível carregar os dados do projeto.' };
+    return {
+      success: false,
+      error: 'Não foi possível carregar os dados do projeto.',
+    };
   }
 }
 
-export async function alterarStatusProjetoAction(projetoId: string, status: StatusProjeto) {
-  const { isAuthorized, userId, role } = await authorizeUser([RoleUsuario.USER, RoleUsuario.ADMIN]);
+export async function alterarStatusProjetoAction(
+  projetoId: string,
+  status: StatusProjeto
+) {
+  const { isAuthorized, userId, role } = await authorizeUser([
+    RoleUsuario.USER,
+    RoleUsuario.ADMIN,
+  ]);
 
   if (!isAuthorized || !userId) {
     return { success: false, error: 'Acesso negado.' };
   }
 
   try {
-    const projeto = await prisma.projeto.findUnique({ where: { id: projetoId } });
+    const projeto = await prisma.projeto.findUnique({
+      where: { id: projetoId },
+    });
     if (!projeto) {
       return { success: false, error: 'Projeto não encontrado.' };
     }
@@ -257,7 +305,9 @@ export async function alterarStatusProjetoAction(projetoId: string, status: Stat
     return { success: true, projeto: atualizado };
   } catch (error) {
     console.error('Erro ao alterar status do projeto:', error);
-    return { success: false, error: 'Não foi possível alterar o status do projeto.' };
+    return {
+      success: false,
+      error: 'Não foi possível alterar o status do projeto.',
+    };
   }
 }
-

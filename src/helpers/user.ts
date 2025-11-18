@@ -7,7 +7,9 @@ import { prisma } from '../lib/prisma';
  * @param id O ID do usuário.
  * @returns O objeto Usuario encontrado ou null se não for encontrado.
  */
-export async function procurarUsuarioPorId(id: string): Promise<Usuario | null> {
+export async function procurarUsuarioPorId(
+  id: string
+): Promise<Usuario | null> {
   try {
     const usuario = await prisma.usuario.findUnique({
       where: {

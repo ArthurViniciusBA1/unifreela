@@ -45,7 +45,12 @@ export function IdiomaHub({}: { setModalOpen: (isOpen: boolean) => void }) {
   };
 
   if (showForm) {
-    return <IdiomaForm setModalOpen={handleCloseForm} dadosIniciais={idiomaParaEditar} />;
+    return (
+      <IdiomaForm
+        setModalOpen={handleCloseForm}
+        dadosIniciais={idiomaParaEditar}
+      />
+    );
   }
 
   return (
@@ -59,15 +64,24 @@ export function IdiomaHub({}: { setModalOpen: (isOpen: boolean) => void }) {
       <div className='space-y-3 max-h-[50vh] overflow-y-auto pr-2'>
         {curriculo?.idiomas && curriculo.idiomas.length > 0 ? (
           curriculo.idiomas.map((idioma) => (
-            <div key={idioma.id} className='flex justify-between items-center p-3 rounded-md border bg-background text-sm'>
+            <div
+              key={idioma.id}
+              className='flex justify-between items-center p-3 rounded-md border bg-background text-sm'
+            >
               <div>
                 <span className='font-medium'>{idioma.nome}</span>
                 <p className='text-muted-foreground text-xs'>
-                  {idioma.nivel.charAt(0).toUpperCase() + idioma.nivel.slice(1).toLowerCase()}
+                  {idioma.nivel.charAt(0).toUpperCase() +
+                    idioma.nivel.slice(1).toLowerCase()}
                 </p>
               </div>
               <div className='flex gap-1'>
-                <Button variant='ghost' size='icon' onClick={() => handleOpenForm(idioma)} disabled={isPending}>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  onClick={() => handleOpenForm(idioma)}
+                  disabled={isPending}
+                >
                   <Pencil size={16} />
                 </Button>
                 <Button
@@ -77,13 +91,19 @@ export function IdiomaHub({}: { setModalOpen: (isOpen: boolean) => void }) {
                   onClick={() => handleDelete(idioma.id)}
                   disabled={isPending}
                 >
-                  {isPending ? <Loader2 size={16} className='animate-spin' /> : <Trash2 size={16} />}
+                  {isPending ? (
+                    <Loader2 size={16} className='animate-spin' />
+                  ) : (
+                    <Trash2 size={16} />
+                  )}
                 </Button>
               </div>
             </div>
           ))
         ) : (
-          <p className='text-muted-foreground text-center py-8'>Nenhum idioma adicionado.</p>
+          <p className='text-muted-foreground text-center py-8'>
+            Nenhum idioma adicionado.
+          </p>
         )}
       </div>
     </div>

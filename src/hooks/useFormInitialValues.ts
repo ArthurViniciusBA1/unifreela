@@ -21,7 +21,10 @@ function formatObjectForForm<T extends object>(data: T): Partial<T> {
   return Object.fromEntries(formattedEntries);
 }
 
-export function useFormInitialValues<T extends object>(initialData: T | null | undefined, defaultValues: T): T {
+export function useFormInitialValues<T extends object>(
+  initialData: T | null | undefined,
+  defaultValues: T
+): T {
   return useMemo(() => {
     if (initialData) {
       return {

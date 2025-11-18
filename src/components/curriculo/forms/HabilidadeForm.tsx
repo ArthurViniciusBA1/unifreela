@@ -11,7 +11,13 @@ import { saveHabilidadeAction } from '@/actions/curriculoParcialActions';
 import { FloatingLabelInput } from '@/components/custom/FloatingLabelInput';
 import { Button } from '@/components/ui/button';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
 import { useCandidato } from '@/context/CandidatoContext';
 import { habilidadeSchema, tHabilidade } from '@/schemas/curriculoSchema';
 
@@ -26,7 +32,10 @@ const defaultFormValues: tHabilidade = {
   curriculoId: undefined,
 };
 
-export function HabilidadeForm({ setModalOpen, dadosIniciais }: HabilidadeFormProps) {
+export function HabilidadeForm({
+  setModalOpen,
+  dadosIniciais,
+}: HabilidadeFormProps) {
   const { fetchCandidatoData } = useCandidato();
   const form = useForm<tHabilidade>({
     resolver: zodResolver(habilidadeSchema),
@@ -67,7 +76,11 @@ export function HabilidadeForm({ setModalOpen, dadosIniciais }: HabilidadeFormPr
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Nome da Habilidade (Ex: React, Photoshop)' id='nomeHabilidade' {...field} />
+                <FloatingLabelInput
+                  label='Nome da Habilidade (Ex: React, Photoshop)'
+                  id='nomeHabilidade'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

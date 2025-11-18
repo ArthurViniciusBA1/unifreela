@@ -36,5 +36,3 @@ export function ModeToggle() {
     </div>
   );
 }
-
-

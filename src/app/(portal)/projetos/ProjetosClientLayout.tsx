@@ -17,7 +17,12 @@ interface ProjetosClientLayoutProps {
   limitPerPage: number;
 }
 
-export default function ProjetosClientLayout({ projetos, totalProjetos, currentPage, limitPerPage }: ProjetosClientLayoutProps) {
+export default function ProjetosClientLayout({
+  projetos,
+  totalProjetos,
+  currentPage,
+  limitPerPage,
+}: ProjetosClientLayoutProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -66,20 +71,28 @@ export default function ProjetosClientLayout({ projetos, totalProjetos, currentP
             >
               <div className='flex items-center mb-4'>
                 <div>
-                  <h2 className='text-xl font-bold text-primary'>{projeto.titulo}</h2>
+                  <h2 className='text-xl font-bold text-primary'>
+                    {projeto.titulo}
+                  </h2>
                   <p className='text-muted-foreground text-sm'>
-                    {projeto.criadoPor?.perfilCliente?.nomeFantasia || projeto.criadoPor?.nome || 'Cliente'}
+                    {projeto.criadoPor?.perfilCliente?.nomeFantasia ||
+                      projeto.criadoPor?.nome ||
+                      'Cliente'}
                   </p>
                 </div>
               </div>
 
-              <p className='text-foreground text-sm mb-3 line-clamp-3'>{projeto.descricao}</p>
+              <p className='text-foreground text-sm mb-3 line-clamp-3'>
+                {projeto.descricao}
+              </p>
               <div className='text-sm text-gray-600 mb-3'>
                 <p>
-                  <strong>Tipo:</strong> {projeto.tipo.replace(/_/g, ' ').toLowerCase()}
+                  <strong>Tipo:</strong>{' '}
+                  {projeto.tipo.replace(/_/g, ' ').toLowerCase()}
                 </p>
                 <p>
-                  <strong>Formato:</strong> {projeto.remoto ? 'Remoto' : 'Presencial'}
+                  <strong>Formato:</strong>{' '}
+                  {projeto.remoto ? 'Remoto' : 'Presencial'}
                 </p>
                 {projeto.orcamentoEstimado && (
                   <p>
@@ -94,7 +107,9 @@ export default function ProjetosClientLayout({ projetos, totalProjetos, currentP
               </div>
 
               <div className='mt-auto flex justify-between items-center text-xs text-muted-foreground pt-4 border-t border-border'>
-                <span>Publicado em: {formatarData(projeto.dataPublicacao)}</span>
+                <span>
+                  Publicado em: {formatarData(projeto.dataPublicacao)}
+                </span>
                 <Button asChild size='sm'>
                   <Link href={`/projetos/${projeto.id}`}>Ver Detalhes</Link>
                 </Button>
@@ -130,4 +145,3 @@ export default function ProjetosClientLayout({ projetos, totalProjetos, currentP
     </div>
   );
 }
-

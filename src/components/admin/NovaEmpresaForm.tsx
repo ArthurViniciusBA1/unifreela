@@ -20,7 +20,11 @@ import { Button } from '@/components/ui/button';
 import { criarEmpresaComRecrutadorAction } from '@/actions/adminActions';
 import { Separator } from '@/components/ui/separator';
 
-export function NovaEmpresaForm({ setDialogOpen }: { setDialogOpen: () => void }) {
+export function NovaEmpresaForm({
+  setDialogOpen,
+}: {
+  setDialogOpen: () => void;
+}) {
   const form = useForm<tNovaEmpresa>({
     resolver: zodResolver(novaEmpresaSchema),
     defaultValues: {
@@ -37,7 +41,9 @@ export function NovaEmpresaForm({ setDialogOpen }: { setDialogOpen: () => void }
     const result = await criarEmpresaComRecrutadorAction(data);
 
     if (result.success) {
-      toast.success('Empresa e recrutador criados com sucesso!', { id: toastId });
+      toast.success('Empresa e recrutador criados com sucesso!', {
+        id: toastId,
+      });
       setDialogOpen();
       form.reset();
     } else {
@@ -123,7 +129,9 @@ export function NovaEmpresaForm({ setDialogOpen }: { setDialogOpen: () => void }
         />
         <div className='flex justify-end pt-4'>
           <Button type='submit' disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+            {form.formState.isSubmitting && (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            )}
             Criar Empresa
           </Button>
         </div>

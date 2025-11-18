@@ -10,10 +10,13 @@ import { Button } from '@/components/ui/button';
 import { useCandidato } from '@/context/CandidatoContext';
 import { ExperienciaProfissionalForm } from '../forms/ExperienciaProfissionalForm';
 
-export function ExperienciaHub({}: { setModalOpen: (isOpen: boolean) => void }) {
+export function ExperienciaHub({}: {
+  setModalOpen: (isOpen: boolean) => void;
+}) {
   const { curriculo, fetchCandidatoData } = useCandidato();
   const [view, setView] = useState<'list' | 'form'>('list');
-  const [experienciaParaEditar, setExperienciaParaEditar] = useState<ExperienciaProfissional | null>(null);
+  const [experienciaParaEditar, setExperienciaParaEditar] =
+    useState<ExperienciaProfissional | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const handleOpenForm = (exp: ExperienciaProfissional | null) => {
@@ -27,7 +30,8 @@ export function ExperienciaHub({}: { setModalOpen: (isOpen: boolean) => void }) 
   };
 
   const handleDelete = (id: string) => {
-    if (!window.confirm('Tem certeza que deseja remover esta experiência?')) return;
+    if (!window.confirm('Tem certeza que deseja remover esta experiência?'))
+      return;
 
     startTransition(() => {
       toast.promise(deleteExperienciaAction(id), {
@@ -47,11 +51,19 @@ export function ExperienciaHub({}: { setModalOpen: (isOpen: boolean) => void }) 
   if (view === 'form') {
     return (
       <div className='pt-4'>
-        <Button variant='ghost' size='sm' onClick={handleFormSuccess} className='mb-4'>
+        <Button
+          variant='ghost'
+          size='sm'
+          onClick={handleFormSuccess}
+          className='mb-4'
+        >
           <ArrowLeft size={16} className='mr-2' />
           Voltar para a lista
         </Button>
-        <ExperienciaProfissionalForm setModalOpen={handleFormSuccess} dadosIniciais={experienciaParaEditar} />
+        <ExperienciaProfissionalForm
+          setModalOpen={handleFormSuccess}
+          dadosIniciais={experienciaParaEditar}
+        />
       </div>
     );
   }
@@ -67,12 +79,20 @@ export function ExperienciaHub({}: { setModalOpen: (isOpen: boolean) => void }) 
       <div className='space-y-4 max-h-[60vh] overflow-y-auto pr-2'>
         {curriculo?.experiencias && curriculo.experiencias.length > 0 ? (
           curriculo.experiencias.map((exp) => (
-            <div key={exp.id} className='flex justify-between items-start p-3 rounded-md border bg-background'>
+            <div
+              key={exp.id}
+              className='flex justify-between items-start p-3 rounded-md border bg-background'
+            >
               <div>
                 <h3 className='font-bold text-lg'>{exp.cargo}</h3>
                 <p className='text-primary font-medium'>{exp.nomeEmpresa}</p>
                 <p className='text-sm text-muted-foreground'>
-                  {new Date(exp.dataInicio).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', timeZone: 'UTC' })} -
+                  {new Date(exp.dataInicio).toLocaleDateString('pt-BR', {
+                    year: 'numeric',
+                    month: 'long',
+                    timeZone: 'UTC',
+                  })}{' '}
+                  -
                   {exp.trabalhoAtual
                     ? ' Presente'
                     : exp.dataFim
@@ -81,7 +101,12 @@ export function ExperienciaHub({}: { setModalOpen: (isOpen: boolean) => void }) 
                 </p>
               </div>
               <div className='flex gap-1'>
-                <Button variant='ghost' size='icon' onClick={() => handleOpenForm(exp)} disabled={isPending}>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  onClick={() => handleOpenForm(exp)}
+                  disabled={isPending}
+                >
                   <Pencil size={18} />
                 </Button>
                 <Button
@@ -91,13 +116,19 @@ export function ExperienciaHub({}: { setModalOpen: (isOpen: boolean) => void }) 
                   onClick={() => handleDelete(exp.id)}
                   disabled={isPending}
                 >
-                  {isPending ? <Loader2 className='animate-spin' size={18} /> : <Trash2 size={18} />}
+                  {isPending ? (
+                    <Loader2 className='animate-spin' size={18} />
+                  ) : (
+                    <Trash2 size={18} />
+                  )}
                 </Button>
               </div>
             </div>
           ))
         ) : (
-          <p className='text-muted-foreground text-center py-8'>Nenhuma experiência profissional adicionada.</p>
+          <p className='text-muted-foreground text-center py-8'>
+            Nenhuma experiência profissional adicionada.
+          </p>
         )}
       </div>
     </div>

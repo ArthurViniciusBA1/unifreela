@@ -11,8 +11,21 @@ import { saveIdiomaAction } from '@/actions/curriculoParcialActions';
 import { FloatingLabelInput } from '@/components/custom/FloatingLabelInput';
 import { Button } from '@/components/ui/button';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useCandidato } from '@/context/CandidatoContext';
 import { idiomaSchema, tIdioma } from '@/schemas/curriculoSchema';
 
@@ -69,7 +82,11 @@ export function IdiomaForm({ setModalOpen, dadosIniciais }: IdiomaFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Idioma (Ex: Inglês, Espanhol)' id='nomeIdioma' {...field} />
+                <FloatingLabelInput
+                  label='Idioma (Ex: Inglês, Espanhol)'
+                  id='nomeIdioma'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,7 +107,8 @@ export function IdiomaForm({ setModalOpen, dadosIniciais }: IdiomaFormProps) {
                 <SelectContent>
                   {Object.values(NivelProficiencia).map((nivel) => (
                     <SelectItem key={nivel} value={nivel}>
-                      {nivel.charAt(0).toUpperCase() + nivel.slice(1).toLowerCase()}
+                      {nivel.charAt(0).toUpperCase() +
+                        nivel.slice(1).toLowerCase()}
                     </SelectItem>
                   ))}
                 </SelectContent>

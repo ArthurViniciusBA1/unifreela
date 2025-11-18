@@ -18,7 +18,11 @@ interface CompanyTableProps {
   onOpenActionsModal: (empresa: any) => void;
 }
 
-export function CompanyTable({ empresas, isLoading, onOpenActionsModal }: CompanyTableProps) {
+export function CompanyTable({
+  empresas,
+  isLoading,
+  onOpenActionsModal,
+}: CompanyTableProps) {
   return (
     <div className='bg-card border rounded-lg'>
       <Table>
@@ -44,7 +48,11 @@ export function CompanyTable({ empresas, isLoading, onOpenActionsModal }: Compan
                 <TableCell>{empresa.cnpj || 'N/A'}</TableCell>
                 <TableCell>{formatarData(empresa.criadoEm)}</TableCell>
                 <TableCell className='text-center'>
-                  <Button variant='ghost' size='icon' onClick={() => onOpenActionsModal(empresa)}>
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    onClick={() => onOpenActionsModal(empresa)}
+                  >
                     <MoreHorizontal className='h-4 w-4' />
                   </Button>
                 </TableCell>

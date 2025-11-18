@@ -17,8 +17,11 @@ export default function PaginaPropostas() {
         </div>
       }
     >
-      {currentMode === 'CLIENTE' ? <PropostasClienteLayout /> : <PropostasFreelancerLayout />}
+      {currentMode === 'CLIENTE' ? (
+        <PropostasClienteLayout />
+      ) : (
+        <PropostasFreelancerLayout />
+      )}
     </Suspense>
   );
 }
-

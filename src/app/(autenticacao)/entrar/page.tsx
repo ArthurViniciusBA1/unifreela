@@ -8,8 +8,8 @@ import FormLogin from './form';
 export default function PaginaEntrar() {
   return (
     <main className='relative w-full flex flex-col items-center justify-center min-h-[calc(100vh-200px)] py-8 px-4'>
-      <Link 
-        href='/' 
+      <Link
+        href='/'
         className='absolute left-4 top-4 md:left-6 md:top-6 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors'
         aria-label='Voltar para a página inicial'
       >
@@ -22,11 +22,11 @@ export default function PaginaEntrar() {
         <div className='text-center space-y-4'>
           <div className='flex justify-center mb-4'>
             <div className='relative'>
-              <Image 
-                src={'/LogoUniVagas.png'} 
-                width={80} 
-                height={80} 
-                alt={'Logo UniVagas'} 
+              <Image
+                src={'/LogoUniVagas.png'}
+                width={80}
+                height={80}
+                alt={'Logo UniVagas'}
                 priority
                 className='transition-opacity duration-300'
               />
@@ -51,7 +51,10 @@ export default function PaginaEntrar() {
         <div className='text-center space-y-4'>
           <p className='text-sm text-muted-foreground'>
             Não tem uma conta?{' '}
-            <Link href='/cadastro' className='text-primary hover:underline font-medium transition-colors'>
+            <Link
+              href='/cadastro'
+              className='text-primary hover:underline font-medium transition-colors'
+            >
               Criar conta gratuita
             </Link>
           </p>

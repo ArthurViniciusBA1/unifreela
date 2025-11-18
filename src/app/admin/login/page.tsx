@@ -18,8 +18,12 @@ export default function PaginaLoginAdmin() {
         </Link>
         <div className='text-center'>
           <ShieldAlert size={40} className='mx-auto text-primary mb-4' />
-          <h1 className='text-3xl font-extrabold uppercase'>Acesso Administrativo</h1>
-          <p className='text-muted-foreground mt-2'>Use suas credenciais de administrador.</p>
+          <h1 className='text-3xl font-extrabold uppercase'>
+            Acesso Administrativo
+          </h1>
+          <p className='text-muted-foreground mt-2'>
+            Use suas credenciais de administrador.
+          </p>
         </div>
         <div className='w-full max-w-md'>
           <FormLoginAdmin />

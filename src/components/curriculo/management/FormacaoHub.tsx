@@ -13,7 +13,8 @@ import { FormacaoAcademicaForm } from '../forms/FormacaoAcademicaForm';
 export function FormacaoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
   const { curriculo, fetchCandidatoData } = useCandidato();
   const [view, setView] = useState<'list' | 'form'>('list');
-  const [formacaoParaEditar, setFormacaoParaEditar] = useState<FormacaoAcademica | null>(null);
+  const [formacaoParaEditar, setFormacaoParaEditar] =
+    useState<FormacaoAcademica | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const handleOpenForm = (formacao: FormacaoAcademica | null) => {
@@ -27,7 +28,8 @@ export function FormacaoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
   };
 
   const handleDelete = (id: string) => {
-    if (!window.confirm('Tem certeza que deseja remover esta formação?')) return;
+    if (!window.confirm('Tem certeza que deseja remover esta formação?'))
+      return;
 
     startTransition(() => {
       toast.promise(deleteFormacaoAction(id), {
@@ -47,11 +49,19 @@ export function FormacaoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
   if (view === 'form') {
     return (
       <div className='pt-4'>
-        <Button variant='ghost' size='sm' onClick={handleFormSuccess} className='mb-4'>
+        <Button
+          variant='ghost'
+          size='sm'
+          onClick={handleFormSuccess}
+          className='mb-4'
+        >
           <ArrowLeft size={16} className='mr-2' />
           Voltar para a lista
         </Button>
-        <FormacaoAcademicaForm setModalOpen={handleFormSuccess} dadosIniciais={formacaoParaEditar} />
+        <FormacaoAcademicaForm
+          setModalOpen={handleFormSuccess}
+          dadosIniciais={formacaoParaEditar}
+        />
       </div>
     );
   }
@@ -67,13 +77,23 @@ export function FormacaoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
       <div className='space-y-4 max-h-[60vh] overflow-y-auto pr-2'>
         {curriculo?.formacoes && curriculo.formacoes.length > 0 ? (
           curriculo.formacoes.map((formacao) => (
-            <div key={formacao.id} className='flex justify-between items-start p-3 rounded-md border bg-background'>
+            <div
+              key={formacao.id}
+              className='flex justify-between items-start p-3 rounded-md border bg-background'
+            >
               <div>
                 <h3 className='font-bold text-lg'>{formacao.curso}</h3>
-                <p className='text-primary font-medium'>{formacao.instituicao}</p>
+                <p className='text-primary font-medium'>
+                  {formacao.instituicao}
+                </p>
               </div>
               <div className='flex gap-1'>
-                <Button variant='ghost' size='icon' onClick={() => handleOpenForm(formacao)} disabled={isPending}>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  onClick={() => handleOpenForm(formacao)}
+                  disabled={isPending}
+                >
                   <Pencil size={18} />
                 </Button>
                 <Button
@@ -83,13 +103,19 @@ export function FormacaoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
                   onClick={() => handleDelete(formacao.id)}
                   disabled={isPending}
                 >
-                  {isPending ? <Loader2 size={18} className='animate-spin' /> : <Trash2 size={18} />}
+                  {isPending ? (
+                    <Loader2 size={18} className='animate-spin' />
+                  ) : (
+                    <Trash2 size={18} />
+                  )}
                 </Button>
               </div>
             </div>
           ))
         ) : (
-          <p className='text-muted-foreground text-center py-8'>Nenhuma formação acadêmica adicionada.</p>
+          <p className='text-muted-foreground text-center py-8'>
+            Nenhuma formação acadêmica adicionada.
+          </p>
         )}
       </div>
     </div>

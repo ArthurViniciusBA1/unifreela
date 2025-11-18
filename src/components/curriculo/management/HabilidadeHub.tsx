@@ -12,7 +12,8 @@ import { HabilidadeForm } from '../forms/HabilidadeForm';
 
 export function HabilidadeHub({}: { setModalOpen: (isOpen: boolean) => void }) {
   const { curriculo, fetchCandidatoData } = useCandidato();
-  const [habilidadeParaEditar, setHabilidadeParaEditar] = useState<Habilidade | null>(null);
+  const [habilidadeParaEditar, setHabilidadeParaEditar] =
+    useState<Habilidade | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -27,7 +28,8 @@ export function HabilidadeHub({}: { setModalOpen: (isOpen: boolean) => void }) {
   };
 
   const handleDelete = (id: string) => {
-    if (!window.confirm('Tem certeza que deseja remover esta habilidade?')) return;
+    if (!window.confirm('Tem certeza que deseja remover esta habilidade?'))
+      return;
 
     startTransition(() => {
       toast.promise(deleteHabilidadeAction(id), {
@@ -45,7 +47,12 @@ export function HabilidadeHub({}: { setModalOpen: (isOpen: boolean) => void }) {
   };
 
   if (showForm) {
-    return <HabilidadeForm setModalOpen={handleCloseForm} dadosIniciais={habilidadeParaEditar} />;
+    return (
+      <HabilidadeForm
+        setModalOpen={handleCloseForm}
+        dadosIniciais={habilidadeParaEditar}
+      />
+    );
   }
 
   return (
@@ -59,10 +66,18 @@ export function HabilidadeHub({}: { setModalOpen: (isOpen: boolean) => void }) {
       <div className='space-y-3 max-h-[50vh] overflow-y-auto pr-2'>
         {curriculo?.habilidades && curriculo.habilidades.length > 0 ? (
           curriculo.habilidades.map((habilidade) => (
-            <div key={habilidade.id} className='flex justify-between items-center p-3 rounded-md border bg-background text-sm'>
+            <div
+              key={habilidade.id}
+              className='flex justify-between items-center p-3 rounded-md border bg-background text-sm'
+            >
               <span className='font-medium'>{habilidade.nome}</span>
               <div className='flex gap-1'>
-                <Button variant='ghost' size='icon' onClick={() => handleOpenForm(habilidade)} disabled={isPending}>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  onClick={() => handleOpenForm(habilidade)}
+                  disabled={isPending}
+                >
                   <Pencil size={16} />
                 </Button>
                 <Button
@@ -72,13 +87,19 @@ export function HabilidadeHub({}: { setModalOpen: (isOpen: boolean) => void }) {
                   onClick={() => handleDelete(habilidade.id)}
                   disabled={isPending}
                 >
-                  {isPending ? <Loader2 size={16} className='animate-spin' /> : <Trash2 size={16} />}
+                  {isPending ? (
+                    <Loader2 size={16} className='animate-spin' />
+                  ) : (
+                    <Trash2 size={16} />
+                  )}
                 </Button>
               </div>
             </div>
           ))
         ) : (
-          <p className='text-muted-foreground text-center py-8'>Nenhuma habilidade adicionada.</p>
+          <p className='text-muted-foreground text-center py-8'>
+            Nenhuma habilidade adicionada.
+          </p>
         )}
       </div>
     </div>

@@ -12,7 +12,13 @@ import { FloatingLabelInput } from '@/components/custom/FloatingLabelInput';
 import { FloatingLabelTextarea } from '@/components/custom/FloatingLabelTextarea';
 import { Button } from '@/components/ui/button';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
 import { useCandidato } from '@/context/CandidatoContext';
 import { projetoSchema, tProjeto } from '@/schemas/curriculoSchema';
 
@@ -77,7 +83,11 @@ export function ProjetoForm({ setModalOpen, dadosIniciais }: ProjetoFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Nome do Projeto' id='nomeProjeto' {...field} />
+                <FloatingLabelInput
+                  label='Nome do Projeto'
+                  id='nomeProjeto'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -89,7 +99,12 @@ export function ProjetoForm({ setModalOpen, dadosIniciais }: ProjetoFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelTextarea label='Descrição (Opcional)' id='descricaoProjeto' rows={4} {...field} />
+                <FloatingLabelTextarea
+                  label='Descrição (Opcional)'
+                  id='descricaoProjeto'
+                  rows={4}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -101,7 +116,12 @@ export function ProjetoForm({ setModalOpen, dadosIniciais }: ProjetoFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='URL do Projeto (Opcional)' id='urlProjeto' type='url' {...field} />
+                <FloatingLabelInput
+                  label='URL do Projeto (Opcional)'
+                  id='urlProjeto'
+                  type='url'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

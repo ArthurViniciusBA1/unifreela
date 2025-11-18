@@ -11,7 +11,13 @@ import { saveCertificacaoAction } from '@/actions/curriculoParcialActions';
 import { FloatingLabelInput } from '@/components/custom/FloatingLabelInput';
 import { Button } from '@/components/ui/button';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
 import { useCandidato } from '@/context/CandidatoContext';
 import { certificacaoSchema, tCertificacao } from '@/schemas/curriculoSchema';
 
@@ -29,7 +35,10 @@ const defaultFormValues: tCertificacao = {
   credencialId: '',
 };
 
-export function CertificacaoForm({ setModalOpen, dadosIniciais }: CertificacaoFormProps) {
+export function CertificacaoForm({
+  setModalOpen,
+  dadosIniciais,
+}: CertificacaoFormProps) {
   const { fetchCandidatoData } = useCandidato();
   const form = useForm<tCertificacao>({
     resolver: zodResolver(certificacaoSchema),
@@ -44,7 +53,9 @@ export function CertificacaoForm({ setModalOpen, dadosIniciais }: CertificacaoFo
         id: dadosIniciais.id,
         nome: dadosIniciais.nome,
         organizacaoEmissora: dadosIniciais.organizacaoEmissora,
-        dataEmissao: new Date(dadosIniciais.dataEmissao).toISOString().substring(0, 7),
+        dataEmissao: new Date(dadosIniciais.dataEmissao)
+          .toISOString()
+          .substring(0, 7),
         credencialId: dadosIniciais.credencialId ?? '',
         credencialUrl: dadosIniciais.credencialUrl ?? '',
       };
@@ -78,7 +89,12 @@ export function CertificacaoForm({ setModalOpen, dadosIniciais }: CertificacaoFo
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Nome do Certificado' id='nomeCertificado' {...field} value={field.value ?? ''} />
+                <FloatingLabelInput
+                  label='Nome do Certificado'
+                  id='nomeCertificado'
+                  {...field}
+                  value={field.value ?? ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,7 +106,12 @@ export function CertificacaoForm({ setModalOpen, dadosIniciais }: CertificacaoFo
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Organização Emissora' id='orgCertificado' {...field} value={field.value ?? ''} />
+                <FloatingLabelInput
+                  label='Organização Emissora'
+                  id='orgCertificado'
+                  {...field}
+                  value={field.value ?? ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -13,9 +13,19 @@ import { FloatingLabelTextarea } from '@/components/custom/FloatingLabelTextarea
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { useCandidato } from '@/context/CandidatoContext';
-import { experienciaProfissionalSchema, tExperienciaProfissional } from '@/schemas/curriculoSchema';
+import {
+  experienciaProfissionalSchema,
+  tExperienciaProfissional,
+} from '@/schemas/curriculoSchema';
 
 interface ExperienciaProfissionalFormProps {
   setModalOpen: (isOpen: boolean) => void;
@@ -34,7 +44,10 @@ const defaultFormValues: tExperienciaProfissional = {
   curriculoId: undefined,
 };
 
-export function ExperienciaProfissionalForm({ setModalOpen, dadosIniciais }: ExperienciaProfissionalFormProps) {
+export function ExperienciaProfissionalForm({
+  setModalOpen,
+  dadosIniciais,
+}: ExperienciaProfissionalFormProps) {
   const { fetchCandidatoData } = useCandidato();
 
   const form = useForm<tExperienciaProfissional>({
@@ -51,8 +64,12 @@ export function ExperienciaProfissionalForm({ setModalOpen, dadosIniciais }: Exp
         cargo: dadosIniciais.cargo,
         nomeEmpresa: dadosIniciais.nomeEmpresa,
         local: dadosIniciais.local ?? '',
-        dataInicio: new Date(dadosIniciais.dataInicio).toISOString().substring(0, 7),
-        dataFim: dadosIniciais.dataFim ? new Date(dadosIniciais.dataFim).toISOString().substring(0, 7) : '',
+        dataInicio: new Date(dadosIniciais.dataInicio)
+          .toISOString()
+          .substring(0, 7),
+        dataFim: dadosIniciais.dataFim
+          ? new Date(dadosIniciais.dataFim).toISOString().substring(0, 7)
+          : '',
         trabalhoAtual: dadosIniciais.trabalhoAtual,
         descricao: dadosIniciais.descricao ?? '',
       };
@@ -100,7 +117,11 @@ export function ExperienciaProfissionalForm({ setModalOpen, dadosIniciais }: Exp
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Empresa' id='empresaExp' {...field} />
+                <FloatingLabelInput
+                  label='Empresa'
+                  id='empresaExp'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -112,7 +133,11 @@ export function ExperienciaProfissionalForm({ setModalOpen, dadosIniciais }: Exp
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Localidade (Ex: Cidade - UF)' id='localExp' {...field} />
+                <FloatingLabelInput
+                  label='Localidade (Ex: Cidade - UF)'
+                  id='localExp'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -124,7 +149,12 @@ export function ExperienciaProfissionalForm({ setModalOpen, dadosIniciais }: Exp
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelTextarea label='Descrição' id='descricaoExp' rows={5} {...field} />
+                <FloatingLabelTextarea
+                  label='Descrição'
+                  id='descricaoExp'
+                  rows={5}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -137,7 +167,12 @@ export function ExperienciaProfissionalForm({ setModalOpen, dadosIniciais }: Exp
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput label='Data de Início' id='dataInicioExp' type='month' {...field} />
+                  <FloatingLabelInput
+                    label='Data de Início'
+                    id='dataInicioExp'
+                    type='month'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -149,7 +184,13 @@ export function ExperienciaProfissionalForm({ setModalOpen, dadosIniciais }: Exp
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput label='Data de Fim' id='dataFimExp' type='month' {...field} disabled={trabalhoAtual} />
+                  <FloatingLabelInput
+                    label='Data de Fim'
+                    id='dataFimExp'
+                    type='month'
+                    {...field}
+                    disabled={trabalhoAtual}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -163,7 +204,11 @@ export function ExperienciaProfissionalForm({ setModalOpen, dadosIniciais }: Exp
             <FormItem className='flex flex-row items-center space-x-3 space-y-0 p-3 h-10'>
               {' '}
               <FormControl>
-                <Checkbox id='trabalhoAtualExp' checked={field.value} onCheckedChange={field.onChange} />
+                <Checkbox
+                  id='trabalhoAtualExp'
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
               </FormControl>{' '}
               <FormLabel htmlFor='trabalhoAtualExp' className='cursor-pointer'>
                 Trabalho Atual

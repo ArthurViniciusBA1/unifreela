@@ -11,4 +11,3 @@ if (fs.existsSync(generatedFile)) {
 } else {
   console.log('⚠️  Generated schema file not found');
 }
-

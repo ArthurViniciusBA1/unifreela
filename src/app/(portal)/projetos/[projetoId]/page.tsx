@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Key } from 'react';
-import { Building2, Calendar, DollarSign, MapPin, Tag, UserRoundCheck } from 'lucide-react';
+import {
+  Building2,
+  Calendar,
+  DollarSign,
+  MapPin,
+  Tag,
+  UserRoundCheck,
+} from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { RoleUsuario } from '@prisma/client';
@@ -68,49 +75,65 @@ export default async function PaginaDetalheProjeto({
     <div className='max-w-3xl mx-auto bg-card border border-border rounded-lg p-6 sm:p-8 shadow-lg my-8'>
       <div className='flex justify-between items-start mb-6'>
         <div>
-          <h1 className='text-3xl font-extrabold text-primary mb-2'>{projeto.titulo}</h1>
+          <h1 className='text-3xl font-extrabold text-primary mb-2'>
+            {projeto.titulo}
+          </h1>
           <p className='text-xl text-foreground font-semibold flex items-center gap-2'>
-            <Building2 size={20} /> {projeto.criadoPor.perfilCliente?.nomeFantasia || 'Cliente'}
+            <Building2 size={20} />{' '}
+            {projeto.criadoPor.perfilCliente?.nomeFantasia || 'Cliente'}
           </p>
         </div>
       </div>
 
       <div className='space-y-4 text-muted-foreground text-sm mb-6'>
         <p className='flex items-center gap-2'>
-          <Tag size={16} /> <strong>Tipo:</strong> {projeto.tipo.replace(/_/g, ' ')}
+          <Tag size={16} /> <strong>Tipo:</strong>{' '}
+          {projeto.tipo.replace(/_/g, ' ')}
         </p>
         <p className='flex items-center gap-2'>
-          <MapPin size={16} /> <strong>Formato:</strong> {projeto.remoto ? 'Remoto' : 'Presencial'}
+          <MapPin size={16} /> <strong>Formato:</strong>{' '}
+          {projeto.remoto ? 'Remoto' : 'Presencial'}
         </p>
         {projeto.orcamentoEstimado && (
           <p className='flex items-center gap-2'>
-            <DollarSign size={16} /> <strong>Orçamento:</strong> {projeto.orcamentoEstimado}
+            <DollarSign size={16} /> <strong>Orçamento:</strong>{' '}
+            {projeto.orcamentoEstimado}
           </p>
         )}
         <p className='flex items-center gap-2'>
-          <Calendar size={16} /> <strong>Publicado em:</strong> {formatarData(projeto.dataPublicacao)}
+          <Calendar size={16} /> <strong>Publicado em:</strong>{' '}
+          {formatarData(projeto.dataPublicacao)}
         </p>
       </div>
 
       <section className='mb-6'>
-        <h2 className='text-2xl font-bold text-foreground mb-3'>Descrição do Projeto</h2>
-        <p className='text-gray-700 whitespace-pre-line leading-relaxed'>{projeto.descricao}</p>
+        <h2 className='text-2xl font-bold text-foreground mb-3'>
+          Descrição do Projeto
+        </h2>
+        <p className='text-gray-700 whitespace-pre-line leading-relaxed'>
+          {projeto.descricao}
+        </p>
       </section>
 
-      {projeto.habilidadesDesejadas && projeto.habilidadesDesejadas.length > 0 && (
-        <section className='mb-6'>
-          <h2 className='text-2xl font-bold text-foreground mb-3'>Habilidades desejadas</h2>
-          <ul className='list-disc list-inside text-gray-700'>
-            {projeto.habilidadesDesejadas.map((hab: string, index: Key) => (
-              <li key={index}>{hab}</li>
-            ))}
-          </ul>
-        </section>
-      )}
+      {projeto.habilidadesDesejadas &&
+        projeto.habilidadesDesejadas.length > 0 && (
+          <section className='mb-6'>
+            <h2 className='text-2xl font-bold text-foreground mb-3'>
+              Habilidades desejadas
+            </h2>
+            <ul className='list-disc list-inside text-gray-700'>
+              {projeto.habilidadesDesejadas.map((hab: string, index: Key) => (
+                <li key={index}>{hab}</li>
+              ))}
+            </ul>
+          </section>
+        )}
 
       {projeto.criadoPor.perfilCliente?.descricao && (
         <section className='mb-6'>
-          <h2 className='text-2xl font-bold text-foreground mb-3'>Sobre o cliente</h2>
+          <h2 className='text-2xl font-bold text-foreground mb-3'>
+            Sobre o cliente
+          </h2>
           <p className='text-gray-700 whitespace-pre-line leading-relaxed'>
             {projeto.criadoPor.perfilCliente.descricao}
           </p>
@@ -142,4 +165,3 @@ export default async function PaginaDetalheProjeto({
     </div>
   );
 }
-

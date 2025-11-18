@@ -16,10 +16,23 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
-import { adminMudarSenhaUsuarioAction, procurarUsuariosAction } from '@/actions/adminActions';
+import {
+  adminMudarSenhaUsuarioAction,
+  procurarUsuariosAction,
+} from '@/actions/adminActions';
 import { mudarSenhaAdminSchema, tMudarSenhaAdmin } from '@/schemas/adminSchema';
 import { FloatingLabelInput } from '../custom/FloatingLabelInput';
 
@@ -58,9 +71,15 @@ export function MudarSenhaAdminForm() {
       return;
     }
     const toastId = toast.loading('Alterando senha...');
-    const result = await adminMudarSenhaUsuarioAction(selectedUser.id, data.novaSenha);
+    const result = await adminMudarSenhaUsuarioAction(
+      selectedUser.id,
+      data.novaSenha
+    );
     if (result.success) {
-      toast.success(`Senha do usuário ${selectedUser.nome} alterada com sucesso!`, { id: toastId });
+      toast.success(
+        `Senha do usuário ${selectedUser.nome} alterada com sucesso!`,
+        { id: toastId }
+      );
       form.reset();
       setSelectedUser(null);
       setSearchTerm('');
@@ -118,12 +137,16 @@ export function MudarSenhaAdminForm() {
                       <Check
                         className={cn(
                           'mr-2 h-4 w-4',
-                          selectedUser?.id === user.id ? 'opacity-100' : 'opacity-0'
+                          selectedUser?.id === user.id
+                            ? 'opacity-100'
+                            : 'opacity-0'
                         )}
                       />
                       <div className='flex flex-col'>
                         <span>{user.nome}</span>
-                        <span className='text-xs text-muted-foreground'>{user.email}</span>
+                        <span className='text-xs text-muted-foreground'>
+                          {user.email}
+                        </span>
                       </div>
                     </CommandItem>
                   ))}
@@ -136,9 +159,13 @@ export function MudarSenhaAdminForm() {
 
       {selectedUser && (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='p-4 border rounded-lg space-y-4'>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className='p-4 border rounded-lg space-y-4'
+          >
             <p className='text-sm font-medium'>
-              Redefinir senha para: <span className='text-primary'>{selectedUser.nome}</span>
+              Redefinir senha para:{' '}
+              <span className='text-primary'>{selectedUser.nome}</span>
             </p>
             <FormField
               control={form.control}
@@ -175,7 +202,9 @@ export function MudarSenhaAdminForm() {
               )}
             />
             <Button type='submit' disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+              {form.formState.isSubmitting && (
+                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+              )}
               Alterar Senha
             </Button>
           </form>

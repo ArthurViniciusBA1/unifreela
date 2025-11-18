@@ -37,17 +37,20 @@ interface ProjetoFormProps {
 export function ProjetoForm({ dadosIniciais }: ProjetoFormProps) {
   const router = useRouter();
 
-  const defaultValues: tProjetoForm = useMemo(() => ({
-    id: dadosIniciais?.id,
-    titulo: dadosIniciais?.titulo ?? '',
-    descricao: dadosIniciais?.descricao ?? '',
-    habilidadesDesejadas: dadosIniciais?.habilidadesDesejadas ?? '',
-    tipo: dadosIniciais?.tipo ?? TipoProjeto.PROJETO_FIXO,
-    status: dadosIniciais?.status ?? StatusProjeto.ABERTO,
-    orcamentoEstimado: dadosIniciais?.orcamentoEstimado ?? '',
-    prazoEstimado: dadosIniciais?.prazoEstimado ?? '',
-    remoto: dadosIniciais?.remoto ?? true,
-  }), [dadosIniciais]);
+  const defaultValues: tProjetoForm = useMemo(
+    () => ({
+      id: dadosIniciais?.id,
+      titulo: dadosIniciais?.titulo ?? '',
+      descricao: dadosIniciais?.descricao ?? '',
+      habilidadesDesejadas: dadosIniciais?.habilidadesDesejadas ?? '',
+      tipo: dadosIniciais?.tipo ?? TipoProjeto.PROJETO_FIXO,
+      status: dadosIniciais?.status ?? StatusProjeto.ABERTO,
+      orcamentoEstimado: dadosIniciais?.orcamentoEstimado ?? '',
+      prazoEstimado: dadosIniciais?.prazoEstimado ?? '',
+      remoto: dadosIniciais?.remoto ?? true,
+    }),
+    [dadosIniciais]
+  );
 
   const form = useForm<tProjetoForm>({
     resolver: zodResolver(projetoFormSchema),
@@ -55,17 +58,26 @@ export function ProjetoForm({ dadosIniciais }: ProjetoFormProps) {
   });
 
   const onSubmit = async (data: tProjetoForm) => {
-    const toastId = toast.loading(dadosIniciais?.id ? 'Atualizando projeto...' : 'Publicando projeto...');
+    const toastId = toast.loading(
+      dadosIniciais?.id ? 'Atualizando projeto...' : 'Publicando projeto...'
+    );
     const result = await saveProjetoAction(data);
 
     if (result.success) {
-      toast.success(dadosIniciais?.id ? 'Projeto atualizado com sucesso!' : 'Projeto publicado!', {
-        id: toastId,
-      });
+      toast.success(
+        dadosIniciais?.id
+          ? 'Projeto atualizado com sucesso!'
+          : 'Projeto publicado!',
+        {
+          id: toastId,
+        }
+      );
       router.push('/projetos');
       router.refresh();
     } else {
-      toast.error(result.error || 'Não foi possível salvar o projeto.', { id: toastId });
+      toast.error(result.error || 'Não foi possível salvar o projeto.', {
+        id: toastId,
+      });
     }
   };
 
@@ -78,7 +90,11 @@ export function ProjetoForm({ dadosIniciais }: ProjetoFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Título do Projeto' id='tituloProjeto' {...field} />
+                <FloatingLabelInput
+                  label='Título do Projeto'
+                  id='tituloProjeto'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -136,7 +152,11 @@ export function ProjetoForm({ dadosIniciais }: ProjetoFormProps) {
                   </FormControl>
                   <SelectContent>
                     {Object.values(TipoProjeto).map((tipo) => (
-                      <SelectItem key={tipo} value={tipo} className='capitalize'>
+                      <SelectItem
+                        key={tipo}
+                        value={tipo}
+                        className='capitalize'
+                      >
                         {tipo.replace(/_/g, ' ').toLowerCase()}
                       </SelectItem>
                     ))}
@@ -167,7 +187,11 @@ export function ProjetoForm({ dadosIniciais }: ProjetoFormProps) {
                     </FormControl>
                     <SelectContent>
                       {statusDisponiveis.map((status) => (
-                        <SelectItem key={status} value={status} className='capitalize'>
+                        <SelectItem
+                          key={status}
+                          value={status}
+                          className='capitalize'
+                        >
                           {status.replace(/_/g, ' ').toLowerCase()}
                         </SelectItem>
                       ))}
@@ -230,10 +254,15 @@ export function ProjetoForm({ dadosIniciais }: ProjetoFormProps) {
                 />
               </FormControl>
               <div className='space-y-1 leading-none'>
-                <FormLabel htmlFor='remotoProjeto' className='cursor-pointer font-medium'>
+                <FormLabel
+                  htmlFor='remotoProjeto'
+                  className='cursor-pointer font-medium'
+                >
                   Projeto remoto
                 </FormLabel>
-                <p className='text-sm text-muted-foreground'>Desmarque para indicar presença obrigatória.</p>
+                <p className='text-sm text-muted-foreground'>
+                  Desmarque para indicar presença obrigatória.
+                </p>
               </div>
               <FormMessage />
             </FormItem>

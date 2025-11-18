@@ -2,7 +2,13 @@
 'use client';
 
 import { Prisma, RoleUsuario } from '@prisma/client';
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { toast } from 'sonner';
 
 import {
@@ -42,7 +48,9 @@ const curriculoCompletoArgs = Prisma.validator<Prisma.CurriculoDefaultArgs>()({
   },
 });
 
-export type CurriculoCompleto = Prisma.CurriculoGetPayload<typeof curriculoCompletoArgs>;
+export type CurriculoCompleto = Prisma.CurriculoGetPayload<
+  typeof curriculoCompletoArgs
+>;
 
 interface CandidatoProfileData {
   id: string;
@@ -57,7 +65,9 @@ interface CandidatoContextType {
   isLoading: boolean;
   error: string | null;
   fetchCandidatoData: () => Promise<void>;
-  updateInformacoesPessoais: (data: tCurriculoInformacoesPessoais) => Promise<void>;
+  updateInformacoesPessoais: (
+    data: tCurriculoInformacoesPessoais
+  ) => Promise<void>;
   saveExperiencia: (data: tExperienciaProfissional) => Promise<void>;
   deleteExperiencia: (id: string) => Promise<void>;
   saveFormacao: (data: tFormacaoAcademica) => Promise<void>;
@@ -72,9 +82,15 @@ interface CandidatoContextType {
   deleteCertificacao: (id: string) => Promise<void>;
 }
 
-const CandidatoContext = createContext<CandidatoContextType | undefined>(undefined);
+const CandidatoContext = createContext<CandidatoContextType | undefined>(
+  undefined
+);
 
-export const CandidatoProvider = ({ children }: { children: React.ReactNode }) => {
+export const CandidatoProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [candidato, setCandidato] = useState<CandidatoProfileData | null>(null);
   const [curriculo, setCurriculo] = useState<CurriculoCompleto | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -86,7 +102,9 @@ export const CandidatoProvider = ({ children }: { children: React.ReactNode }) =
     try {
       const response = await fetch('/api/candidato/meus-dados');
       if (!response.ok) {
-        const errData = await response.json().catch(() => ({ error: 'Falha ao buscar dados do candidato.' }));
+        const errData = await response
+          .json()
+          .catch(() => ({ error: 'Falha ao buscar dados do candidato.' }));
         throw new Error(errData.error);
       }
       const data = await response.json();
@@ -104,7 +122,9 @@ export const CandidatoProvider = ({ children }: { children: React.ReactNode }) =
   }, [fetchCandidatoData]);
 
   // Adaptação da função para usar Server Action
-  const updateInformacoesPessoais = async (data: tCurriculoInformacoesPessoais) => {
+  const updateInformacoesPessoais = async (
+    data: tCurriculoInformacoesPessoais
+  ) => {
     // Usa toast.promise para exibir o feedback de sucesso/erro
     toast.promise(saveInformacoesPessoaisAction(data), {
       loading: 'Salvando informações pessoais...',
@@ -117,7 +137,9 @@ export const CandidatoProvider = ({ children }: { children: React.ReactNode }) =
       },
       error: (err) => {
         console.error('Erro ao salvar informações pessoais:', err);
-        return err instanceof Error ? err.message : 'Erro ao salvar informações pessoais.';
+        return err instanceof Error
+          ? err.message
+          : 'Erro ao salvar informações pessoais.';
       },
     });
   };
@@ -250,7 +272,9 @@ export const CandidatoProvider = ({ children }: { children: React.ReactNode }) =
 export const useCandidato = () => {
   const context = useContext(CandidatoContext);
   if (context === undefined) {
-    throw new Error('useCandidato deve ser usado dentro de um CandidatoProvider');
+    throw new Error(
+      'useCandidato deve ser usado dentro de um CandidatoProvider'
+    );
   }
   return context;
 };

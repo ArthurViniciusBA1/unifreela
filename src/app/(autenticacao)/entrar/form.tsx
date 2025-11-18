@@ -9,7 +9,13 @@ import { LogIn } from 'lucide-react';
 
 import { FloatingLabelInput } from '@/components/custom/FloatingLabelInput';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
 import { loginSchema, tLogin } from '@/schemas/usuarioSchema';
 
 export default function FormLogin() {
@@ -34,7 +40,9 @@ export default function FormLogin() {
       const result = await res.json();
 
       if (!res.ok) {
-        toast.error(result.error?.form || result.error || 'E-mail ou senha inválidos.');
+        toast.error(
+          result.error?.form || result.error || 'E-mail ou senha inválidos.'
+        );
         return;
       }
 
@@ -48,7 +56,10 @@ export default function FormLogin() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='w-full flex flex-col gap-5'>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='w-full flex flex-col gap-5'
+      >
         <div className='space-y-4'>
           <FormField
             control={form.control}
@@ -56,7 +67,13 @@ export default function FormLogin() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput label='E-mail' id='email' type='email' autoComplete='username' {...field} />
+                  <FloatingLabelInput
+                    label='E-mail'
+                    id='email'
+                    type='email'
+                    autoComplete='username'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -68,7 +85,13 @@ export default function FormLogin() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput label='Senha' id='senhaLogin' type='password' autoComplete='current-password' {...field} />
+                  <FloatingLabelInput
+                    label='Senha'
+                    id='senhaLogin'
+                    type='password'
+                    autoComplete='current-password'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -76,10 +99,10 @@ export default function FormLogin() {
           />
         </div>
 
-        <Button 
-          type='submit' 
-          disabled={form.formState.isSubmitting} 
-          variant='default' 
+        <Button
+          type='submit'
+          disabled={form.formState.isSubmitting}
+          variant='default'
           size='lg'
           className='w-full cursor-pointer mt-2'
         >

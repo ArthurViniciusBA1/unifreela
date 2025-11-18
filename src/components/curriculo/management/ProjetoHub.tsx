@@ -1,7 +1,14 @@
 'use client';
 
 import { ProjetoPortfolio } from '@prisma/client';
-import { Github, Link as LinkIcon, Loader2, Pencil, PlusCircle, Trash2 } from 'lucide-react';
+import {
+  Github,
+  Link as LinkIcon,
+  Loader2,
+  Pencil,
+  PlusCircle,
+  Trash2,
+} from 'lucide-react';
 import Link from 'next/link';
 import React, { useState, useTransition } from 'react';
 import { toast } from 'sonner';
@@ -13,7 +20,8 @@ import { ProjetoForm } from '../forms/ProjetoForm';
 
 export function ProjetoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
   const { curriculo, fetchCandidatoData } = useCandidato();
-  const [projetoParaEditar, setProjetoParaEditar] = useState<ProjetoPortfolio | null>(null);
+  const [projetoParaEditar, setProjetoParaEditar] =
+    useState<ProjetoPortfolio | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -46,7 +54,12 @@ export function ProjetoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
   };
 
   if (showForm) {
-    return <ProjetoForm setModalOpen={handleCloseForm} dadosIniciais={projetoParaEditar} />;
+    return (
+      <ProjetoForm
+        setModalOpen={handleCloseForm}
+        dadosIniciais={projetoParaEditar}
+      />
+    );
   }
 
   return (
@@ -58,13 +71,22 @@ export function ProjetoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
         </Button>
       </div>
       <div className='space-y-3 max-h-[50vh] overflow-y-auto pr-2'>
-        {curriculo?.projetosPortfolio && curriculo.projetosPortfolio.length > 0 ? (
+        {curriculo?.projetosPortfolio &&
+        curriculo.projetosPortfolio.length > 0 ? (
           curriculo.projetosPortfolio.map((projeto) => (
-            <div key={projeto.id} className='p-3 rounded-md border bg-background'>
+            <div
+              key={projeto.id}
+              className='p-3 rounded-md border bg-background'
+            >
               <div className='flex justify-between items-start'>
                 <h3 className='font-bold text-base'>{projeto.nome}</h3>
                 <div className='flex gap-1'>
-                  <Button variant='ghost' size='icon' onClick={() => handleOpenForm(projeto)} disabled={isPending}>
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    onClick={() => handleOpenForm(projeto)}
+                    disabled={isPending}
+                  >
                     <Pencil size={16} />
                   </Button>
                   <Button
@@ -74,22 +96,38 @@ export function ProjetoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
                     onClick={() => handleDelete(projeto.id)}
                     disabled={isPending}
                   >
-                    {isPending ? <Loader2 size={16} className='animate-spin' /> : <Trash2 size={16} />}
+                    {isPending ? (
+                      <Loader2 size={16} className='animate-spin' />
+                    ) : (
+                      <Trash2 size={16} />
+                    )}
                   </Button>
                 </div>
               </div>
-              {projeto.descricao && <p className='text-sm text-muted-foreground mt-1'>{projeto.descricao}</p>}
+              {projeto.descricao && (
+                <p className='text-sm text-muted-foreground mt-1'>
+                  {projeto.descricao}
+                </p>
+              )}
               <div className='flex items-center gap-4 mt-3'>
                 {projeto.projectUrl && (
                   <Button variant='link' asChild className='p-0 h-auto text-xs'>
-                    <Link href={projeto.projectUrl} target='_blank' rel='noopener noreferrer'>
+                    <Link
+                      href={projeto.projectUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
                       <LinkIcon size={14} className='mr-1.5' /> Ver Projeto
                     </Link>
                   </Button>
                 )}
                 {projeto.repositorioUrl && (
                   <Button variant='link' asChild className='p-0 h-auto text-xs'>
-                    <Link href={projeto.repositorioUrl} target='_blank' rel='noopener noreferrer'>
+                    <Link
+                      href={projeto.repositorioUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
                       <Github size={14} className='mr-1.5' /> Repositório
                     </Link>
                   </Button>
@@ -98,7 +136,9 @@ export function ProjetoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
             </div>
           ))
         ) : (
-          <p className='text-muted-foreground text-center py-8'>Nenhum projeto adicionado.</p>
+          <p className='text-muted-foreground text-center py-8'>
+            Nenhum projeto adicionado.
+          </p>
         )}
       </div>
     </div>

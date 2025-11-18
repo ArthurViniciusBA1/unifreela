@@ -24,13 +24,19 @@ interface ApplicationActionBarProps {
   statusAtual: StatusCandidatura;
 }
 
-export function ApplicationActionBar({ candidaturaId, statusAtual }: ApplicationActionBarProps) {
+export function ApplicationActionBar({
+  candidaturaId,
+  statusAtual,
+}: ApplicationActionBarProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const handleUpdateStatus = (novoStatus: StatusCandidatura) => {
     startTransition(async () => {
-      const result = await updateCandidaturaStatusAction(candidaturaId, novoStatus);
+      const result = await updateCandidaturaStatusAction(
+        candidaturaId,
+        novoStatus
+      );
       if (result.success) {
         toast.success(`Candidatura marcada como ${novoStatus.toLowerCase()}!`);
         router.refresh(); // Recarrega os dados da página para refletir o novo status
@@ -40,7 +46,8 @@ export function ApplicationActionBar({ candidaturaId, statusAtual }: Application
     });
   };
 
-  const isFinalizado = statusAtual === 'APROVADO' || statusAtual === 'REJEITADO';
+  const isFinalizado =
+    statusAtual === 'APROVADO' || statusAtual === 'REJEITADO';
 
   return (
     <div className='p-4 bg-card border rounded-lg shadow-sm space-y-4'>
@@ -59,8 +66,8 @@ export function ApplicationActionBar({ candidaturaId, statusAtual }: Application
             <DialogHeader>
               <DialogTitle>Aprovar Candidato</DialogTitle>
               <DialogDescription>
-                Você tem certeza que deseja aprovar este candidato para a vaga? Esta ação não pode
-                ser desfeita.
+                Você tem certeza que deseja aprovar este candidato para a vaga?
+                Esta ação não pode ser desfeita.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
@@ -92,8 +99,8 @@ export function ApplicationActionBar({ candidaturaId, statusAtual }: Application
             <DialogHeader>
               <DialogTitle>Rejeitar Candidato</DialogTitle>
               <DialogDescription>
-                Você tem certeza que deseja rejeitar este candidato? Esta ação não pode ser
-                desfeita.
+                Você tem certeza que deseja rejeitar este candidato? Esta ação
+                não pode ser desfeita.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>

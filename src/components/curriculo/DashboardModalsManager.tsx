@@ -27,12 +27,19 @@ interface DashboardModalsManagerProps {
   setActiveModal: (modal: ActiveModalType) => void;
 }
 
-export function DashboardModalsManager({ activeModal, setActiveModal }: DashboardModalsManagerProps) {
+export function DashboardModalsManager({
+  activeModal,
+  setActiveModal,
+}: DashboardModalsManagerProps) {
   const closeModal = () => setActiveModal(null);
 
   return (
     <>
-      <CurriculoSecaoModal isOpen={activeModal === 'infoPessoal'} setIsOpen={closeModal} title='Editar Informações Pessoais'>
+      <CurriculoSecaoModal
+        isOpen={activeModal === 'infoPessoal'}
+        setIsOpen={closeModal}
+        title='Editar Informações Pessoais'
+      >
         <InformacoesPessoaisForm setModalOpen={closeModal} />
       </CurriculoSecaoModal>
 
@@ -42,7 +49,9 @@ export function DashboardModalsManager({ activeModal, setActiveModal }: Dashboar
         title='Gerenciar Experiências Profissionais'
         dialogContentClassName='sm:max-w-2xl'
       >
-        {activeModal === 'experiencia' && <ExperienciaHub setModalOpen={closeModal} />}
+        {activeModal === 'experiencia' && (
+          <ExperienciaHub setModalOpen={closeModal} />
+        )}
       </CurriculoSecaoModal>
 
       <CurriculoSecaoModal
@@ -51,7 +60,9 @@ export function DashboardModalsManager({ activeModal, setActiveModal }: Dashboar
         title='Gerenciar Formação Acadêmica'
         dialogContentClassName='sm:max-w-2xl'
       >
-        {activeModal === 'formacao' && <FormacaoHub setModalOpen={closeModal} />}
+        {activeModal === 'formacao' && (
+          <FormacaoHub setModalOpen={closeModal} />
+        )}
       </CurriculoSecaoModal>
 
       <CurriculoSecaoModal
@@ -60,7 +71,9 @@ export function DashboardModalsManager({ activeModal, setActiveModal }: Dashboar
         title='Gerenciar Habilidades'
         dialogContentClassName='sm:max-w-xl'
       >
-        {activeModal === 'habilidades' && <HabilidadeHub setModalOpen={closeModal} />}
+        {activeModal === 'habilidades' && (
+          <HabilidadeHub setModalOpen={closeModal} />
+        )}
       </CurriculoSecaoModal>
 
       <CurriculoSecaoModal
@@ -87,7 +100,9 @@ export function DashboardModalsManager({ activeModal, setActiveModal }: Dashboar
         title='Gerenciar Certificações'
         dialogContentClassName='sm:max-w-xl'
       >
-        {activeModal === 'certificacoes' && <CertificacaoHub setModalOpen={closeModal} />}
+        {activeModal === 'certificacoes' && (
+          <CertificacaoHub setModalOpen={closeModal} />
+        )}
       </CurriculoSecaoModal>
     </>
   );

@@ -19,13 +19,21 @@ interface FetchFreelancerDetalhesResult {
   freelancer?: any;
 }
 
-export async function fetchFreelancersDisponiveis(params: { page?: number; limit?: number } = {}): Promise<FetchFreelancersResult> {
+export async function fetchFreelancersDisponiveis(
+  params: { page?: number; limit?: number } = {}
+): Promise<FetchFreelancersResult> {
   const { page = 1, limit = 9 } = params;
   const skip = (page - 1) * limit;
 
-  const { isAuthorized } = await authorizeUser([RoleUsuario.USER, RoleUsuario.ADMIN]);
+  const { isAuthorized } = await authorizeUser([
+    RoleUsuario.USER,
+    RoleUsuario.ADMIN,
+  ]);
   if (!isAuthorized) {
-    return { success: false, error: 'Acesso negado. Faça login para visualizar freelancers.' };
+    return {
+      success: false,
+      error: 'Acesso negado. Faça login para visualizar freelancers.',
+    };
   }
 
   try {
@@ -62,12 +70,20 @@ export async function fetchFreelancersDisponiveis(params: { page?: number; limit
     return { success: true, freelancers, total };
   } catch (error) {
     console.error('Erro ao listar freelancers disponíveis:', error);
-    return { success: false, error: 'Não foi possível carregar os freelancers no momento.' };
+    return {
+      success: false,
+      error: 'Não foi possível carregar os freelancers no momento.',
+    };
   }
 }
 
-export async function fetchFreelancerDetalhes(freelancerId: string): Promise<FetchFreelancerDetalhesResult> {
-  const { isAuthorized } = await authorizeUser([RoleUsuario.USER, RoleUsuario.ADMIN]);
+export async function fetchFreelancerDetalhes(
+  freelancerId: string
+): Promise<FetchFreelancerDetalhesResult> {
+  const { isAuthorized } = await authorizeUser([
+    RoleUsuario.USER,
+    RoleUsuario.ADMIN,
+  ]);
   if (!isAuthorized) {
     return { success: false, error: 'Acesso negado.' };
   }
@@ -112,7 +128,9 @@ export async function fetchFreelancerDetalhes(freelancerId: string): Promise<Fet
     return { success: true, freelancer };
   } catch (error) {
     console.error('Erro ao buscar detalhes do freelancer:', error);
-    return { success: false, error: 'Não foi possível carregar os detalhes do freelancer.' };
+    return {
+      success: false,
+      error: 'Não foi possível carregar os detalhes do freelancer.',
+    };
   }
 }
-

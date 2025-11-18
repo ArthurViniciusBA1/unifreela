@@ -37,7 +37,8 @@ export function NewCompanyDialog({ onCompanyCreated }: NewCompanyDialogProps) {
         <DialogHeader>
           <DialogTitle>Cadastrar Nova Empresa</DialogTitle>
           <DialogDescription>
-            Preencha os dados abaixo para criar uma nova empresa e seu primeiro usuário recrutador.
+            Preencha os dados abaixo para criar uma nova empresa e seu primeiro
+            usuário recrutador.
           </DialogDescription>
         </DialogHeader>
         <NovaEmpresaForm setDialogOpen={handleSuccess} />

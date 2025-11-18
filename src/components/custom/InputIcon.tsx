@@ -13,7 +13,18 @@ interface InputIconProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const InputIcon = forwardRef<HTMLInputElement, InputIconProps>(
-  ({ type = 'text', placeholder = '', iconLeft, showToggle = false, className, mask, ...rest }, ref) => {
+  (
+    {
+      type = 'text',
+      placeholder = '',
+      iconLeft,
+      showToggle = false,
+      className,
+      mask,
+      ...rest
+    },
+    ref
+  ) => {
     const [showPassword, setShowPassword] = useState(false);
     const inputType = showToggle ? (showPassword ? 'text' : 'password') : type;
     const paddingRight = showToggle ? 'pr-10' : '';
@@ -40,7 +51,13 @@ const InputIcon = forwardRef<HTMLInputElement, InputIconProps>(
             {...rest}
           />
         ) : (
-          <input ref={ref} type={inputType} placeholder={placeholder} className={commonClasses} {...rest} />
+          <input
+            ref={ref}
+            type={inputType}
+            placeholder={placeholder}
+            className={commonClasses}
+            {...rest}
+          />
         )}
 
         {showToggle && (

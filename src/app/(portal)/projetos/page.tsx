@@ -1,7 +1,10 @@
 import { Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
 
-import { fetchAvailableProjetos, fetchProjetosDoCliente } from '@/actions/projetoActions';
+import {
+  fetchAvailableProjetos,
+  fetchProjetosDoCliente,
+} from '@/actions/projetoActions';
 import ProjetosClientLayout from './ProjetosClientLayout';
 import ProjetosClienteLayout from './ProjetosClienteLayout';
 
@@ -12,7 +15,9 @@ interface PaginaProjetosProps {
   }>;
 }
 
-export default async function PaginaProjetos({ searchParams }: PaginaProjetosProps) {
+export default async function PaginaProjetos({
+  searchParams,
+}: PaginaProjetosProps) {
   const params = await searchParams;
   const currentPage = parseInt(params.page || '1');
   const limitPerPage = parseInt(params.limit || '9');

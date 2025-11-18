@@ -10,7 +10,14 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { UserCog, KeyRound, Trash2, AlertTriangle, UserCheck, UserX } from 'lucide-react';
+import {
+  UserCog,
+  KeyRound,
+  Trash2,
+  AlertTriangle,
+  UserCheck,
+  UserX,
+} from 'lucide-react';
 import { Empresa } from '@prisma/client';
 import { toast } from 'sonner';
 
@@ -90,7 +97,10 @@ export function UserActionsModal({
             />
           </TabsContent>
           <TabsContent value='senha' className='py-4'>
-            <SimplePasswordChangeForm usuarioId={user.id} setDialogOpen={onOpenChange} />
+            <SimplePasswordChangeForm
+              usuarioId={user.id}
+              setDialogOpen={onOpenChange}
+            />
           </TabsContent>
           <TabsContent value='inativar' className='py-4 space-y-4'>
             <div className='p-4 bg-destructive/10 border-l-4 border-destructive text-destructive'>

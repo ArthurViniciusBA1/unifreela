@@ -74,11 +74,10 @@ Antes de começar, certifique-se de ter instalado:
     ENCRYPTION_KEY="SUA_CHAVE_DE_64_CARACTERES_HEXADECIMAIS_AQUI"
    ```
 
-    Como gerar as chaves:
+   Como gerar as chaves:
+   - JWT_SECRET: Você pode usar o comando openssl rand -base64 32 no terminal.
 
-    - JWT_SECRET: Você pode usar o comando openssl rand -base64 32 no terminal.
-
-    - ENCRYPTION_KEY: Você pode usar openssl rand -hex 32.
+   - ENCRYPTION_KEY: Você pode usar openssl rand -hex 32.
 
 4. **Execute as migrações do banco de dados**
 
@@ -102,17 +101,17 @@ Antes de começar, certifique-se de ter instalado:
 
 ```md
 uni-vagas/
-├── prisma/              # Esquemas e migrações do banco
-├── public/              # Arquivos estáticos
+├── prisma/ # Esquemas e migrações do banco
+├── public/ # Arquivos estáticos
 ├── src/
-│   ├── app/            # App Router do Next.js
-│   ├── components/     # Componentes reutilizáveis
-│   ├── lib/           # Utilitários e configurações
-│   └── types/         # Definições de tipos TypeScript
-├── .env.example       # Exemplo de variáveis de ambiente
-├── next.config.ts     # Configuração do Next.js
+│ ├── app/ # App Router do Next.js
+│ ├── components/ # Componentes reutilizáveis
+│ ├── lib/ # Utilitários e configurações
+│ └── types/ # Definições de tipos TypeScript
+├── .env.example # Exemplo de variáveis de ambiente
+├── next.config.ts # Configuração do Next.js
 ├── tailwind.config.js # Configuração do Tailwind
-└── tsconfig.json      # Configuração do TypeScript
+└── tsconfig.json # Configuração do TypeScript
 ```
 
 ## 🗄️ Banco de Dados

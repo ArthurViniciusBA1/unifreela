@@ -1,7 +1,10 @@
 import { Users } from 'lucide-react';
 import { RoleUsuario } from '@prisma/client';
 
-import { listarTodosUsuariosAction, listarTodasEmpresasAction } from '@/actions/adminActions';
+import {
+  listarTodosUsuariosAction,
+  listarTodasEmpresasAction,
+} from '@/actions/adminActions';
 import { UserManagementClient } from '@/components/admin/UserManagementClient';
 
 interface AdminUsuariosPageProps {
@@ -13,7 +16,9 @@ interface AdminUsuariosPageProps {
   }>;
 }
 
-export default async function AdminUsuariosPage({ searchParams }: AdminUsuariosPageProps) {
+export default async function AdminUsuariosPage({
+  searchParams,
+}: AdminUsuariosPageProps) {
   const page = Number((await searchParams).page) || 1;
   const query = (await searchParams).query || '';
   const role =
@@ -26,7 +31,12 @@ export default async function AdminUsuariosPage({ searchParams }: AdminUsuariosP
       : (await searchParams).status;
 
   // Busca os dados no servidor antes de renderizar
-  const resultUsuarios = await listarTodosUsuariosAction({ page, query, role, status });
+  const resultUsuarios = await listarTodosUsuariosAction({
+    page,
+    query,
+    role,
+    status,
+  });
   const resultEmpresas = await listarTodasEmpresasAction();
 
   const initialUsuarios = resultUsuarios.success ? resultUsuarios.items : [];

@@ -9,7 +9,11 @@ interface PaginationControlsProps {
   onPageChange: (newPage: number) => void;
 }
 
-export function PaginationControls({ page, totalPages, onPageChange }: PaginationControlsProps) {
+export function PaginationControls({
+  page,
+  totalPages,
+  onPageChange,
+}: PaginationControlsProps) {
   return (
     <div className='flex items-center justify-end space-x-2 py-4'>
       <span className='text-sm text-muted-foreground'>

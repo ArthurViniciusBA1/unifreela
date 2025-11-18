@@ -11,7 +11,11 @@ interface ModeTransitionWrapperProps {
   isOwner: boolean; // Se o usuário logado é o dono do currículo
 }
 
-export function ModeTransitionWrapper({ children, isEditMode, isOwner }: ModeTransitionWrapperProps) {
+export function ModeTransitionWrapper({
+  children,
+  isEditMode,
+  isOwner,
+}: ModeTransitionWrapperProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -21,7 +25,9 @@ export function ModeTransitionWrapper({ children, isEditMode, isOwner }: ModeTra
   const [isAnimatingIn, setIsAnimatingIn] = useState(false); // Transição da próxima página para a atual (retrair)
   const [showOverlay, setShowOverlay] = useState(false); // Controla a visibilidade da camada de overlay
   const [overlayStyle, setOverlayStyle] = useState({}); // Estilo dinâmico para a animação de expansão
-  const [iconToDisplay, setIconToDisplay] = useState<React.ElementType>(isEditMode ? Eye : Pencil); // Ícone para o FAB
+  const [iconToDisplay, setIconToDisplay] = useState<React.ElementType>(
+    isEditMode ? Eye : Pencil
+  ); // Ícone para o FAB
 
   // Efeito para atualizar o ícone do FAB
   useEffect(() => {
@@ -86,17 +92,27 @@ export function ModeTransitionWrapper({ children, isEditMode, isOwner }: ModeTra
     <>
       {/* A camada de overlay que faz a animação de expansão/retração */}
       {showOverlay && (
-        <div className={`fixed inset-0 bg-blue-500 z-[9999] transition-all ease-in-out duration-500`} style={overlayStyle}>
+        <div
+          className={`fixed inset-0 bg-blue-500 z-[9999] transition-all ease-in-out duration-500`}
+          style={overlayStyle}
+        >
           {/* Este div se expandirá */}
           {/* Quando a animação de saída termina, ele se expande completamente */}
           {isAnimatingOut && (
-            <div className='absolute inset-0 bg-blue-500' style={{ transform: 'scale(200)', borderRadius: '0' }} />
+            <div
+              className='absolute inset-0 bg-blue-500'
+              style={{ transform: 'scale(200)', borderRadius: '0' }}
+            />
           )}
           {/* Quando a animação de entrada começa na nova página, ele se retrai */}
           {isAnimatingIn && (
             <div
               className='absolute inset-0 bg-blue-500'
-              style={{ transform: 'scale(0)', borderRadius: '50%', transitionDuration: '500ms' }}
+              style={{
+                transform: 'scale(0)',
+                borderRadius: '50%',
+                transitionDuration: '500ms',
+              }}
             />
           )}
         </div>

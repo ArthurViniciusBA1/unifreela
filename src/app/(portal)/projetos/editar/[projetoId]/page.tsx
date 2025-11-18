@@ -10,7 +10,9 @@ interface EditarProjetoPageProps {
   }>;
 }
 
-export default async function EditarProjetoPage({ params }: EditarProjetoPageProps) {
+export default async function EditarProjetoPage({
+  params,
+}: EditarProjetoPageProps) {
   const { projetoId } = await params;
   const result = await fetchProjetoParaEdicao(projetoId);
 
@@ -34,11 +36,12 @@ export default async function EditarProjetoPage({ params }: EditarProjetoPagePro
         <h1 className='text-3xl md:text-4xl font-bold text-foreground flex items-center gap-3'>
           <BriefcaseBusiness size={32} /> Editar Projeto
         </h1>
-        <p className='text-lg text-muted-foreground mt-1'>Atualize as informações do seu projeto.</p>
+        <p className='text-lg text-muted-foreground mt-1'>
+          Atualize as informações do seu projeto.
+        </p>
       </header>
 
       <ProjetoForm dadosIniciais={result.projeto} />
     </div>
   );
 }
-

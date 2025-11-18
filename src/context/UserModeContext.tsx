@@ -1,6 +1,13 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 export type UserMode = 'FREELANCER' | 'CLIENTE';
 
@@ -13,7 +20,9 @@ interface UserModeContextValue {
 const STORAGE_KEY = 'univagas:user-mode';
 const DEFAULT_MODE: UserMode = 'FREELANCER';
 
-const UserModeContext = createContext<UserModeContextValue | undefined>(undefined);
+const UserModeContext = createContext<UserModeContextValue | undefined>(
+  undefined
+);
 
 export function UserModeProvider({ children }: { children: React.ReactNode }) {
   const [currentMode, setCurrentMode] = useState<UserMode>(DEFAULT_MODE);
@@ -23,7 +32,9 @@ export function UserModeProvider({ children }: { children: React.ReactNode }) {
     if (typeof window === 'undefined') {
       return;
     }
-    const storedMode = window.localStorage.getItem(STORAGE_KEY) as UserMode | null;
+    const storedMode = window.localStorage.getItem(
+      STORAGE_KEY
+    ) as UserMode | null;
     if (storedMode === 'CLIENTE' || storedMode === 'FREELANCER') {
       setCurrentMode(storedMode);
     }
@@ -46,7 +57,11 @@ export function UserModeProvider({ children }: { children: React.ReactNode }) {
     [currentMode, isReady, setMode]
   );
 
-  return <UserModeContext.Provider value={value}>{children}</UserModeContext.Provider>;
+  return (
+    <UserModeContext.Provider value={value}>
+      {children}
+    </UserModeContext.Provider>
+  );
 }
 
 export function useUserMode() {
@@ -56,5 +71,3 @@ export function useUserMode() {
   }
   return context;
 }
-
-

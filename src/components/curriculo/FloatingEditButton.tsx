@@ -13,12 +13,18 @@ interface FloatingEditButtonProps {
   iconComponent: React.ElementType; // <<<<<<<<<< CORREÇÃO AQUI
 }
 
-export function FloatingEditButton({ isEditMode, onButtonClick, iconComponent }: FloatingEditButtonProps) {
+export function FloatingEditButton({
+  isEditMode,
+  onButtonClick,
+  iconComponent,
+}: FloatingEditButtonProps) {
   const [animateButton, setAnimateButton] = useState(false);
 
   // Mude o tipo de currentIcon para React.ElementType
   // O React.ElementType é mais abrangente e aceita funções de componente.
-  const [currentIcon, setCurrentIcon] = useState<React.ElementType>(isEditMode ? Eye : Pencil); // <<<<<<<<<< CORREÇÃO AQUI
+  const [currentIcon, setCurrentIcon] = useState<React.ElementType>(
+    isEditMode ? Eye : Pencil
+  ); // <<<<<<<<<< CORREÇÃO AQUI
 
   useEffect(() => {
     // A lógica de animação de giro do ícone permanece a mesma
@@ -55,7 +61,9 @@ export function FloatingEditButton({ isEditMode, onButtonClick, iconComponent }:
                  focus:ring-2 focus:ring-blue-400 focus:ring-offset-2
                  flex items-center justify-center transition-all duration-300 ease-in-out
                  ${animateButton ? 'animate-button-bounce' : ''}`}
-      aria-label={isEditMode ? 'Sair do modo de edição' : 'Entrar no modo de edição'}
+      aria-label={
+        isEditMode ? 'Sair do modo de edição' : 'Entrar no modo de edição'
+      }
       style={{ width: '3rem', height: '3rem' }}
     >
       {/* O ícone será renderizado normalmente, já que IconComponent é um React.ElementType */}

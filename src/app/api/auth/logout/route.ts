@@ -6,5 +6,8 @@ export async function POST() {
 
   cookieStore.delete('token');
 
-  return NextResponse.json({ message: 'Logout realizado com sucesso' }, { status: 200 });
+  return NextResponse.json(
+    { message: 'Logout realizado com sucesso' },
+    { status: 200 }
+  );
 }

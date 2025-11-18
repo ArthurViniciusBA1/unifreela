@@ -13,9 +13,19 @@ import { FloatingLabelTextarea } from '@/components/custom/FloatingLabelTextarea
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { useCandidato } from '@/context/CandidatoContext';
-import { formacaoAcademicaSchema, tFormacaoAcademica } from '@/schemas/curriculoSchema';
+import {
+  formacaoAcademicaSchema,
+  tFormacaoAcademica,
+} from '@/schemas/curriculoSchema';
 
 interface FormacaoAcademicaFormProps {
   setModalOpen: (isOpen: boolean) => void;
@@ -33,7 +43,10 @@ const defaultFormValues: tFormacaoAcademica = {
   descricao: '',
 };
 
-export function FormacaoAcademicaForm({ setModalOpen, dadosIniciais }: FormacaoAcademicaFormProps) {
+export function FormacaoAcademicaForm({
+  setModalOpen,
+  dadosIniciais,
+}: FormacaoAcademicaFormProps) {
   const { fetchCandidatoData } = useCandidato();
   const form = useForm<tFormacaoAcademica>({
     resolver: zodResolver(formacaoAcademicaSchema),
@@ -49,8 +62,12 @@ export function FormacaoAcademicaForm({ setModalOpen, dadosIniciais }: FormacaoA
         instituicao: dadosIniciais.instituicao,
         curso: dadosIniciais.curso,
         areaEstudo: dadosIniciais.areaEstudo ?? '',
-        dataInicio: new Date(dadosIniciais.dataInicio).toISOString().substring(0, 7),
-        dataFim: dadosIniciais.dataFim ? new Date(dadosIniciais.dataFim).toISOString().substring(0, 7) : '',
+        dataInicio: new Date(dadosIniciais.dataInicio)
+          .toISOString()
+          .substring(0, 7),
+        dataFim: dadosIniciais.dataFim
+          ? new Date(dadosIniciais.dataFim).toISOString().substring(0, 7)
+          : '',
         emCurso: dadosIniciais.emCurso,
         descricao: dadosIniciais.descricao ?? '',
       };
@@ -88,7 +105,12 @@ export function FormacaoAcademicaForm({ setModalOpen, dadosIniciais }: FormacaoA
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Instituição de Ensino' id='instituicao' {...field} value={field.value ?? ''} />
+                <FloatingLabelInput
+                  label='Instituição de Ensino'
+                  id='instituicao'
+                  {...field}
+                  value={field.value ?? ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -100,7 +122,12 @@ export function FormacaoAcademicaForm({ setModalOpen, dadosIniciais }: FormacaoA
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Curso (Ex: Ciência da Computação)' id='curso' {...field} value={field.value ?? ''} />
+                <FloatingLabelInput
+                  label='Curso (Ex: Ciência da Computação)'
+                  id='curso'
+                  {...field}
+                  value={field.value ?? ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -112,7 +139,12 @@ export function FormacaoAcademicaForm({ setModalOpen, dadosIniciais }: FormacaoA
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Área de Estudo (Opcional)' id='areaEstudo' {...field} value={field.value ?? ''} />
+                <FloatingLabelInput
+                  label='Área de Estudo (Opcional)'
+                  id='areaEstudo'
+                  {...field}
+                  value={field.value ?? ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -163,7 +195,11 @@ export function FormacaoAcademicaForm({ setModalOpen, dadosIniciais }: FormacaoA
           render={({ field }) => (
             <FormItem className='flex flex-row items-center space-x-3 space-y-0 p-3 h-10'>
               <FormControl>
-                <Checkbox id='emCurso' checked={field.value} onCheckedChange={field.onChange} />
+                <Checkbox
+                  id='emCurso'
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
               </FormControl>
               <div className='space-y-1 leading-none'>
                 <FormLabel htmlFor='emCurso' className='cursor-pointer'>

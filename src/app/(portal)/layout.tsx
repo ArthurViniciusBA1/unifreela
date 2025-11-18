@@ -33,10 +33,16 @@ export default async function PortalLayout({ children }: PortalLayoutProps) {
   if (token) {
     try {
       const decodedToken = jwt.verify(token, jwtSecret) as TokenPayload;
-      if (decodedToken?.id && (decodedToken.role === RoleUsuario.USER || decodedToken.role === RoleUsuario.ADMIN)) {
+      if (
+        decodedToken?.id &&
+        (decodedToken.role === RoleUsuario.USER ||
+          decodedToken.role === RoleUsuario.ADMIN)
+      ) {
         tokenData = decodedToken;
       } else {
-        console.warn(`PortalLayout: Tentativa de acesso por usuário com role '${decodedToken?.role}'.`);
+        console.warn(
+          `PortalLayout: Tentativa de acesso por usuário com role '${decodedToken?.role}'.`
+        );
       }
     } catch (error) {
       console.warn('PortalLayout: Token inválido ou expirado.', error);
@@ -46,17 +52,22 @@ export default async function PortalLayout({ children }: PortalLayoutProps) {
   if (!tokenData) {
     const headersList = await headers();
     const originalPathname = headersList.get('x-next-pathname') || '/projetos';
-    const errorMessage = encodeURIComponent('Acesso restrito. Por favor, faça login.');
-    redirect(`/entrar?error=${errorMessage}&redirect=${encodeURIComponent(originalPathname)}`);
+    const errorMessage = encodeURIComponent(
+      'Acesso restrito. Por favor, faça login.'
+    );
+    redirect(
+      `/entrar?error=${errorMessage}&redirect=${encodeURIComponent(originalPathname)}`
+    );
   }
 
   return (
     <CandidatoProvider>
       <div className='flex flex-col min-h-screen bg-background'>
         <UnifiedNavbar />
-        <main className='flex-grow container mx-auto px-4 py-6 md:py-8 max-w-screen-xl'>{children}</main>
+        <main className='flex-grow container mx-auto px-4 py-6 md:py-8 max-w-screen-xl'>
+          {children}
+        </main>
       </div>
     </CandidatoProvider>
   );
 }
-

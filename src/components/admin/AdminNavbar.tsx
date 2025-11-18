@@ -39,7 +39,11 @@ export function AdminNavbar() {
               </Button>
             ))}
           </div>
-          <LogoutButton variant='outline' size='sm' className='hover:bg-destructive' />
+          <LogoutButton
+            variant='outline'
+            size='sm'
+            className='hover:bg-destructive'
+          />
         </div>
       </div>
     </nav>

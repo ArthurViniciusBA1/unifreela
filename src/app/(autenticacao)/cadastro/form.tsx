@@ -9,7 +9,13 @@ import { UserPlus } from 'lucide-react';
 
 import { FloatingLabelInput } from '@/components/custom/FloatingLabelInput';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
 import { cadastroSchema, tCadastro } from '@/schemas/usuarioSchema';
 
 export default function RegistroForm() {
@@ -40,14 +46,18 @@ export default function RegistroForm() {
         if (result.error?.form) {
           toast.error(result.error.form);
         } else if (result.error?.email) {
-          form.setError('email', { message: result.error.email._errors.join(', ') });
+          form.setError('email', {
+            message: result.error.email._errors.join(', '),
+          });
         } else {
           toast.error(result.error || 'Falha ao cadastrar. Tente novamente.');
         }
         return;
       }
 
-      toast.success(`Cadastro de ${result.usuario?.nome || 'usuário'} realizado com sucesso! Redirecionando para login...`);
+      toast.success(
+        `Cadastro de ${result.usuario?.nome || 'usuário'} realizado com sucesso! Redirecionando para login...`
+      );
       form.reset();
 
       setTimeout(() => {
@@ -61,7 +71,10 @@ export default function RegistroForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='w-full flex flex-col gap-6'>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='w-full flex flex-col gap-6'
+      >
         <div className='space-y-4'>
           <FormField
             control={form.control}
@@ -69,7 +82,12 @@ export default function RegistroForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput label='Nome completo' id='nome' autoComplete='name' {...field} />
+                  <FloatingLabelInput
+                    label='Nome completo'
+                    id='nome'
+                    autoComplete='name'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -82,7 +100,13 @@ export default function RegistroForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput label='E-mail' id='email' type='email' autoComplete='email' {...field} />
+                  <FloatingLabelInput
+                    label='E-mail'
+                    id='email'
+                    type='email'
+                    autoComplete='email'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -95,7 +119,13 @@ export default function RegistroForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput label='Senha' id='senha' type='password' autoComplete='new-password' {...field} />
+                  <FloatingLabelInput
+                    label='Senha'
+                    id='senha'
+                    type='password'
+                    autoComplete='new-password'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -108,7 +138,13 @@ export default function RegistroForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput label='Confirmar senha' id='confirmarSenha' type='password' autoComplete='new-password' {...field} />
+                  <FloatingLabelInput
+                    label='Confirmar senha'
+                    id='confirmarSenha'
+                    type='password'
+                    autoComplete='new-password'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -116,10 +152,10 @@ export default function RegistroForm() {
           />
         </div>
 
-        <Button 
-          type='submit' 
-          disabled={form.formState.isSubmitting} 
-          variant='default' 
+        <Button
+          type='submit'
+          disabled={form.formState.isSubmitting}
+          variant='default'
           size='lg'
           className='w-full cursor-pointer mt-2'
         >

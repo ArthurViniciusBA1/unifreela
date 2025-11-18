@@ -1,7 +1,13 @@
 'use client';
 
 import { Certificacao } from '@prisma/client';
-import { Link as LinkIcon, Loader2, Pencil, PlusCircle, Trash2 } from 'lucide-react';
+import {
+  Link as LinkIcon,
+  Loader2,
+  Pencil,
+  PlusCircle,
+  Trash2,
+} from 'lucide-react';
 import Link from 'next/link';
 import React, { useState, useTransition } from 'react';
 import { toast } from 'sonner';
@@ -11,9 +17,12 @@ import { Button } from '@/components/ui/button';
 import { useCandidato } from '@/context/CandidatoContext';
 import { CertificacaoForm } from '../forms/CertificacaoForm';
 
-export function CertificacaoHub({}: { setModalOpen: (isOpen: boolean) => void }) {
+export function CertificacaoHub({}: {
+  setModalOpen: (isOpen: boolean) => void;
+}) {
   const { curriculo, fetchCandidatoData } = useCandidato();
-  const [certificacaoParaEditar, setCertificacaoParaEditar] = useState<Certificacao | null>(null);
+  const [certificacaoParaEditar, setCertificacaoParaEditar] =
+    useState<Certificacao | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -28,7 +37,8 @@ export function CertificacaoHub({}: { setModalOpen: (isOpen: boolean) => void })
   };
 
   const handleDelete = (id: string) => {
-    if (!window.confirm('Tem certeza que deseja remover esta certificação?')) return;
+    if (!window.confirm('Tem certeza que deseja remover esta certificação?'))
+      return;
 
     startTransition(() => {
       toast.promise(deleteCertificacaoAction(id), {
@@ -46,7 +56,12 @@ export function CertificacaoHub({}: { setModalOpen: (isOpen: boolean) => void })
   };
 
   if (showForm) {
-    return <CertificacaoForm setModalOpen={handleCloseForm} dadosIniciais={certificacaoParaEditar} />;
+    return (
+      <CertificacaoForm
+        setModalOpen={handleCloseForm}
+        dadosIniciais={certificacaoParaEditar}
+      />
+    );
   }
 
   return (
@@ -60,11 +75,16 @@ export function CertificacaoHub({}: { setModalOpen: (isOpen: boolean) => void })
       <div className='space-y-3 max-h-[50vh] overflow-y-auto pr-2'>
         {curriculo?.certificacoes && curriculo.certificacoes.length > 0 ? (
           curriculo.certificacoes.map((cert) => (
-            <div key={cert.id} className='p-3 rounded-md border bg-background text-sm'>
+            <div
+              key={cert.id}
+              className='p-3 rounded-md border bg-background text-sm'
+            >
               <div className='flex justify-between items-start'>
                 <div>
                   <h3 className='font-bold text-base'>{cert.nome}</h3>
-                  <p className='text-muted-foreground'>{cert.organizacaoEmissora}</p>
+                  <p className='text-muted-foreground'>
+                    {cert.organizacaoEmissora}
+                  </p>
                   <p className='text-xs text-muted-foreground mt-1'>
                     Emitido em:{' '}
                     {new Date(cert.dataEmissao).toLocaleDateString('pt-BR', {
@@ -75,7 +95,12 @@ export function CertificacaoHub({}: { setModalOpen: (isOpen: boolean) => void })
                   </p>
                 </div>
                 <div className='flex gap-1'>
-                  <Button variant='ghost' size='icon' onClick={() => handleOpenForm(cert)} disabled={isPending}>
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    onClick={() => handleOpenForm(cert)}
+                    disabled={isPending}
+                  >
                     <Pencil size={16} />
                   </Button>
                   <Button
@@ -85,13 +110,25 @@ export function CertificacaoHub({}: { setModalOpen: (isOpen: boolean) => void })
                     onClick={() => handleDelete(cert.id)}
                     disabled={isPending}
                   >
-                    {isPending ? <Loader2 size={16} className='animate-spin' /> : <Trash2 size={16} />}
+                    {isPending ? (
+                      <Loader2 size={16} className='animate-spin' />
+                    ) : (
+                      <Trash2 size={16} />
+                    )}
                   </Button>
                 </div>
               </div>
               {cert.credencialUrl && (
-                <Button variant='link' asChild className='p-0 h-auto text-xs mt-2'>
-                  <Link href={cert.credencialUrl} target='_blank' rel='noopener noreferrer'>
+                <Button
+                  variant='link'
+                  asChild
+                  className='p-0 h-auto text-xs mt-2'
+                >
+                  <Link
+                    href={cert.credencialUrl}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
                     <LinkIcon size={14} className='mr-1.5' /> Ver Credencial
                   </Link>
                 </Button>
@@ -99,7 +136,9 @@ export function CertificacaoHub({}: { setModalOpen: (isOpen: boolean) => void })
             </div>
           ))
         ) : (
-          <p className='text-muted-foreground text-center py-8'>Nenhuma certificação adicionada.</p>
+          <p className='text-muted-foreground text-center py-8'>
+            Nenhuma certificação adicionada.
+          </p>
         )}
       </div>
     </div>

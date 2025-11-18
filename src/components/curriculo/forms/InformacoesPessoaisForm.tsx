@@ -27,7 +27,9 @@ interface InformacoesPessoaisFormProps {
   setModalOpen: (isOpen: boolean) => void;
 }
 
-export function InformacoesPessoaisForm({ setModalOpen }: InformacoesPessoaisFormProps) {
+export function InformacoesPessoaisForm({
+  setModalOpen,
+}: InformacoesPessoaisFormProps) {
   const { curriculo, updateInformacoesPessoais } = useCandidato();
 
   const form = useForm<tCurriculoInformacoesPessoais>({
@@ -58,7 +60,10 @@ export function InformacoesPessoaisForm({ setModalOpen }: InformacoesPessoaisFor
       await updateInformacoesPessoais(data);
       setModalOpen(false);
     } catch (error) {
-      console.error('Falha ao submeter o formulário de informações pessoais:', error);
+      console.error(
+        'Falha ao submeter o formulário de informações pessoais:',
+        error
+      );
     }
   };
 
@@ -71,7 +76,11 @@ export function InformacoesPessoaisForm({ setModalOpen }: InformacoesPessoaisFor
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Título Profissional' id='tituloProfissionalModal' {...field} />
+                <FloatingLabelInput
+                  label='Título Profissional'
+                  id='tituloProfissionalModal'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

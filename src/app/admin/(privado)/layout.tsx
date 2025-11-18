@@ -8,11 +8,15 @@ interface AdminPrivadoLayoutProps {
   children: React.ReactNode;
 }
 
-export default async function AdminPrivadoLayout({ children }: AdminPrivadoLayoutProps) {
+export default async function AdminPrivadoLayout({
+  children,
+}: AdminPrivadoLayoutProps) {
   const { isAuthorized } = await authorizeUser([RoleUsuario.ADMIN]);
 
   if (!isAuthorized) {
-    const errorMessage = encodeURIComponent('Acesso restrito. Faça login como administrador.');
+    const errorMessage = encodeURIComponent(
+      'Acesso restrito. Faça login como administrador.'
+    );
     redirect(`/admin/login?error=${errorMessage}`);
   }
 

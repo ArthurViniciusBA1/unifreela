@@ -73,8 +73,16 @@ export function BotaoCandidatura({ projetoId }: BotaoPropostaProps) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button onClick={handleApplyClick} disabled={isLoading} className='w-full sm:w-auto'>
-          {isLoading ? <Loader2 className='mr-2 h-4 w-4 animate-spin' /> : 'Enviar proposta'}
+        <Button
+          onClick={handleApplyClick}
+          disabled={isLoading}
+          className='w-full sm:w-auto'
+        >
+          {isLoading ? (
+            <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+          ) : (
+            'Enviar proposta'
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -116,7 +124,11 @@ export function BotaoCandidatura({ projetoId }: BotaoPropostaProps) {
             <Link href='/perfil'>Editar currículo</Link>
           </Button>
           <Button type='button' onClick={enviarProposta} disabled={isLoading}>
-            {isLoading ? <Loader2 className='mr-2 h-4 w-4 animate-spin' /> : 'Enviar'}
+            {isLoading ? (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            ) : (
+              'Enviar'
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

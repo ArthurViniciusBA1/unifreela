@@ -43,10 +43,18 @@ export async function criarEmpresaComRecrutadorAction(
     return { success: false, error: 'Dados do formulário inválidos.' };
   }
 
-  const { nomeEmpresa, cnpj, nomeRecrutador, emailRecrutador, senhaRecrutador } = validation.data;
+  const {
+    nomeEmpresa,
+    cnpj,
+    nomeRecrutador,
+    emailRecrutador,
+    senhaRecrutador,
+  } = validation.data;
 
   try {
-    const emailEmUso = await prisma.usuario.findUnique({ where: { email: emailRecrutador } });
+    const emailEmUso = await prisma.usuario.findUnique({
+      where: { email: emailRecrutador },
+    });
     if (emailEmUso) {
       return { success: false, error: 'Este e-mail já está em uso.' };
     }
@@ -81,7 +89,9 @@ export async function criarEmpresaComRecrutadorAction(
   }
 }
 
-export async function procurarUsuariosAction(termoBusca: string): Promise<AdminActionResult> {
+export async function procurarUsuariosAction(
+  termoBusca: string
+): Promise<AdminActionResult> {
   const { isAuthorized, role } = await authorizeUser([RoleUsuario.ADMIN]);
   if (!isAuthorized || role !== RoleUsuario.ADMIN) {
     return { success: false, error: 'Acesso negado.' };
@@ -125,7 +135,10 @@ export async function adminMudarSenhaUsuarioAction(
   }
 
   if (!usuarioId || !novaSenha || novaSenha.length < 6) {
-    return { success: false, error: 'Dados inválidos para alteração de senha.' };
+    return {
+      success: false,
+      error: 'Dados inválidos para alteração de senha.',
+    };
   }
 
   try {
@@ -141,8 +154,12 @@ export async function adminMudarSenhaUsuarioAction(
   }
 }
 
-export async function adminEditarUsuarioAction(data: tEditarUsuario): Promise<AdminActionResult> {
-  const { isAuthorized, role: adminRole } = await authorizeUser([RoleUsuario.ADMIN]);
+export async function adminEditarUsuarioAction(
+  data: tEditarUsuario
+): Promise<AdminActionResult> {
+  const { isAuthorized, role: adminRole } = await authorizeUser([
+    RoleUsuario.ADMIN,
+  ]);
   if (!isAuthorized || adminRole !== RoleUsuario.ADMIN) {
     return { success: false, error: 'Acesso negado.' };
   }
@@ -238,9 +255,16 @@ export async function listarTodasEmpresasAction(
   }
 }
 export async function listarTodosUsuariosAction(
-  params: { page: number; query?: string; role?: RoleUsuario; status?: string } = { page: 1 }
+  params: {
+    page: number;
+    query?: string;
+    role?: RoleUsuario;
+    status?: string;
+  } = { page: 1 }
 ): Promise<ListarResult> {
-  const { isAuthorized, role: adminRole } = await authorizeUser([RoleUsuario.ADMIN]);
+  const { isAuthorized, role: adminRole } = await authorizeUser([
+    RoleUsuario.ADMIN,
+  ]);
   if (!isAuthorized || adminRole !== RoleUsuario.ADMIN) {
     return { success: false, error: 'Acesso negado.' };
   }
@@ -292,14 +316,23 @@ export async function listarTodosUsuariosAction(
   }
 }
 
-export async function adminToggleUsuarioAtivoAction(usuarioId: string): Promise<AdminActionResult> {
-  const { isAuthorized, role, userId: adminId } = await authorizeUser([RoleUsuario.ADMIN]);
+export async function adminToggleUsuarioAtivoAction(
+  usuarioId: string
+): Promise<AdminActionResult> {
+  const {
+    isAuthorized,
+    role,
+    userId: adminId,
+  } = await authorizeUser([RoleUsuario.ADMIN]);
   if (!isAuthorized || role !== RoleUsuario.ADMIN) {
     return { success: false, error: 'Acesso negado.' };
   }
 
   if (usuarioId === adminId) {
-    return { success: false, error: 'Você não pode inativar sua própria conta.' };
+    return {
+      success: false,
+      error: 'Você não pode inativar sua própria conta.',
+    };
   }
 
   try {
@@ -326,7 +359,9 @@ export async function adminToggleUsuarioAtivoAction(usuarioId: string): Promise<
   }
 }
 
-export async function adminEditarEmpresaAction(data: tEmpresaForm): Promise<AdminActionResult> {
+export async function adminEditarEmpresaAction(
+  data: tEmpresaForm
+): Promise<AdminActionResult> {
   const { isAuthorized, role } = await authorizeUser([RoleUsuario.ADMIN]);
   if (!isAuthorized || role !== RoleUsuario.ADMIN) {
     return { success: false, error: 'Acesso negado.' };

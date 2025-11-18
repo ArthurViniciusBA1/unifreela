@@ -2,7 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Building2, Layers3, PenLine, Send, Sparkles, Users, User } from 'lucide-react';
+import {
+  Building2,
+  Layers3,
+  PenLine,
+  Send,
+  Sparkles,
+  Users,
+  User,
+} from 'lucide-react';
 
 import { LogoutButton } from '@/components/auth/LogoutButton';
 import { Button } from '@/components/ui/button';
@@ -34,8 +42,12 @@ export function UnifiedNavbar() {
         <div className='flex items-center gap-3'>
           <Building2 size={28} className='text-primary' />
           <div>
-            <p className='text-sm uppercase text-muted-foreground tracking-widest'>UniFreela</p>
-            <p className='text-lg font-semibold text-foreground'>Portal Unificado</p>
+            <p className='text-sm uppercase text-muted-foreground tracking-widest'>
+              UniFreela
+            </p>
+            <p className='text-lg font-semibold text-foreground'>
+              Portal Unificado
+            </p>
           </div>
         </div>
 
@@ -45,8 +57,17 @@ export function UnifiedNavbar() {
             {navLinks.map((link) => {
               const isActive = pathname.startsWith(link.href);
               return (
-                <Button key={link.href} asChild variant={isActive ? 'secondary' : 'ghost'} size='sm' className='px-3'>
-                  <Link href={link.href} className={cn('flex items-center gap-2')}>
+                <Button
+                  key={link.href}
+                  asChild
+                  variant={isActive ? 'secondary' : 'ghost'}
+                  size='sm'
+                  className='px-3'
+                >
+                  <Link
+                    href={link.href}
+                    className={cn('flex items-center gap-2')}
+                  >
                     <link.icon size={16} />
                     <span className='hidden sm:inline'>{link.label}</span>
                   </Link>
@@ -54,16 +75,25 @@ export function UnifiedNavbar() {
               );
             })}
             <Button asChild variant='ghost' size='sm' className='px-3'>
-              <Link href='/perfil' className={cn('flex items-center gap-2', pathname === '/perfil' && 'text-primary')}>
+              <Link
+                href='/perfil'
+                className={cn(
+                  'flex items-center gap-2',
+                  pathname === '/perfil' && 'text-primary'
+                )}
+              >
                 <User size={16} />
                 <span className='hidden sm:inline'>Perfil</span>
               </Link>
             </Button>
           </div>
-          <LogoutButton variant='outline' size='sm' className='hover:bg-destructive hover:text-destructive-foreground' />
+          <LogoutButton
+            variant='outline'
+            size='sm'
+            className='hover:bg-destructive hover:text-destructive-foreground'
+          />
         </div>
       </div>
     </nav>
   );
 }
-

@@ -1,5 +1,13 @@
 import { notFound } from 'next/navigation';
-import { ArrowLeft, FileWarning, Github, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
+import {
+  ArrowLeft,
+  FileWarning,
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  Phone,
+} from 'lucide-react';
 import Link from 'next/link';
 
 import { fetchFreelancerDetalhes } from '@/actions/freelancerActions';
@@ -19,7 +27,9 @@ export default async function PaginaDetalheFreelancer({
       <div className='flex flex-col items-center justify-center min-h-[calc(100vh-200px)] text-center p-4'>
         <FileWarning size={64} className='text-destructive mb-4' />
         <h1 className='text-3xl font-bold mb-2'>Erro ao Carregar Freelancer</h1>
-        <p className='text-muted-foreground'>{result.error || 'O freelancer não foi encontrado.'}</p>
+        <p className='text-muted-foreground'>
+          {result.error || 'O freelancer não foi encontrado.'}
+        </p>
         <Button asChild className='mt-4'>
           <Link href='/freelancers'>Voltar para Freelancers</Link>
         </Button>
@@ -43,8 +53,12 @@ export default async function PaginaDetalheFreelancer({
 
       <div className='bg-card border rounded-lg p-6 mb-6'>
         <div className='mb-6'>
-          <h1 className='text-2xl font-bold text-primary mb-2'>{usuario.nome}</h1>
-          <p className='text-lg text-muted-foreground'>{freelancer.tituloProfissional}</p>
+          <h1 className='text-2xl font-bold text-primary mb-2'>
+            {usuario.nome}
+          </h1>
+          <p className='text-lg text-muted-foreground'>
+            {freelancer.tituloProfissional}
+          </p>
           <div className='text-sm text-gray-600 flex flex-wrap items-center gap-x-4 gap-y-1 mt-4'>
             {usuario.email && (
               <span className='flex items-center gap-2'>
@@ -64,18 +78,32 @@ export default async function PaginaDetalheFreelancer({
           </div>
           <div className='flex items-center gap-4 mt-3'>
             {freelancer.linkedinUrl && (
-              <Link href={freelancer.linkedinUrl} target='_blank' rel='noopener noreferrer'>
+              <Link
+                href={freelancer.linkedinUrl}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
                 <Linkedin className='text-blue-700' size={20} />
               </Link>
             )}
             {freelancer.githubUrl && (
-              <Link href={freelancer.githubUrl} target='_blank' rel='noopener noreferrer'>
+              <Link
+                href={freelancer.githubUrl}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
                 <Github className='text-gray-800' size={20} />
               </Link>
             )}
             {freelancer.portfolioUrl && (
-              <Link href={freelancer.portfolioUrl} target='_blank' rel='noopener noreferrer'>
-                <span className='text-sm text-primary hover:underline'>Portfolio</span>
+              <Link
+                href={freelancer.portfolioUrl}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <span className='text-sm text-primary hover:underline'>
+                  Portfolio
+                </span>
               </Link>
             )}
           </div>
@@ -84,7 +112,9 @@ export default async function PaginaDetalheFreelancer({
         {freelancer.resumo && (
           <div className='mb-6'>
             <h2 className='text-lg font-semibold mb-2'>Resumo Profissional</h2>
-            <p className='text-gray-700 whitespace-pre-line leading-relaxed'>{freelancer.resumo}</p>
+            <p className='text-gray-700 whitespace-pre-line leading-relaxed'>
+              {freelancer.resumo}
+            </p>
           </div>
         )}
 
@@ -92,7 +122,8 @@ export default async function PaginaDetalheFreelancer({
           <div className='mb-6'>
             <p className='text-sm text-muted-foreground'>Valor por hora</p>
             <p className='text-lg font-semibold'>
-              R$ {Number(freelancer.valorHora).toLocaleString('pt-BR', {
+              R${' '}
+              {Number(freelancer.valorHora).toLocaleString('pt-BR', {
                 minimumFractionDigits: 2,
               })}
             </p>
@@ -104,4 +135,3 @@ export default async function PaginaDetalheFreelancer({
     </div>
   );
 }
-

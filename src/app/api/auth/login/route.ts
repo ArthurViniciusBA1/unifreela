@@ -20,7 +20,15 @@ export async function POST(request: Request) {
     const result = loginSchema.safeParse(body);
 
     if (!result.success) {
-      return NextResponse.json({ error: { form: 'Dados de login inválidos.', details: result.error.format() } }, { status: 400 });
+      return NextResponse.json(
+        {
+          error: {
+            form: 'Dados de login inválidos.',
+            details: result.error.format(),
+          },
+        },
+        { status: 400 }
+      );
     }
 
     const { email, senha } = result.data as tLogin;
@@ -34,12 +42,18 @@ export async function POST(request: Request) {
     });
 
     if (!usuario) {
-      return NextResponse.json({ error: { form: 'E-mail ou senha inválidos.' } }, { status: 401 });
+      return NextResponse.json(
+        { error: { form: 'E-mail ou senha inválidos.' } },
+        { status: 401 }
+      );
     }
 
     const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
     if (!senhaCorreta) {
-      return NextResponse.json({ error: { form: 'E-mail ou senha inválidos.' } }, { status: 401 });
+      return NextResponse.json(
+        { error: { form: 'E-mail ou senha inválidos.' } },
+        { status: 401 }
+      );
     }
 
     const tokenPayload: TokenPayload = {
@@ -73,6 +87,9 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error('Erro no endpoint de login:', error);
-    return NextResponse.json({ error: 'Erro interno no servidor ao processar o login.' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Erro interno no servidor ao processar o login.' },
+      { status: 500 }
+    );
   }
 }

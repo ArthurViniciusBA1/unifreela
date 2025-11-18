@@ -43,15 +43,18 @@ export function UserManagementClient({
     const statusParam = status === 'TODOS' ? undefined : status;
 
     setIsLoading(true);
-    listarTodosUsuariosAction({ page, query, role: roleParam, status: statusParam }).then(
-      (result) => {
-        if (result.success) {
-          setUsuarios(result.items || []);
-          setTotal(result.total || 0);
-        }
-        setIsLoading(false);
+    listarTodosUsuariosAction({
+      page,
+      query,
+      role: roleParam,
+      status: statusParam,
+    }).then((result) => {
+      if (result.success) {
+        setUsuarios(result.items || []);
+        setTotal(result.total || 0);
       }
-    );
+      setIsLoading(false);
+    });
   };
 
   const debouncedSearch = useDebouncedCallback((term: string) => {

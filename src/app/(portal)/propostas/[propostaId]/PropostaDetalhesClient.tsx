@@ -15,34 +15,51 @@ interface PropostaDetalhesClientProps {
   userId?: string;
 }
 
-export function PropostaDetalhesClient({ proposta, userId }: PropostaDetalhesClientProps) {
+export function PropostaDetalhesClient({
+  proposta,
+  userId,
+}: PropostaDetalhesClientProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const { currentMode } = useUserMode();
 
   const handleStatusChange = (newStatus: StatusProposta) => {
-    const actionLabel = newStatus === StatusProposta.ACEITA ? 'Aceitando' : 'Recusando';
+    const actionLabel =
+      newStatus === StatusProposta.ACEITA ? 'Aceitando' : 'Recusando';
     const toastId = toast.loading(`${actionLabel} proposta...`);
 
     startTransition(async () => {
-      const result = await atualizarStatusPropostaAction(proposta.id, newStatus);
+      const result = await atualizarStatusPropostaAction(
+        proposta.id,
+        newStatus
+      );
 
       if (result.success) {
-        toast.success(`Proposta ${newStatus === StatusProposta.ACEITA ? 'aceita' : 'recusada'} com sucesso!`, {
-          id: toastId,
-        });
+        toast.success(
+          `Proposta ${newStatus === StatusProposta.ACEITA ? 'aceita' : 'recusada'} com sucesso!`,
+          {
+            id: toastId,
+          }
+        );
         router.refresh();
       } else {
-        toast.error(result.error || 'Falha ao atualizar status.', { id: toastId });
+        toast.error(result.error || 'Falha ao atualizar status.', {
+          id: toastId,
+        });
       }
     });
   };
 
-  const canAccept = proposta.status === StatusProposta.ENVIADA || proposta.status === StatusProposta.EM_NEGOCIACAO;
-  const canReject = proposta.status === StatusProposta.ENVIADA || proposta.status === StatusProposta.EM_NEGOCIACAO;
+  const canAccept =
+    proposta.status === StatusProposta.ENVIADA ||
+    proposta.status === StatusProposta.EM_NEGOCIACAO;
+  const canReject =
+    proposta.status === StatusProposta.ENVIADA ||
+    proposta.status === StatusProposta.EM_NEGOCIACAO;
 
   // Verificar se o usuário é o dono do projeto (cliente)
-  const isCliente = currentMode === 'CLIENTE' && proposta.projeto.criadoPorId === userId;
+  const isCliente =
+    currentMode === 'CLIENTE' && proposta.projeto.criadoPorId === userId;
 
   return (
     <div className='space-y-6'>
@@ -79,4 +96,3 @@ export function PropostaDetalhesClient({ proposta, userId }: PropostaDetalhesCli
     </div>
   );
 }
-

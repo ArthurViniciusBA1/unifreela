@@ -30,7 +30,9 @@ export default function AdminDashboardPage() {
     <div className='container mx-auto py-8'>
       <header className='mb-10'>
         <h1 className='text-4xl font-bold'>Painel Administrativo</h1>
-        <p className='text-lg text-muted-foreground'>Gerencie a plataforma, empresas e usuários.</p>
+        <p className='text-lg text-muted-foreground'>
+          Gerencie a plataforma, empresas e usuários.
+        </p>
       </header>
 
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
@@ -42,7 +44,9 @@ export default function AdminDashboardPage() {
             {isLoading ? (
               <Skeleton className='h-10 w-20' />
             ) : (
-              <p className='text-4xl font-extrabold'>{stats?.totalEmpresas ?? 0}</p>
+              <p className='text-4xl font-extrabold'>
+                {stats?.totalEmpresas ?? 0}
+              </p>
             )}
             <p className='text-muted-foreground'>Empresas cadastradas</p>
           </div>
@@ -59,7 +63,9 @@ export default function AdminDashboardPage() {
             {isLoading ? (
               <Skeleton className='h-10 w-20' />
             ) : (
-              <p className='text-4xl font-extrabold'>{stats?.totalUsuarios ?? 0}</p>
+              <p className='text-4xl font-extrabold'>
+                {stats?.totalUsuarios ?? 0}
+              </p>
             )}
             <p className='text-muted-foreground'>Usuários na plataforma</p>
           </div>

@@ -11,12 +11,17 @@ interface PaginaFreelancersProps {
   }>;
 }
 
-export default async function PaginaFreelancers({ searchParams }: PaginaFreelancersProps) {
+export default async function PaginaFreelancers({
+  searchParams,
+}: PaginaFreelancersProps) {
   const params = await searchParams;
   const currentPage = parseInt(params.page || '1');
   const limitPerPage = parseInt(params.limit || '9');
 
-  const result = await fetchFreelancersDisponiveis({ page: currentPage, limit: limitPerPage });
+  const result = await fetchFreelancersDisponiveis({
+    page: currentPage,
+    limit: limitPerPage,
+  });
 
   if (!result.success) {
     return (
@@ -45,4 +50,3 @@ export default async function PaginaFreelancers({ searchParams }: PaginaFreelanc
     </Suspense>
   );
 }
-

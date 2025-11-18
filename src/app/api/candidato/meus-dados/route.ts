@@ -15,16 +15,29 @@ export async function GET() {
   const jwtSecret = process.env.JWT_SECRET;
 
   if (!jwtSecret) {
-    return NextResponse.json({ error: 'Configuração do servidor incompleta.' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Configuração do servidor incompleta.' },
+      { status: 500 }
+    );
   }
   if (!token) {
-    return NextResponse.json({ error: 'Usuário não autenticado.' }, { status: 401 });
+    return NextResponse.json(
+      { error: 'Usuário não autenticado.' },
+      { status: 401 }
+    );
   }
 
   try {
     const decodedToken = jwt.verify(token, jwtSecret) as TokenPayload;
-    if (!decodedToken?.id || (decodedToken.role !== RoleUsuario.USER && decodedToken.role !== RoleUsuario.ADMIN)) {
-      return NextResponse.json({ error: 'Acesso não autorizado.' }, { status: 403 });
+    if (
+      !decodedToken?.id ||
+      (decodedToken.role !== RoleUsuario.USER &&
+        decodedToken.role !== RoleUsuario.ADMIN)
+    ) {
+      return NextResponse.json(
+        { error: 'Acesso não autorizado.' },
+        { status: 403 }
+      );
     }
 
     const usuario = await prisma.usuario.findUnique({
@@ -38,7 +51,10 @@ export async function GET() {
     });
 
     if (!usuario) {
-      return NextResponse.json({ error: 'Usuário não encontrado.' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Usuário não encontrado.' },
+        { status: 404 }
+      );
     }
 
     let curriculo;
@@ -58,7 +74,10 @@ export async function GET() {
       });
     } catch (includeError) {
       // Se houver erro com projetosPortfolio, tenta sem ele
-      console.warn('Erro ao incluir projetosPortfolio, tentando sem ele:', includeError);
+      console.warn(
+        'Erro ao incluir projetosPortfolio, tentando sem ele:',
+        includeError
+      );
       curriculo = await prisma.curriculo.findUnique({
         where: { usuarioId: usuario.id },
         include: {
@@ -76,7 +95,9 @@ export async function GET() {
     const serializedCurriculo = curriculo
       ? {
           ...curriculo,
-          valorHora: curriculo.valorHora ? curriculo.valorHora.toString() : null,
+          valorHora: curriculo.valorHora
+            ? curriculo.valorHora.toString()
+            : null,
         }
       : null;
 
@@ -86,7 +107,10 @@ export async function GET() {
     if (error instanceof jwt.JsonWebTokenError) {
       return NextResponse.json({ error: 'Token inválido.' }, { status: 401 });
     }
-    const errorMessage = error instanceof Error ? error.message : 'Erro ao buscar dados do candidato.';
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : 'Erro ao buscar dados do candidato.';
     console.error('Error details:', errorMessage);
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }

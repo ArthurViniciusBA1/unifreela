@@ -32,8 +32,12 @@ export function EmpresaNavbar() {
         <div className='flex items-center gap-3'>
           <Building2 size={28} className='text-primary' />
           <div>
-            <p className='text-sm uppercase text-muted-foreground tracking-widest'>UniFreela</p>
-            <p className='text-lg font-semibold text-foreground'>Portal Unificado</p>
+            <p className='text-sm uppercase text-muted-foreground tracking-widest'>
+              UniFreela
+            </p>
+            <p className='text-lg font-semibold text-foreground'>
+              Portal Unificado
+            </p>
           </div>
         </div>
 
@@ -43,8 +47,17 @@ export function EmpresaNavbar() {
             {navLinks.map((link) => {
               const isActive = pathname.startsWith(link.href);
               return (
-                <Button key={link.href} asChild variant={isActive ? 'secondary' : 'ghost'} size='sm' className='px-3'>
-                  <Link href={link.href} className={cn('flex items-center gap-2')}>
+                <Button
+                  key={link.href}
+                  asChild
+                  variant={isActive ? 'secondary' : 'ghost'}
+                  size='sm'
+                  className='px-3'
+                >
+                  <Link
+                    href={link.href}
+                    className={cn('flex items-center gap-2')}
+                  >
                     <link.icon size={16} />
                     <span className='hidden sm:inline'>{link.label}</span>
                   </Link>
@@ -52,7 +65,11 @@ export function EmpresaNavbar() {
               );
             })}
           </div>
-          <LogoutButton variant='outline' size='sm' className='hover:bg-destructive hover:text-destructive-foreground' />
+          <LogoutButton
+            variant='outline'
+            size='sm'
+            className='hover:bg-destructive hover:text-destructive-foreground'
+          />
         </div>
       </div>
     </nav>

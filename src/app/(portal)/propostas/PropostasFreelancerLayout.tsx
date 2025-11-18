@@ -1,13 +1,22 @@
 'use client';
 
-import { CheckCircle2, FileText, Loader2, MessageCircle, XCircle } from 'lucide-react';
+import {
+  CheckCircle2,
+  FileText,
+  Loader2,
+  MessageCircle,
+  XCircle,
+} from 'lucide-react';
 import Link from 'next/link';
 import { JSX, useState, useEffect, useTransition, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { StatusProposta } from '@prisma/client';
 
-import { fetchUserPropostas, cancelarPropostaAction } from '@/actions/propostaActions';
+import {
+  fetchUserPropostas,
+  cancelarPropostaAction,
+} from '@/actions/propostaActions';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatarData } from '@/lib/formatters';
@@ -39,14 +48,20 @@ const statusOptions: { value: 'TODOS' | StatusProposta; label: string }[] = [
 
 const getStatusBadgeVariant = (
   status: StatusProposta
-): { variant: 'default' | 'secondary' | 'destructive' | 'outline'; icon: JSX.Element } => {
+): {
+  variant: 'default' | 'secondary' | 'destructive' | 'outline';
+  icon: JSX.Element;
+} => {
   switch (status) {
     case StatusProposta.ENVIADA:
       return { variant: 'secondary', icon: <FileText size={14} /> };
     case StatusProposta.EM_NEGOCIACAO:
       return { variant: 'default', icon: <MessageCircle size={14} /> };
     case StatusProposta.ACEITA:
-      return { variant: 'outline', icon: <CheckCircle2 size={14} className='text-green-600' /> };
+      return {
+        variant: 'outline',
+        icon: <CheckCircle2 size={14} className='text-green-600' />,
+      };
     case StatusProposta.RECUSADA:
       return { variant: 'destructive', icon: <XCircle size={14} /> };
     default:
@@ -70,7 +85,8 @@ export default function PropostasFreelancerLayout() {
     setIsLoading(true);
     setError(null);
 
-    const statusFiltro = status === 'TODOS' ? undefined : (status as StatusProposta);
+    const statusFiltro =
+      status === 'TODOS' ? undefined : (status as StatusProposta);
     const result = await fetchUserPropostas(statusFiltro);
     if (result.success) {
       setPropostas(result.propostas || []);
@@ -110,7 +126,9 @@ export default function PropostasFreelancerLayout() {
       const result = await cancelarPropostaAction(propostaId);
       if (result.success) {
         toast.success('Proposta cancelada com sucesso.');
-        setPropostas((prev) => prev?.filter((c) => c.id !== propostaId) || null);
+        setPropostas(
+          (prev) => prev?.filter((c) => c.id !== propostaId) || null
+        );
       } else {
         toast.error(result.error || 'Não foi possível cancelar a proposta.');
       }
@@ -163,9 +181,10 @@ export default function PropostasFreelancerLayout() {
         {propostas && propostas.length > 0 ? (
           propostas.map((proposta: any) => {
             const statusInfo = getStatusBadgeVariant(proposta.status);
-            const canBeCancelled = [StatusProposta.ENVIADA, StatusProposta.EM_NEGOCIACAO].includes(
-              proposta.status
-            );
+            const canBeCancelled = [
+              StatusProposta.ENVIADA,
+              StatusProposta.EM_NEGOCIACAO,
+            ].includes(proposta.status);
 
             return (
               <div
@@ -174,17 +193,22 @@ export default function PropostasFreelancerLayout() {
               >
                 <div className='flex items-center justify-between mb-4'>
                   <div className='flex-grow'>
-                    <h2 className='text-lg font-bold text-primary'>{proposta.projeto.titulo}</h2>
+                    <h2 className='text-lg font-bold text-primary'>
+                      {proposta.projeto.titulo}
+                    </h2>
                     <p className='text-muted-foreground text-xs'>
                       Status do projeto:{' '}
-                      <span className='capitalize'>{proposta.projeto.status.toLowerCase()}</span>
+                      <span className='capitalize'>
+                        {proposta.projeto.status.toLowerCase()}
+                      </span>
                     </p>
                   </div>
                 </div>
 
                 <div className='text-sm text-gray-600 mb-4 space-y-1'>
                   <p>
-                    <strong>Enviada em:</strong> {formatarData(proposta.createdAt)}
+                    <strong>Enviada em:</strong>{' '}
+                    {formatarData(proposta.createdAt)}
                   </p>
                   <p>
                     <strong>Valor proposto:</strong> R${' '}
@@ -193,7 +217,8 @@ export default function PropostasFreelancerLayout() {
                     })}
                   </p>
                   <p>
-                    <strong>Prazo estimado:</strong> {proposta.prazoEstimadoDias} dia(s)
+                    <strong>Prazo estimado:</strong>{' '}
+                    {proposta.prazoEstimadoDias} dia(s)
                   </p>
                 </div>
 
@@ -209,7 +234,9 @@ export default function PropostasFreelancerLayout() {
 
                 <div className='mt-auto flex justify-between items-center text-xs text-muted-foreground pt-4 border-t border-border gap-2'>
                   <Button asChild size='sm' variant='outline'>
-                    <Link href={`/projetos/${proposta.projeto.id}`}>Ver Projeto</Link>
+                    <Link href={`/projetos/${proposta.projeto.id}`}>
+                      Ver Projeto
+                    </Link>
                   </Button>
                   <Button asChild size='sm' variant='outline'>
                     <Link href={`/propostas/${proposta.id}`}>Ver Detalhes</Link>
@@ -229,9 +256,9 @@ export default function PropostasFreelancerLayout() {
                       <DialogHeader>
                         <DialogTitle>Cancelar Proposta</DialogTitle>
                         <DialogDescription>
-                          Você tem certeza que deseja cancelar sua proposta para o projeto{' '}
-                          <strong>{proposta.projeto.titulo}</strong>? Esta ação não pode ser
-                          desfeita.
+                          Você tem certeza que deseja cancelar sua proposta para
+                          o projeto <strong>{proposta.projeto.titulo}</strong>?
+                          Esta ação não pode ser desfeita.
                         </DialogDescription>
                       </DialogHeader>
                       <DialogFooter>
@@ -258,7 +285,9 @@ export default function PropostasFreelancerLayout() {
           })
         ) : (
           <div className='col-span-full text-center text-muted-foreground py-12'>
-            <p className='text-xl'>Nenhuma proposta encontrada para este filtro.</p>
+            <p className='text-xl'>
+              Nenhuma proposta encontrada para este filtro.
+            </p>
             <p className='mt-2 text-sm'>
               Explore os{' '}
               <Link href='/projetos' className='text-primary underline'>
@@ -272,4 +301,3 @@ export default function PropostasFreelancerLayout() {
     </div>
   );
 }
-

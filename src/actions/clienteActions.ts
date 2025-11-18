@@ -35,7 +35,10 @@ interface UpdateClienteResult {
 }
 
 export async function fetchDashboardData(): Promise<DashboardDataResult> {
-  const { isAuthorized, userId, role } = await authorizeUser([RoleUsuario.USER, RoleUsuario.ADMIN]);
+  const { isAuthorized, userId, role } = await authorizeUser([
+    RoleUsuario.USER,
+    RoleUsuario.ADMIN,
+  ]);
 
   if (!isAuthorized || !userId) {
     return { success: false, error: 'Acesso negado.' };
@@ -64,7 +67,10 @@ export async function fetchDashboardData(): Promise<DashboardDataResult> {
 
     const clientePerfil = usuario.perfilCliente;
     if (role === RoleUsuario.USER && !clientePerfil) {
-      return { success: false, error: 'Complete seu perfil de cliente para acessar o dashboard.' };
+      return {
+        success: false,
+        error: 'Complete seu perfil de cliente para acessar o dashboard.',
+      };
     }
 
     let totalProjetosAbertos = 0;
@@ -73,12 +79,16 @@ export async function fetchDashboardData(): Promise<DashboardDataResult> {
     let totalPropostasAceitas = 0;
 
     if (role === RoleUsuario.ADMIN) {
-      totalProjetosAbertos = await prisma.projeto.count({ where: { status: StatusProjeto.ABERTO } });
+      totalProjetosAbertos = await prisma.projeto.count({
+        where: { status: StatusProjeto.ABERTO },
+      });
       totalPropostasRecebidas = await prisma.proposta.count();
       totalPropostasEmNegociacao = await prisma.proposta.count({
         where: { status: StatusProposta.EM_NEGOCIACAO },
       });
-      totalPropostasAceitas = await prisma.proposta.count({ where: { status: StatusProposta.ACEITA } });
+      totalPropostasAceitas = await prisma.proposta.count({
+        where: { status: StatusProposta.ACEITA },
+      });
     } else {
       totalProjetosAbertos = await prisma.projeto.count({
         where: { criadoPorId: userId, status: StatusProjeto.ABERTO },
@@ -87,19 +97,30 @@ export async function fetchDashboardData(): Promise<DashboardDataResult> {
         where: { projeto: { criadoPorId: userId } },
       });
       totalPropostasEmNegociacao = await prisma.proposta.count({
-        where: { projeto: { criadoPorId: userId }, status: StatusProposta.EM_NEGOCIACAO },
+        where: {
+          projeto: { criadoPorId: userId },
+          status: StatusProposta.EM_NEGOCIACAO,
+        },
       });
       totalPropostasAceitas = await prisma.proposta.count({
-        where: { projeto: { criadoPorId: userId }, status: StatusProposta.ACEITA },
+        where: {
+          projeto: { criadoPorId: userId },
+          status: StatusProposta.ACEITA,
+        },
       });
     }
 
     return {
       success: true,
       data: {
-        clienteNome: role === RoleUsuario.ADMIN ? 'Painel Administrativo' : clientePerfil?.nomeFantasia || 'Cliente',
+        clienteNome:
+          role === RoleUsuario.ADMIN
+            ? 'Painel Administrativo'
+            : clientePerfil?.nomeFantasia || 'Cliente',
         clienteDescricao:
-          role === RoleUsuario.ADMIN ? 'Resumo geral da plataforma.' : clientePerfil?.descricao || null,
+          role === RoleUsuario.ADMIN
+            ? 'Resumo geral da plataforma.'
+            : clientePerfil?.descricao || null,
         usuarioNome: usuario.nome,
         usuarioEmail: usuario.email,
         totalProjetosAbertos,
@@ -115,7 +136,10 @@ export async function fetchDashboardData(): Promise<DashboardDataResult> {
 }
 
 export async function fetchClientePerfil(): Promise<FetchClienteResult> {
-  const { isAuthorized, userId } = await authorizeUser([RoleUsuario.USER, RoleUsuario.ADMIN]);
+  const { isAuthorized, userId } = await authorizeUser([
+    RoleUsuario.USER,
+    RoleUsuario.ADMIN,
+  ]);
   if (!isAuthorized || !userId) {
     return { success: false, error: 'Acesso negado.' };
   }
@@ -141,8 +165,13 @@ export async function fetchClientePerfil(): Promise<FetchClienteResult> {
   }
 }
 
-export async function updateClienteAction(data: tClienteForm): Promise<UpdateClienteResult> {
-  const { isAuthorized, userId } = await authorizeUser([RoleUsuario.USER, RoleUsuario.ADMIN]);
+export async function updateClienteAction(
+  data: tClienteForm
+): Promise<UpdateClienteResult> {
+  const { isAuthorized, userId } = await authorizeUser([
+    RoleUsuario.USER,
+    RoleUsuario.ADMIN,
+  ]);
   if (!isAuthorized || !userId) {
     return { success: false, error: 'Acesso negado.' };
   }

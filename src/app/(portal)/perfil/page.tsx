@@ -42,9 +42,12 @@ export default async function PaginaPerfil() {
             {clienteError || !cliente ? (
               <div className='flex flex-col items-center justify-center text-center p-8'>
                 <FileWarning size={48} className='text-destructive mb-4' />
-                <h2 className='text-2xl font-bold mb-2'>Erro ao Carregar Perfil</h2>
+                <h2 className='text-2xl font-bold mb-2'>
+                  Erro ao Carregar Perfil
+                </h2>
                 <p className='text-muted-foreground'>
-                  {clienteError || 'Não foi possível encontrar os dados do cliente.'}
+                  {clienteError ||
+                    'Não foi possível encontrar os dados do cliente.'}
                 </p>
               </div>
             ) : (
@@ -52,7 +55,9 @@ export default async function PaginaPerfil() {
                 <h2 className='text-2xl font-bold text-foreground mb-4 flex items-center gap-2'>
                   <Building2 size={24} /> Perfil do Cliente
                 </h2>
-                <p className='text-muted-foreground mb-6'>Mantenha seus dados sempre atualizados.</p>
+                <p className='text-muted-foreground mb-6'>
+                  Mantenha seus dados sempre atualizados.
+                </p>
                 <ClienteProfileForm initialData={cliente} />
               </>
             )}
@@ -62,4 +67,3 @@ export default async function PaginaPerfil() {
     </div>
   );
 }
-

@@ -91,7 +91,9 @@ export function EditarEmpresaForm({
         />
         <div className='flex justify-end pt-4'>
           <Button type='submit' disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+            {form.formState.isSubmitting && (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            )}
             Salvar Alterações
           </Button>
         </div>

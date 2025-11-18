@@ -26,7 +26,10 @@ export async function getDecodedToken(): Promise<DecodedTokenPayload | null> {
     return decoded;
   } catch (error) {
     // Se a verificação falhar (token inválido, expirado, etc.), retorna null.
-    console.warn('Falha na verificação do token JWT:', (error as Error).message);
+    console.warn(
+      'Falha na verificação do token JWT:',
+      (error as Error).message
+    );
     return null;
   }
 }

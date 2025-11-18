@@ -1,10 +1,4 @@
-import {
-  Award,
-  Briefcase,
-  FileText,
-  Languages,
-  Lightbulb,
-} from 'lucide-react';
+import { Award, Briefcase, FileText, Languages, Lightbulb } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 
@@ -24,7 +18,9 @@ function CurriculoSecao({
         <div className='bg-primary/10 p-2 rounded-full mr-4'>{icon}</div>
         <h2 className='text-xl font-bold text-primary'>{titulo}</h2>
       </div>
-      <div className='pl-[52px] border-l-2 border-primary/20 ml-3'>{children}</div>
+      <div className='pl-[52px] border-l-2 border-primary/20 ml-3'>
+        {children}
+      </div>
     </section>
   );
 }
@@ -64,7 +60,9 @@ export function ResumeDisplay({ curriculo }: { curriculo: any }) {
         <div className='space-y-6'>
           {curriculo.experiencias?.map((exp: any) => (
             <div key={exp.id}>
-              <h3 className='text-lg font-semibold text-gray-800'>{exp.cargo}</h3>
+              <h3 className='text-lg font-semibold text-gray-800'>
+                {exp.cargo}
+              </h3>
               <p className='text-md text-gray-700'>
                 {exp.nomeEmpresa} • {exp.local}
               </p>
@@ -73,7 +71,9 @@ export function ResumeDisplay({ curriculo }: { curriculo: any }) {
                 {exp.trabalhoAtual ? 'Presente' : formatarData(exp.dataFim)}
               </p>
               {exp.descricao && (
-                <p className='mt-2 text-sm text-gray-600 whitespace-pre-line'>{exp.descricao}</p>
+                <p className='mt-2 text-sm text-gray-600 whitespace-pre-line'>
+                  {exp.descricao}
+                </p>
               )}
             </div>
           ))}
@@ -86,7 +86,9 @@ export function ResumeDisplay({ curriculo }: { curriculo: any }) {
         <div className='space-y-6'>
           {curriculo.formacoes?.map((formacao: any) => (
             <div key={formacao.id}>
-              <h3 className='text-lg font-semibold text-gray-800'>{formacao.curso}</h3>
+              <h3 className='text-lg font-semibold text-gray-800'>
+                {formacao.curso}
+              </h3>
               <p className='text-md text-gray-700'>{formacao.instituicao}</p>
               <p className='text-sm text-gray-500 capitalize'>
                 {formatarData(formacao.dataInicio)} -{' '}
@@ -96,7 +98,10 @@ export function ResumeDisplay({ curriculo }: { curriculo: any }) {
           ))}
         </div>
       </CurriculoSecao>
-      <CurriculoSecao titulo='Habilidades' icon={<Lightbulb size={20} className='text-primary' />}>
+      <CurriculoSecao
+        titulo='Habilidades'
+        icon={<Lightbulb size={20} className='text-primary' />}
+      >
         <div className='flex flex-wrap gap-2'>
           {curriculo.habilidades?.map((hab: any) => (
             <Badge key={hab.id} variant='secondary'>
@@ -105,25 +110,38 @@ export function ResumeDisplay({ curriculo }: { curriculo: any }) {
           ))}
         </div>
       </CurriculoSecao>
-      <CurriculoSecao titulo='Idiomas' icon={<Languages size={20} className='text-primary' />}>
+      <CurriculoSecao
+        titulo='Idiomas'
+        icon={<Languages size={20} className='text-primary' />}
+      >
         <div className='space-y-2'>
           {curriculo.idiomas?.map((idioma: any) => (
             <p key={idioma.id} className='text-gray-700'>
               {idioma.nome} -{' '}
-              <span className='font-semibold capitalize'>{idioma.nivel.toLowerCase()}</span>
+              <span className='font-semibold capitalize'>
+                {idioma.nivel.toLowerCase()}
+              </span>
             </p>
           ))}
         </div>
       </CurriculoSecao>
-      <CurriculoSecao titulo='Certificações' icon={<Award size={20} className='text-primary' />}>
+      <CurriculoSecao
+        titulo='Certificações'
+        icon={<Award size={20} className='text-primary' />}
+      >
         <div className='space-y-4'>
           {curriculo.certificacoes?.map((cert: any) => (
             <div key={cert.id}>
               <div className='flex items-center gap-2'>
-                <h3 className='text-md font-semibold text-gray-800'>{cert.nome}</h3>
+                <h3 className='text-md font-semibold text-gray-800'>
+                  {cert.nome}
+                </h3>
                 {cert.credencialUrl && (
                   <Link href={cert.credencialUrl} target='_blank'>
-                    <LinkIcon size={14} className='text-blue-600 hover:underline' />
+                    <LinkIcon
+                      size={14}
+                      className='text-blue-600 hover:underline'
+                    />
                   </Link>
                 )}
               </div>

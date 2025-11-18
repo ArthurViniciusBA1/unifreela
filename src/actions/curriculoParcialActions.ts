@@ -26,9 +26,15 @@ interface TokenPayload {
   id: string;
 }
 
-type ActionLogic<TInput, TOutput> = (input: TInput, userId: string) => Promise<TOutput>;
+type ActionLogic<TInput, TOutput> = (
+  input: TInput,
+  userId: string
+) => Promise<TOutput>;
 
-async function createProtectedAction<TInput, TOutput>(schema: z.ZodSchema<TInput> | null, logic: ActionLogic<TInput, TOutput>) {
+async function createProtectedAction<TInput, TOutput>(
+  schema: z.ZodSchema<TInput> | null,
+  logic: ActionLogic<TInput, TOutput>
+) {
   return async (
     input: TInput
   ): Promise<{
@@ -41,14 +47,19 @@ async function createProtectedAction<TInput, TOutput>(schema: z.ZodSchema<TInput
     if (!token) return { success: false, error: 'Não autenticado.' };
 
     try {
-      const { id: userId } = jwt.verify(token, process.env.JWT_SECRET!) as TokenPayload;
+      const { id: userId } = jwt.verify(
+        token,
+        process.env.JWT_SECRET!
+      ) as TokenPayload;
 
       if (schema) {
         const validation = schema.safeParse(input);
         if (!validation.success)
           return {
             success: false,
-            error: validation.error.errors.map((e) => e.message).join(', ') || 'Dados de entrada inválidos.',
+            error:
+              validation.error.errors.map((e) => e.message).join(', ') ||
+              'Dados de entrada inválidos.',
           };
       }
 
@@ -60,7 +71,10 @@ async function createProtectedAction<TInput, TOutput>(schema: z.ZodSchema<TInput
     } catch (e) {
       console.error('Action Error:', e);
       if (e instanceof jwt.JsonWebTokenError) {
-        return { success: false, error: 'Token inválido ou expirado. Faça login novamente.' };
+        return {
+          success: false,
+          error: 'Token inválido ou expirado. Faça login novamente.',
+        };
       }
       return {
         success: false,
@@ -83,7 +97,10 @@ async function getCurriculoId(userId: string): Promise<string> {
 }
 
 // Informações Pessoais (NOVA ACTION)
-const saveInformacoesPessoaisLogic: ActionLogic<tCurriculoInformacoesPessoais, any> = async (data, userId) => {
+const saveInformacoesPessoaisLogic: ActionLogic<
+  tCurriculoInformacoesPessoais,
+  any
+> = async (data, userId) => {
   const dataToSave = {
     tituloProfissional: data.tituloProfissional,
     resumo: data.resumo || null,
@@ -107,7 +124,10 @@ export const saveInformacoesPessoaisAction = await createProtectedAction(
 );
 
 // Experiência Profissional
-const saveExperienciaLogic: ActionLogic<tExperienciaProfissional, any> = async (data, userId) => {
+const saveExperienciaLogic: ActionLogic<tExperienciaProfissional, any> = async (
+  data,
+  userId
+) => {
   const { id, local, ...rest } = data;
   const prismaData = {
     ...rest,
@@ -126,11 +146,20 @@ const deleteExperienciaLogic: ActionLogic<string, any> = (id, userId) =>
   prisma.experienciaProfissional.delete({
     where: { id, curriculo: { usuarioId: userId } },
   });
-export const saveExperienciaAction = await createProtectedAction(experienciaProfissionalSchema, saveExperienciaLogic);
-export const deleteExperienciaAction = await createProtectedAction(z.string().min(1), deleteExperienciaLogic);
+export const saveExperienciaAction = await createProtectedAction(
+  experienciaProfissionalSchema,
+  saveExperienciaLogic
+);
+export const deleteExperienciaAction = await createProtectedAction(
+  z.string().min(1),
+  deleteExperienciaLogic
+);
 
 // Formação Acadêmica
-const saveFormacaoLogic: ActionLogic<tFormacaoAcademica, any> = async (data, userId) => {
+const saveFormacaoLogic: ActionLogic<tFormacaoAcademica, any> = async (
+  data,
+  userId
+) => {
   const { id, ...rest } = data;
   const prismaData = {
     ...rest,
@@ -148,11 +177,20 @@ const deleteFormacaoLogic: ActionLogic<string, any> = (id, userId) =>
   prisma.formacaoAcademica.delete({
     where: { id, curriculo: { usuarioId: userId } },
   });
-export const saveFormacaoAction = await createProtectedAction(formacaoAcademicaSchema, saveFormacaoLogic);
-export const deleteFormacaoAction = await createProtectedAction(z.string().min(1), deleteFormacaoLogic);
+export const saveFormacaoAction = await createProtectedAction(
+  formacaoAcademicaSchema,
+  saveFormacaoLogic
+);
+export const deleteFormacaoAction = await createProtectedAction(
+  z.string().min(1),
+  deleteFormacaoLogic
+);
 
 // Habilidade
-const saveHabilidadeLogic: ActionLogic<tHabilidade, any> = async (data, userId) => {
+const saveHabilidadeLogic: ActionLogic<tHabilidade, any> = async (
+  data,
+  userId
+) => {
   const { id, ...rest } = data;
   const curriculoId = await getCurriculoId(userId);
   return prisma.habilidade.upsert({
@@ -165,8 +203,14 @@ const deleteHabilidadeLogic: ActionLogic<string, any> = (id, userId) =>
   prisma.habilidade.delete({
     where: { id, curriculo: { usuarioId: userId } },
   });
-export const saveHabilidadeAction = await createProtectedAction(habilidadeSchema, saveHabilidadeLogic);
-export const deleteHabilidadeAction = await createProtectedAction(z.string().min(1), deleteHabilidadeLogic);
+export const saveHabilidadeAction = await createProtectedAction(
+  habilidadeSchema,
+  saveHabilidadeLogic
+);
+export const deleteHabilidadeAction = await createProtectedAction(
+  z.string().min(1),
+  deleteHabilidadeLogic
+);
 
 // Idioma
 const saveIdiomaLogic: ActionLogic<tIdioma, any> = async (data, userId) => {
@@ -182,8 +226,14 @@ const deleteIdiomaLogic: ActionLogic<string, any> = (id, userId) =>
   prisma.idioma.delete({
     where: { id, curriculo: { usuarioId: userId } },
   });
-export const saveIdiomaAction = await createProtectedAction(idiomaSchema, saveIdiomaLogic);
-export const deleteIdiomaAction = await createProtectedAction(z.string().min(1), deleteIdiomaLogic);
+export const saveIdiomaAction = await createProtectedAction(
+  idiomaSchema,
+  saveIdiomaLogic
+);
+export const deleteIdiomaAction = await createProtectedAction(
+  z.string().min(1),
+  deleteIdiomaLogic
+);
 
 // Projeto
 const saveProjetoLogic: ActionLogic<tProjeto, any> = async (data, userId) => {
@@ -208,11 +258,20 @@ const deleteProjetoLogic: ActionLogic<string, any> = (id, userId) =>
   prisma.projetoPortfolio.delete({
     where: { id, curriculo: { usuarioId: userId } },
   });
-export const saveProjetoAction = await createProtectedAction(projetoSchema, saveProjetoLogic);
-export const deleteProjetoAction = await createProtectedAction(z.string().min(1), deleteProjetoLogic);
+export const saveProjetoAction = await createProtectedAction(
+  projetoSchema,
+  saveProjetoLogic
+);
+export const deleteProjetoAction = await createProtectedAction(
+  z.string().min(1),
+  deleteProjetoLogic
+);
 
 // Certificação
-const saveCertificacaoLogic: ActionLogic<tCertificacao, any> = async (data, userId) => {
+const saveCertificacaoLogic: ActionLogic<tCertificacao, any> = async (
+  data,
+  userId
+) => {
   const { id, ...rest } = data;
   const prismaData = {
     ...rest,
@@ -234,5 +293,11 @@ const deleteCertificacaoLogic: ActionLogic<string, any> = (id, userId) =>
   prisma.certificacao.delete({
     where: { id, curriculo: { usuarioId: userId } },
   });
-export const saveCertificacaoAction = await createProtectedAction(certificacaoSchema, saveCertificacaoLogic);
-export const deleteCertificacaoAction = await createProtectedAction(z.string().min(1), deleteCertificacaoLogic);
+export const saveCertificacaoAction = await createProtectedAction(
+  certificacaoSchema,
+  saveCertificacaoLogic
+);
+export const deleteCertificacaoAction = await createProtectedAction(
+  z.string().min(1),
+  deleteCertificacaoLogic
+);

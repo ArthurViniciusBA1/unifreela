@@ -35,7 +35,11 @@ export function encrypt(text: string): string {
 
 export function decrypt(text: string): string {
   const iv = Buffer.alloc(IV_LENGTH, 0); // IV fixo
-  const decipher = crypto.createDecipheriv(ALGORITHM, getEncryptionKeyBuffer(), iv);
+  const decipher = crypto.createDecipheriv(
+    ALGORITHM,
+    getEncryptionKeyBuffer(),
+    iv
+  );
   let decrypted = decipher.update(text, 'hex', 'utf8');
   decrypted += decipher.final('utf8');
   return decrypted;

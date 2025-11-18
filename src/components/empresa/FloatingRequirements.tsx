@@ -3,7 +3,11 @@
 import { ListChecks } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 export function FloatingRequirements({ requisitos }: { requisitos: string[] }) {
   if (!requisitos || requisitos.length === 0) {

@@ -38,7 +38,9 @@ export function ClienteProfileForm({ initialData }: { initialData: any }) {
     const result = await updateClienteAction(data);
 
     if (result.success) {
-      toast.success('Perfil da empresa atualizado com sucesso!', { id: toastId });
+      toast.success('Perfil da empresa atualizado com sucesso!', {
+        id: toastId,
+      });
     } else {
       toast.error(result.error || 'Falha ao salvar.', { id: toastId });
     }
@@ -53,7 +55,11 @@ export function ClienteProfileForm({ initialData }: { initialData: any }) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Nome / Organização' id='nomeFantasia' {...field} />
+                <FloatingLabelInput
+                  label='Nome / Organização'
+                  id='nomeFantasia'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -87,7 +93,9 @@ export function ClienteProfileForm({ initialData }: { initialData: any }) {
                   id='cpfOuCnpj'
                   inputMode='numeric'
                   {...field}
-                  onChange={(event) => field.onChange(event.target.value.replace(/\D/g, ''))}
+                  onChange={(event) =>
+                    field.onChange(event.target.value.replace(/\D/g, ''))
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -100,7 +108,12 @@ export function ClienteProfileForm({ initialData }: { initialData: any }) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Website URL' id='websiteUrl' type='url' {...field} />
+                <FloatingLabelInput
+                  label='Website URL'
+                  id='websiteUrl'
+                  type='url'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -112,7 +125,11 @@ export function ClienteProfileForm({ initialData }: { initialData: any }) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label='Localização principal' id='localizacao' {...field} />
+                <FloatingLabelInput
+                  label='Localização principal'
+                  id='localizacao'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
