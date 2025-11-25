@@ -103,15 +103,15 @@ function CTAButtons({ isAuthenticated }: { isAuthenticated: boolean }) {
           className='group flex items-center justify-between gap-3 rounded-2xl border border-border bg-card px-6 py-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg text-left'
         >
           <div>
+            <h3 className='text-xl font-semibold'>Quero contratar</h3>
             <p className='text-xs uppercase text-muted-foreground'>
-              Quero contratar
+              Publicar vagas
             </p>
-            <h3 className='text-xl font-semibold'>Gerenciar projetos</h3>
             <p className='text-sm text-muted-foreground mt-1'>
               Publique e gerencie seus projetos
             </p>
           </div>
-          <div className='flex h-12 w-12 items-center justify-center rounded-full bg-secondary/10 text-secondary-foreground shrink-0'>
+          <div className='flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary shrink-0'>
             <Briefcase size={22} />
           </div>
           <ArrowRight

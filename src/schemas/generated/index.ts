@@ -93,7 +93,7 @@ export type StatusPropostaType = `${z.infer<typeof StatusPropostaSchema>}`
 
 export const UsuarioSchema = z.object({
   role: RoleUsuarioSchema,
-  id: z.cuid(),
+  id: z.string().cuid(),
   email: z.string(),
   senha: z.string(),
   nome: z.string(),
@@ -110,7 +110,7 @@ export type Usuario = z.infer<typeof UsuarioSchema>
 /////////////////////////////////////////
 
 export const ClienteSchema = z.object({
-  id: z.cuid(),
+  id: z.string().cuid(),
   usuarioId: z.string(),
   nomeFantasia: z.string().nullable(),
   cpfOuCnpj: z.string().nullable(),
@@ -128,7 +128,7 @@ export type Cliente = z.infer<typeof ClienteSchema>
 /////////////////////////////////////////
 
 export const CurriculoSchema = z.object({
-  id: z.cuid(),
+  id: z.string().cuid(),
   usuarioId: z.string(),
   tituloProfissional: z.string(),
   resumo: z.string().nullable(),
@@ -150,7 +150,7 @@ export type Curriculo = z.infer<typeof CurriculoSchema>
 export const ProjetoSchema = z.object({
   tipo: TipoProjetoSchema,
   status: StatusProjetoSchema,
-  id: z.cuid(),
+  id: z.string().cuid(),
   titulo: z.string(),
   descricao: z.string(),
   habilidadesDesejadas: z.string().array(),
@@ -170,7 +170,7 @@ export type Projeto = z.infer<typeof ProjetoSchema>
 
 export const PropostaSchema = z.object({
   status: StatusPropostaSchema,
-  id: z.cuid(),
+  id: z.string().cuid(),
   mensagem: z.string(),
   valorProposto: z.instanceof(Prisma.Decimal, { message: "Field 'valorProposto' must be a Decimal. Location: ['Models', 'Proposta']"}),
   prazoEstimadoDias: z.number().int(),
@@ -187,7 +187,7 @@ export type Proposta = z.infer<typeof PropostaSchema>
 /////////////////////////////////////////
 
 export const AvaliacaoSchema = z.object({
-  id: z.cuid(),
+  id: z.string().cuid(),
   nota: z.number().int(),
   comentario: z.string().nullable(),
   projetoId: z.string(),
@@ -203,7 +203,7 @@ export type Avaliacao = z.infer<typeof AvaliacaoSchema>
 /////////////////////////////////////////
 
 export const ExperienciaProfissionalSchema = z.object({
-  id: z.cuid(),
+  id: z.string().cuid(),
   cargo: z.string(),
   empresa: z.string(),
   descricao: z.string().nullable(),
@@ -220,7 +220,7 @@ export type ExperienciaProfissional = z.infer<typeof ExperienciaProfissionalSche
 /////////////////////////////////////////
 
 export const FormacaoAcademicaSchema = z.object({
-  id: z.cuid(),
+  id: z.string().cuid(),
   instituicao: z.string(),
   curso: z.string(),
   dataInicio: z.coerce.date(),
@@ -236,7 +236,7 @@ export type FormacaoAcademica = z.infer<typeof FormacaoAcademicaSchema>
 /////////////////////////////////////////
 
 export const HabilidadeSchema = z.object({
-  id: z.cuid(),
+  id: z.string().cuid(),
   nome: z.string(),
   curriculoId: z.string(),
 })
@@ -249,7 +249,7 @@ export type Habilidade = z.infer<typeof HabilidadeSchema>
 
 export const IdiomaSchema = z.object({
   nivel: NivelProficienciaSchema,
-  id: z.cuid(),
+  id: z.string().cuid(),
   nome: z.string(),
   curriculoId: z.string(),
 })
@@ -261,7 +261,7 @@ export type Idioma = z.infer<typeof IdiomaSchema>
 /////////////////////////////////////////
 
 export const CertificacaoSchema = z.object({
-  id: z.cuid(),
+  id: z.string().cuid(),
   nome: z.string(),
   organizacaoEmissora: z.string(),
   dataEmissao: z.coerce.date(),
@@ -276,7 +276,7 @@ export type Certificacao = z.infer<typeof CertificacaoSchema>
 /////////////////////////////////////////
 
 export const ProjetoPortfolioSchema = z.object({
-  id: z.cuid(),
+  id: z.string().cuid(),
   nome: z.string(),
   descricao: z.string().nullable(),
   projectUrl: z.string().nullable(),
