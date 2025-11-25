@@ -62,7 +62,7 @@ export async function criarEmpresaComRecrutadorAction(
     const hashedPassword = await bcrypt.hash(senhaRecrutador, 10);
 
     await prisma.$transaction(async (tx) => {
-      const novoUsuario = await tx.susuario.create({
+      const novoUsuario = await tx.usuario.create({
         data: {
           nome: nomeRecrutador,
           email: emailRecrutador,

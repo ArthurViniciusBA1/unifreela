@@ -30,6 +30,7 @@ enum NivelProficiencia {
 
 enum TipoProjeto {
   PROJETO_FIXO
+  DIÁRIA
   HORA
   CONSULTORIA
   LONGO_PRAZO
